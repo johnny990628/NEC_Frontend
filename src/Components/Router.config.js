@@ -67,7 +67,7 @@ const routerList = [
         icon: <InsertChartOutlined />,
         path: '/statistic',
         Component: Statistic,
-        authority: [3],
+        authority: [4],
     },
 ]
 

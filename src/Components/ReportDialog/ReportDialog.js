@@ -19,12 +19,6 @@ import { useReactToPrint } from 'react-to-print'
 
 import useStyles from './Style'
 
-import Gallbladder from '../../Assets/OrganJson/gallbladder.json'
-import Kidney from '../../Assets/OrganJson/kidney.json'
-import Liver from '../../Assets/OrganJson/liver.json'
-import Pancreas from '../../Assets/OrganJson/pancreas.json'
-import Spleen from '../../Assets/OrganJson/spleen.json'
-import Suggestion from '../../Assets/OrganJson/suggestion.json'
 import { closeDialog } from '../../Redux/Slices/Dialog'
 import CustomReportForm from '../CustomReport/CustomReportForm'
 import ReportFormHtml, { ReportFormForPDF } from './ReportFormHtml'
@@ -127,7 +121,9 @@ const ReportDialog = ({ mode }) => {
             </DialogTitle>
             <DialogContent sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
                 {isEditing ? (
-                    <CustomReportForm lists={[Liver, Gallbladder, Kidney, Pancreas, Spleen, Suggestion]} patient={patient} mode="edit" />
+                    {
+                        /* <CustomReportForm lists={[Liver, Gallbladder, Kidney, Pancreas, Spleen, Suggestion]} patient={patient} mode="edit" /> */
+                    }
                 ) : (
                     <>
                         <ReportFormHtml />

@@ -1,0 +1,334 @@
+[
+    {
+        "name": "TN",
+        "label": "腫瘤編號",
+        "type": "text"
+    },
+    {
+        "name": "LR",
+        "label": "左右側",
+        "type": "text"
+    },
+    {
+        "name": "POSITION",
+        "label": "方位",
+        "type": "text"
+    },
+    {
+        "name": "DISTANCE",
+        "label": "距離乳頭距離(cm)",
+        "type": "text"
+    },
+    {
+        "name": "MAXRADIUS",
+        "label": "最大徑(cm)",
+        "type": "text",
+        "divider": true
+    },
+    {
+        "name": "SHAPE",
+        "label": "Shape",
+        "type": "radio",
+        "divider": true,
+        "options": [
+            {
+                "label": "Oval",
+                "value": "oval"
+            },
+            {
+                "label": "Round",
+                "value": "round"
+            },
+            {
+                "label": "Irregualr",
+                "value": "irregualr"
+            }
+        ]
+    },
+    {
+        "name": "ORIENTATION",
+        "label": "Orientation",
+        "type": "radio",
+        "divider": true,
+        "options": [
+            {
+                "label": "parallel",
+                "value": "parallel"
+            },
+            {
+                "label": "Not parallel",
+                "value": "not_parallel"
+            }
+        ]
+    },
+    {
+        "name": "MARGIN",
+        "label": "Margin",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Circumscribed",
+                "value": "circumscribed"
+            },
+            {
+                "label": "Indistinct",
+                "value": "indistinct"
+            },
+            {
+                "label": "Angular",
+                "value": "angular"
+            },
+            {
+                "label": "Microbuated",
+                "value": "microbuate"
+            },
+            {
+                "label": "Spiculated",
+                "value": "spiculated"
+            }
+        ]
+    },
+    {
+        "name": "EP",
+        "label": "Echo Pattern",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Anechoic",
+                "value": "anechoic"
+            },
+            {
+                "label": "Hyperechoic",
+                "value": "hyperechoic"
+            },
+            {
+                "label": "Complex",
+                "value": "complex"
+            },
+            {
+                "label": "Hypoechoic",
+                "value": "hypoechoic"
+            },
+            {
+                "label": "Isoechoic",
+                "value": "isoechoic"
+            }
+        ]
+    },
+    {
+        "name": "PF",
+        "label": "Posterior Fatures",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "No posterior acoustic features",
+                "value": "no_psterior_acoustic_features"
+            },
+            {
+                "label": "Enhancement",
+                "value": "enhancement"
+            },
+            {
+                "label": "Shadowing",
+                "value": "shadowing"
+            },
+            {
+                "label": "Combined pattern",
+                "value": "combined_pattern"
+            }
+        ]
+    },
+    {
+        "name": "AF",
+        "label": "Associated Fatures",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Architectural distortion",
+                "value": "architectural_distortion"
+            },
+            {
+                "label": "Duct Change",
+                "value": "duct_change"
+            },
+            {
+                "label": "Skin changes / Skin Thickening",
+                "value": "skin_change_skin_thickening"
+            },
+            {
+                "label": "Skin changes / Skin Retraction",
+                "value": "skin_change_skin_retraction"
+            },
+            {
+                "label": "Edema",
+                "value": "edema"
+            }
+        ]
+    },
+    {
+        "name": "VASCULARITY",
+        "label": "Vascularity",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Not assessed",
+                "value": "not_assessed"
+            },
+            {
+                "label": "Vasculariry / Absent",
+                "value": "vasculariry_absent"
+            },
+            {
+                "label": "Vasculariry / Internal Vascularity",
+                "value": "vasculariry_internal_vascularity"
+            },
+            {
+                "label": "Vasculariry / Vesseles in Rim",
+                "value": "vasculariry_vesseles_in_rim"
+            }
+        ]
+    },
+    {
+        "name": "SUC",
+        "label": "Surrounding Change (Multiple)",
+        "type": "select_multiple",
+        "divider": true,
+        "options": [
+            {
+                "label": "Duct changes",
+                "value": "duct_changes"
+            },
+            {
+                "label": "Cooper's ligament changes",
+                "value": "coopers_ligament_changes"
+            },
+            {
+                "label": "Edema",
+                "value": "edema"
+            },
+            {
+                "label": "Architectural distortion",
+                "value": "architectural_distortion"
+            },
+            {
+                "label": "Skin thickening",
+                "value": "skin_thickening"
+            },
+            {
+                "label": "Skin retraction / irregularity",
+                "value": "skin_retraction_irregularity"
+            }
+        ]
+    },
+    {
+        "name": "SPC",
+        "label": "Special Case",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Clustered microcysts",
+                "value": "dclustered_microcysts"
+            },
+            {
+                "label": "Complicated cyst",
+                "value": "complicated_cyst"
+            },
+            {
+                "label": "Mass in or on skin",
+                "value": "mass_in_or_on_skin"
+            },
+            {
+                "label": "Foreign body",
+                "value": "foreign_body"
+            },
+            {
+                "label": "Simple cysts",
+                "value": "simple_cysts"
+            },
+            {
+                "label": "VascularAbnormalities / AVM",
+                "value": "vascularabnormalities_avm"
+            },
+            {
+                "label": "Vascular Abnormalities / Mondor Disease",
+                "value": "vascularabnormalities_mondor_disease"
+            },
+            {
+                "label": "Postsurgical Fluid Collection",
+                "value": "posturgical_fluid_collection"
+            },
+            {
+                "label": "Fat Necrosis",
+                "value": "fat_necrosis"
+            },
+            {
+                "label": "Lymph nodes - itramammary",
+                "value": "lymph_nodes_itramammary"
+            },
+            {
+                "label": "Lymph nodes - axillary",
+                "value": "lymph_nodes_axillary"
+            }
+        ]
+    },
+    {
+        "name": "CALCIFICATIONS",
+        "label": "Calcifications",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Intraductal",
+                "value": "intraductal"
+            },
+            {
+                "label": "Microcalcifications out of mass",
+                "value": "microcalcifications_out_of_mass"
+            },
+            {
+                "label": "Microcalcifications in mass",
+                "value": "microcalcifications_in_mass"
+            }
+        ]
+    },
+    {
+        "name": "EA",
+        "label": "Elasticity Assessment",
+        "type": "select",
+        "divider": true,
+        "options": [
+            {
+                "label": "Not assessed",
+                "value": "not_assessed"
+            },
+            {
+                "label": "soft",
+                "value": "soft"
+            },
+            {
+                "label": "Intermediate",
+                "value": "intermediate"
+            },
+            {
+                "label": "Hard",
+                "value": "hard"
+            }
+        ]
+    },
+    {
+        "name": "IS",
+        "label": "檢查總結",
+        "type": "text"
+    },
+    {
+        "name": "BIRADS",
+        "label": "BI-RADS",
+        "type": "text"
+    }
+]

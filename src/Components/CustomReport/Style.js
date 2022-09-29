@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     },
     formContainer: {
         padding: '.5rem',
-        marginBottom: '2rem',
         display: 'flex',
         alignItems: 'center',
     },
@@ -29,16 +28,17 @@ const useStyles = makeStyles(theme => ({
         },
     },
     inputLabel: {
-        fontSize: '1.3rem',
+        textTransform: 'none',
+        // fontSize: '1.3rem',
         padding: '.3rem',
 
         [theme.breakpoints.down('lg')]: {
-            fontSize: '1rem',
+            // fontSize: '1rem',
         },
     },
     toggleButton: {
-        marginRight: '1rem',
-        padding: '0 .8rem',
+        // marginRight: '1rem',
+        padding: '0 .4rem',
         margin: '.3rem',
         border: 'none',
         borderRadius: '1rem',

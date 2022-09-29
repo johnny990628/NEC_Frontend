@@ -10,12 +10,8 @@ import Lottie from 'lottie-react'
 
 import CustomDataGrid from '../../Components/CustomDataGrid/CustomDataGrid'
 import CustomReportForm from '../../Components/CustomReport/CustomReportForm'
-import Gallbladder from '../../Assets/OrganJson/gallbladder.json'
-import Kidney from '../../Assets/OrganJson/kidney.json'
-import Liver from '../../Assets/OrganJson/liver.json'
-import Pancreas from '../../Assets/OrganJson/pancreas.json'
-import Spleen from '../../Assets/OrganJson/spleen.json'
-import Suggestion from '../../Assets/OrganJson/suggestion.json'
+import REPORTCOLS from '../../Assets/Json/ReportCols.json'
+import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 
 import { createReport, resetReport } from '../../Redux/Slices/ReportForm'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
@@ -65,11 +61,12 @@ const CreateReport = () => {
     }, [])
 
     const handleReportSubmit = () => {
+        console.log(report)
         dispatch(
             createReport({
                 patientID: patient.id,
                 reportID: patient.reportID,
-                data: { report: { ...report, id: v4() }, userID: user._id, status: 'finished' },
+                data: { report: { report, id: v4() }, userID: user._id, status: 'finished' },
             })
         )
     }
@@ -170,11 +167,7 @@ const CreateReport = () => {
                     )}
                     {currentStep === 1 && (
                         <>
-                            <CustomReportForm
-                                lists={[Liver, Gallbladder, Kidney, Pancreas, Spleen, Suggestion]}
-                                patient={patient}
-                                mode="create"
-                            />
+                            <CustomReportForm cols1={REPORTCOLS} cols2={REPORTCOLS2} patient={patient} mode="create" />
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
                                 <Button
                                     variant="contained"

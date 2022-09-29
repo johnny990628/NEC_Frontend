@@ -1,0 +1,176 @@
+[
+    {
+        "name": "UEM",
+        "label": "US examination mode",
+        "type": "radio",
+        "divider":true,
+        "options": [
+            { "label": "Screenings US", "value": "screenings_us", "type": "checkbox" },
+            { "label": "Diagnostic US", "value": "diagnostic_us", "type": "checkbox" },
+            { "label": "Both", "value": "both", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "EFSP",
+        "label": "10.Exam for symptomatic patient",
+        "type": "radio",
+        "divider":true,
+        "options": [
+            { "label": "Pain", "value": "pain", "type": "checkbox" },
+            { "label": "Palpable mass", "value": "palpable_mass", "type": "checkbox" },
+            { "label": "Discharge", "value": "discharge", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "SMC",
+        "label": "20.Screening mammographic Category",
+        "type": "radio",
+        "options": [
+            { "label": "Right", "value": "right", "type": "checkbox" },
+            { "label": "Left", "value": "left", "type": "checkbox" },
+            { "label": "UOQ", "value": "uoq", "type": "checkbox" },
+            { "label": "UIQ", "value": "uiq", "type": "checkbox" },
+            { "label": "LOQ", "value": "loq", "type": "checkbox" },
+            { "label": "LIQ", "value": "liq", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "MASS",
+        "label": "21.Mass",
+        "type": "checkbox"
+    },
+    {
+        "name": "CALCIFICATION",
+        "label": "22.Calcification",
+        "type": "checkbox"
+    },
+    {
+        "name": "ASYMMETRY",
+        "label": "23.Asymmetry",
+        "type": "checkbox"
+    },
+    {
+        "name": "AD",
+        "label": "24.Architecture distortion",
+        "type": "checkbox"
+    },
+    {
+        "name": "OTHERS",
+        "label": "25.Others",
+        "type": "text"
+    },
+    {
+        "name": "DOB",
+        "label": "26.Density of breast",
+        "type": "select",
+        "options": [
+            { "label": "A", "value": "a", "type": "text" },
+            { "label": "B", "value": "b", "type": "text" },
+            { "label": "C", "value": "c", "type": "text" },
+            { "label": "D", "value": "d", "type": "text" }
+        ]
+    },
+    {
+        "name": "RECOMENDATION",
+        "label": "27.Recomendation",
+        "type": "text",
+        "divider":true
+    },
+    {
+        "name": "FUFPNBL",
+        "label": "30.F/U for previous noted benign lesions",
+        "type": "radio",
+        "options": [
+            { "label": "Fibroademoa", "value": "fibroademoa", "type": "checkbox" },
+            { "label": "Fibrocystic change", "value": "fibrocystic_change", "type": "checkbox" },
+            { "label": "Cyst", "value": "cyst", "type": "checkbox" },
+            { "label": "Others", "value": "others", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "SAB",
+        "label": "40.Surgically altered breast",
+        "type": "radio",
+        "divider":true,
+        "options": [
+            { "label": "S/P biopsy / wide excision / BCS", "value": "sp_biopsy", "type": "checkbox" },
+            { "label": "S/P breast", "value": "sp_breast", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "AR",
+        "label": "50.Augmentation / Reconstruction",
+        "type": "radio",
+        "divider":true,
+        "options": [
+            {
+                "label": "Other reasons for breast sono examination",
+                "value": "other_reasons_for_breast_sono_examination",
+                "type": "checkbox"
+            }
+        ]
+    },
+    {
+        "name": "USCATEGORY",
+        "label": "US Category",
+        "type": "select",
+        "options": [
+            { "label": "Category 0", "value": "c0", "type": "checkbox" },
+            { "label": "Category 1", "value": "c1", "type": "checkbox" },
+            { "label": "Category 2", "value": "c2", "type": "checkbox" },
+            { "label": "Category 3", "value": "c3", "type": "checkbox" },
+            { "label": "Category 4A", "value": "c4a", "type": "checkbox" },
+            { "label": "Category 4B", "value": "c4b", "type": "checkbox" },
+            { "label": "Category 4C", "value": "c4c", "type": "checkbox" },
+            { "label": "Category 5", "value": "c5", "type": "checkbox" },
+            { "label": "Category 6", "value": "c6", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "CMAUSFC",
+        "label": "Combined mammogram and US final category",
+        "type": "select",
+        "options": [
+            { "label": "Category 0", "value": "c0", "type": "checkbox" },
+            { "label": "Category 1", "value": "c1", "type": "checkbox" },
+            { "label": "Category 2", "value": "c2", "type": "checkbox" },
+            { "label": "Category 3", "value": "c3", "type": "checkbox" },
+            { "label": "Category 4A", "value": "c4a", "type": "checkbox" },
+            { "label": "Category 4B", "value": "c4b", "type": "checkbox" },
+            { "label": "Category 4C", "value": "c4c", "type": "checkbox" },
+            { "label": "Category 5", "value": "c5", "type": "checkbox" },
+            { "label": "Category 6", "value": "c6", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "BAOES",
+        "label": "Biopsy an other Evaluation Suggestion",
+        "type": "select",
+        "options": [
+            { "label": "不用做biopsy", "value": "nobiopsy", "type": "checkbox" },
+            { "label": "Aspiration cytology", "value": "aspiration_cytology", "type": "checkbox" },
+            { "label": "Core biopsy", "value": "core_biopsy", "type": "checkbox" },
+            { "label": "Open biopsy", "value": "open_biopsy", "type": "checkbox" },
+            { "label": "Mammography", "value": "mammography", "type": "checkbox" },
+            { "label": "MRI", "value": "mri", "type": "checkbox" },
+            { "label": "其他", "value": "other", "type": "checkbox" }
+        ]
+    },
+    {
+        "name": "PR",
+        "label": "Pathology Results",
+        "type": "select",
+        "options": [
+            { "label": "未做biopsy", "value": "nobiopsy", "type": "checkbox" },
+            { "label": "Benign", "value": "benign", "type": "checkbox" },
+            { "label": "Malignant-Carcinoma in situ", "value": "malignant-carcinoma_in_situ", "type": "checkbox" },
+            { "label": "Malignant-Invasive cancer", "value": "malignant-incasive_cancer", "type": "checkbox" },
+            { "label": "Malignant-other", "value": "malignant-other", "type": "checkbox" },
+            { "label": "Cytology : suspicious", "value": "cytology_suspicious", "type": "checkbox" },
+            { "label": "Cytology : atypia", "value": "cytology_atypia", "type": "checkbox" },
+            { "label": "Cytology : positive", "value": "cytology_positive", "type": "checkbox" },
+            { "label": "Cytology : negative", "value": "cytology_negative", "type": "checkbox" },
+            { "label": "已做biopsy,結果不知", "value": "done_biopsy_unknown", "type": "checkbox" }
+        ]
+    }
+]

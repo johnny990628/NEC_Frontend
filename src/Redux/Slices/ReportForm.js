@@ -3,22 +3,8 @@ import { apiUpdateReport } from '../../Axios/Report'
 import { apiDeleteScheduleAndBloodAndReport } from '../../Axios/Schedule'
 
 const initialState = {
-    create: {
-        liver: [],
-        gallbladder: [],
-        kidney: [],
-        pancreas: [],
-        spleen: [],
-        suggestion: [],
-    },
-    edit: {
-        liver: [],
-        gallbladder: [],
-        kidney: [],
-        pancreas: [],
-        spleen: [],
-        suggestion: [],
-    },
+    create: [],
+    edit: [],
 }
 
 export const createReport = createAsyncThunk('reportForm/createReport', async ({ patientID, reportID, data }) => {
@@ -45,18 +31,18 @@ const reportFormSlice = createSlice({
     initialState,
     reducers: {
         addCancer: (state, action) => {
-            const { organ, name, type, value, mode } = action.payload
-            state[mode][organ].find(s => s.name === name) //if has the same name
-                ? (state[mode][organ] = [...state[mode][organ].filter(s => s.name !== name), { name, type, value }]) //replace the name with value
-                : (state[mode][organ] = [...state[mode][organ], { name, type, value }]) //or add the new one
+            const { name, type, value, mode } = action.payload
+            state[mode].find(s => s.name === name) //if has the same name
+                ? (state[mode] = [...state[mode].filter(s => s.name !== name), { name, type, value }]) //replace the name with value
+                : (state[mode] = [...state[mode], { name, type, value }]) //or add the new one
         },
         removeCancer: (state, action) => {
-            const { organ, name, mode } = action.payload
-            state[mode][organ] = state[mode][organ].filter(c => c.name !== name)
+            const { name, mode } = action.payload
+            state[mode] = state[mode].filter(c => c.name !== name)
         },
         clearCancer: (state, action) => {
-            const { organ, mode } = action.payload
-            state[mode][organ] = []
+            const { mode } = action.payload
+            state[mode] = []
         },
         fillReport: (state, action) => {
             const { report } = action.payload
@@ -67,14 +53,7 @@ const reportFormSlice = createSlice({
         },
         resetReport: (state, action) => {
             const { mode } = action.payload
-            state[mode] = {
-                liver: [],
-                gallbladder: [],
-                kidney: [],
-                pancreas: [],
-                spleen: [],
-                suggestion: [],
-            }
+            state[mode] = []
         },
     },
     extraReducers: {

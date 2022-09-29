@@ -33,8 +33,8 @@ const FormSection = ({ list, mode }) => {
     const classes = useStyles()
 
     const dispatch = useDispatch()
-    const editReport = useSelector(state => state.reportForm.edit[list.name])
-    const createReport = useSelector(state => state.reportForm.create[list.name])
+    const editReport = useSelector(state => state.reportForm.edit)
+    const createReport = useSelector(state => state.reportForm.create)
 
     const setupNormal = () => {
         if (mode === 'create') {
@@ -45,44 +45,27 @@ const FormSection = ({ list, mode }) => {
         }
     }
 
-    const setupValue = ({ row }) => {
+    const setupValue = list => {
         if (mode === 'create') {
-            return createReport.find(d => d.name === row.name)
+            return createReport.find(r => r.name === list.name)
         }
         if (mode === 'edit') {
-            return editReport.find(d => d.name === row.name)
+            return editReport.find(r => r.name === list.name)
         }
     }
 
     return (
-        <Box id={list.name} className={classes.formContainer}>
-            <ToggleButton
-                disableFocusRipple
-                disableRipple
-                color="primary"
-                value="check"
-                selected={setupNormal()}
-                onClick={() => dispatch(clearCancer({ organ: list.name, mode }))}
-                className={classes.toggleButton}
-            >
-                <Box className={classes.formLabel}>{list.label}</Box>
-            </ToggleButton>
-
-            <Box>
-                {list.cols.map(row => (
-                    <CustomReportInput key={row.label} row={row} organ={list.name} input={setupValue({ row })} mode={mode} />
-                ))}
-            </Box>
+        <Box className={classes.formContainer}>
+            <CustomReportInput key={list.label} row={list} input={setupValue(list)} mode={mode} />
         </Box>
     )
 }
 
-const CustomReportForm = ({ lists, patient, mode }) => {
+const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     const classes = useStyles()
     const theme = useTheme()
     const isComputer = useMediaQuery(theme.breakpoints.up('xl'))
     const dispatch = useDispatch()
-    const commandList = useMemo(() => lists.map(list => list.cols).reduce((acc, col) => acc.concat(col)), [lists])
 
     const [audio] = useState(new Audio('./audio.mp3'))
     const [historyAnchorEl, setHistoryAnchorEl] = useState(null)
@@ -90,75 +73,70 @@ const CustomReportForm = ({ lists, patient, mode }) => {
 
     const { transcript, setRecord, listening } = useSpeech2Text()
 
-    const speechAction = useDebouncedCallback(() => {
-        // 辨識的疾病名稱，使用Regex防止疾病含有相同的字串
-        const cancerOfTranscript = commandList.find(col => new RegExp(col.label).test(transcript))
-        // 辨識的器官名稱
-        const organOfTranscript = lists.find(list => transcript.includes(list.label))
+    // const speechAction = useDebouncedCallback(() => {
+    //     // 辨識的疾病名稱，使用Regex防止疾病含有相同的字串
+    //     const cancerOfTranscript = commandList.find(col => new RegExp(col.label).test(transcript))
+    //     // 辨識的器官名稱
+    //     const organOfTranscript = lists.find(list => transcript.includes(list.label))
 
-        //如果語音含有疾病名稱
-        if (!!cancerOfTranscript) {
-            // 疾病的器官
-            const organOfCancer = lists.find(list => list.cols.find(l => l.name === cancerOfTranscript.name))
+    //     //如果語音含有疾病名稱
+    //     if (!!cancerOfTranscript) {
+    //         // 疾病的器官
+    //         const organOfCancer = lists.find(list => list.cols.find(l => l.name === cancerOfTranscript.name))
 
-            if (cancerOfTranscript.type === 'radio') {
-                const option = cancerOfTranscript.options.find(option => transcript.includes(option.label))
-                if (option) {
-                    dispatch(
-                        addCancer({
-                            organ: organOfCancer.name,
-                            name: cancerOfTranscript.name,
-                            type: cancerOfTranscript.type,
-                            value: [option.value],
-                            mode,
-                        })
-                    )
-                    audio.play()
-                }
-            }
+    //         if (cancerOfTranscript.type === 'radio') {
+    //             const option = cancerOfTranscript.options.find(option => transcript.includes(option.label))
+    //             if (option) {
+    //                 dispatch(
+    //                     addCancer({
+    //                         organ: organOfCancer.name,
+    //                         name: cancerOfTranscript.name,
+    //                         type: cancerOfTranscript.type,
+    //                         value: [option.value],
+    //                         mode,
+    //                     })
+    //                 )
+    //                 audio.play()
+    //             }
+    //         }
 
-            if (cancerOfTranscript.type === 'checkbox') {
-                dispatch(
-                    addCancer({
-                        organ: organOfCancer.name,
-                        name: cancerOfTranscript.name,
-                        type: cancerOfTranscript.tㄓype,
-                        value: true,
-                        mode,
-                    })
-                )
-                audio.play()
-            }
-        }
+    //         if (cancerOfTranscript.type === 'checkbox') {
+    //             dispatch(
+    //                 addCancer({
+    //                     organ: organOfCancer.name,
+    //                     name: cancerOfTranscript.name,
+    //                     type: cancerOfTranscript.tㄓype,
+    //                     value: true,
+    //                     mode,
+    //                 })
+    //             )
+    //             audio.play()
+    //         }
+    //     }
 
-        //如果語音含有器官名稱
-        if (!!organOfTranscript) {
-            // 清除器官
-            if (transcript.includes('清除')) dispatch(clearCancer({ organ: organOfTranscript.name, name: organOfTranscript.name, mode }))
-            // 新增備註
-            else
-                dispatch(
-                    addCancer({
-                        organ: organOfTranscript.name,
-                        name: 'other',
-                        type: 'text',
-                        value: transcript.replace(organOfTranscript.label, ''),
-                        mode,
-                    })
-                )
-            audio.play()
-        }
-    }, 250)
+    //     //如果語音含有器官名稱
+    //     if (!!organOfTranscript) {
+    //         // 清除器官
+    //         if (transcript.includes('清除')) dispatch(clearCancer({ organ: organOfTranscript.name, name: organOfTranscript.name, mode }))
+    //         // 新增備註
+    //         else
+    //             dispatch(
+    //                 addCancer({
+    //                     organ: organOfTranscript.name,
+    //                     name: 'other',
+    //                     type: 'text',
+    //                     value: transcript.replace(organOfTranscript.label, ''),
+    //                     mode,
+    //                 })
+    //             )
+    //         audio.play()
+    //     }
+    // }, 250)
 
-    useEffect(() => {
-        speechAction()
-    }, [transcript])
+    // useEffect(() => {
+    //     speechAction()
+    // }, [transcript])
 
-    const [tabIndex, setTabIndex] = useState(0)
-    const tabOnClick = ({ index, id }) => {
-        setTabIndex(index)
-        window.document.getElementById(id).scrollIntoView({ behavior: 'smooth' })
-    }
     const [toolkitOpen, setToolkitOpen] = useState(false)
     const handleRecordClick = e => {
         setRecord(s => !s)
@@ -172,12 +150,6 @@ const CustomReportForm = ({ lists, patient, mode }) => {
     const handleDicomClick = event => {
         setDicomAnchorEl(dicom => (dicom ? null : event.currentTarget))
     }
-
-    const onScrollEvent = useDebouncedCallback(event => {
-        let index = Math.floor(event.target.scrollTop / 100)
-        index = index < lists.length - 1 ? index : lists.length - 1
-        setTabIndex(index)
-    }, 100)
 
     const HistoryPopover = () => {
         const handleClose = () => {
@@ -262,29 +234,22 @@ const CustomReportForm = ({ lists, patient, mode }) => {
             )}
 
             <Box className={classes.container}>
-                {isComputer && (
-                    <Scrollspy items={lists.map(list => list.name)} className={classes.scrollspy}>
-                        <Tabs value={tabIndex} orientation="vertical">
-                            {lists.map((list, index) => (
-                                <Tab
-                                    key={list.name}
-                                    label={list.label}
-                                    disableRipple
-                                    component="a"
-                                    className={classes.scrollspyButton}
-                                    onClick={() => tabOnClick({ index, id: list.name })}
-                                />
-                            ))}
-                        </Tabs>
-                    </Scrollspy>
-                )}
                 {mode === 'create' && (
-                    <Grid container sx={{ height: '100%' }} spacing={2}>
+                    <Grid container sx={{ height: '100%' }}>
                         <Grid item xs={12} xl={10}>
-                            <CustomScrollbar onScroll={onScrollEvent}>
-                                {lists.map(list => (
-                                    <FormSection key={list.name} list={list} mode={mode} />
-                                ))}
+                            <CustomScrollbar>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} xl={7}>
+                                        {cols1?.map(col => (
+                                            <FormSection key={col.name} list={col} mode={mode} />
+                                        ))}
+                                    </Grid>
+                                    <Grid item xs={12} xl={5}>
+                                        {cols2?.map(col => (
+                                            <FormSection key={col.name} list={col} mode={mode} />
+                                        ))}
+                                    </Grid>
+                                </Grid>
                             </CustomScrollbar>
                         </Grid>
                         {isComputer && (
@@ -296,13 +261,6 @@ const CustomReportForm = ({ lists, patient, mode }) => {
                             </Grid>
                         )}
                     </Grid>
-                )}
-                {mode === 'edit' && (
-                    <CustomScrollbar>
-                        {lists.map(list => (
-                            <FormSection key={list.name} list={list} mode={mode} />
-                        ))}
-                    </CustomScrollbar>
                 )}
             </Box>
         </>
