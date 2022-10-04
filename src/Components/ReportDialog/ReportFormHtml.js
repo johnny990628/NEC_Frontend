@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux'
 export const ReportFormForPDF = React.forwardRef((_, ref) => {
     return (
         <div style={{ width: '100%', padding: '3rem' }} ref={ref}>
-            <FormHeader />
-            <PatientForm />
+            {/* <FormHeader /> */}
+            {/* <PatientForm /> */}
             <ReportFormHtml print={true} />
             <FormFooter />
         </div>
@@ -24,16 +24,38 @@ const ReportFormHtml = ({ print }) => {
         <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
             <tbody>
                 <tr>
-                    <td className={classes.table}>
-                        <b>項目</b>
-                    </td>
-                    <td colSpan="3" className={classes.table}>
-                        <b>檢查結果及說明</b>
+                    <td colSpan="4" className={classes.table}>
+                        <b>檢查適應症</b>
                     </td>
                 </tr>
-                {[...REPORTCOLS, ...REPORTCOLS2].map(list => (
-                    <FormSection key={list.name} col={list} />
+                {REPORTCOLS.filter(list => list.section === 'Indication').map(list => (
+                    <IndicationSection key={list.name} col={list} />
                 ))}
+
+                {[...REPORTCOLS, ...REPORTCOLS2]
+                    .filter(list => list.section !== 'Indication')
+                    .map(list => (
+                        <tr className={classes.table}>
+                            <td>
+                                <input type="checkbox" readOnly />
+                                {list.label}
+                            </td>
+
+                            <td>
+                                {list?.options?.map(option => (
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            value={option.value}
+                                            // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
+                                            readOnly
+                                        />
+                                        {option.label}
+                                    </div>
+                                ))}
+                            </td>
+                        </tr>
+                    ))}
                 {print && (
                     <tr>
                         <td className={classes.table} style={{ fontSize: '1.5rem' }}>
@@ -51,7 +73,7 @@ const ReportFormHtml = ({ print }) => {
     )
 }
 
-const FormSection = ({ col }) => {
+const IndicationSection = ({ col }) => {
     const classes = useStyles()
     const report = useSelector(state => state.reportForm.edit)
     const [cancerArr, setCancerArr] = useState([])
@@ -60,32 +82,33 @@ const FormSection = ({ col }) => {
     //         setCancerArr(report[list.name])
     //     }
     // }, [report])
-    console.log(col)
 
     return (
         <div>
             {col.type === 'radio' && (
                 <tr>
-                    <td className={classes.table}>
+                    <td>
                         <input type="checkbox" readOnly />
                         {col.label}
-                        {col.options.map(option => (
-                            <>
-                                <input
-                                    type="radio"
-                                    value={option.value}
-                                    // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
-                                    readOnly
-                                />
-                                {option.label}
-                            </>
-                        ))}
+                        <div>
+                            {col.options.map(option => (
+                                <>
+                                    <input
+                                        type="radio"
+                                        value={option.value}
+                                        // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
+                                        readOnly
+                                    />
+                                    {option.label}
+                                </>
+                            ))}
+                        </div>
                     </td>
                 </tr>
             )}
             {col.type === 'checkbox' && (
                 <tr>
-                    <td className={classes.table}>
+                    <td>
                         <input type="checkbox" readOnly />
                         {col.label}
                     </td>
@@ -93,7 +116,7 @@ const FormSection = ({ col }) => {
             )}
             {col.type === 'text' && (
                 <tr>
-                    <td className={classes.table}>
+                    <td>
                         <input type="checkbox" readOnly />
                         {col.label}:{cancerArr?.find(c => c.name === col.name)?.value}
                     </td>
@@ -101,8 +124,22 @@ const FormSection = ({ col }) => {
             )}
             {col.type === 'select' && (
                 <tr>
-                    <td colSpan="3" className={classes.table}>
+                    <td colSpan="3">
                         <input type="checkbox" readOnly />
+                        {col.label}
+                        <div>
+                            {col.options.map(option => (
+                                <>
+                                    <input
+                                        type="radio"
+                                        value={option.value}
+                                        // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
+                                        readOnly
+                                    />
+                                    {option.label}
+                                </>
+                            ))}
+                        </div>
                     </td>
                 </tr>
             )}

@@ -3,7 +3,8 @@
         "name": "UEM",
         "label": "US examination mode",
         "type": "radio",
-        "divider":true,
+        "section": "Indication",
+        "divider": true,
         "options": [
             { "label": "Screenings US", "value": "screenings_us", "type": "checkbox" },
             { "label": "Diagnostic US", "value": "diagnostic_us", "type": "checkbox" },
@@ -14,7 +15,8 @@
         "name": "EFSP",
         "label": "10.Exam for symptomatic patient",
         "type": "radio",
-        "divider":true,
+        "section": "Indication",
+        "divider": true,
         "options": [
             { "label": "Pain", "value": "pain", "type": "checkbox" },
             { "label": "Palpable mass", "value": "palpable_mass", "type": "checkbox" },
@@ -25,6 +27,7 @@
         "name": "SMC",
         "label": "20.Screening mammographic Category",
         "type": "radio",
+        "section": "Indication",
         "options": [
             { "label": "Right", "value": "right", "type": "checkbox" },
             { "label": "Left", "value": "left", "type": "checkbox" },
@@ -37,32 +40,38 @@
     {
         "name": "MASS",
         "label": "21.Mass",
-        "type": "checkbox"
+        "type": "checkbox",
+        "section": "Indication"
     },
     {
         "name": "CALCIFICATION",
         "label": "22.Calcification",
-        "type": "checkbox"
+        "type": "checkbox",
+        "section": "Indication"
     },
     {
         "name": "ASYMMETRY",
         "label": "23.Asymmetry",
-        "type": "checkbox"
+        "type": "checkbox",
+        "section": "Indication"
     },
     {
         "name": "AD",
         "label": "24.Architecture distortion",
-        "type": "checkbox"
+        "type": "checkbox",
+        "section": "Indication"
     },
     {
         "name": "OTHERS",
         "label": "25.Others",
-        "type": "text"
+        "type": "text",
+        "section": "Indication"
     },
     {
         "name": "DOB",
         "label": "26.Density of breast",
         "type": "select",
+        "section": "Indication",
         "options": [
             { "label": "A", "value": "a", "type": "text" },
             { "label": "B", "value": "b", "type": "text" },
@@ -74,12 +83,14 @@
         "name": "RECOMENDATION",
         "label": "27.Recomendation",
         "type": "text",
-        "divider":true
+        "section": "Indication",
+        "divider": true
     },
     {
         "name": "FUFPNBL",
         "label": "30.F/U for previous noted benign lesions",
         "type": "radio",
+        "section": "Indication",
         "options": [
             { "label": "Fibroademoa", "value": "fibroademoa", "type": "checkbox" },
             { "label": "Fibrocystic change", "value": "fibrocystic_change", "type": "checkbox" },
@@ -91,7 +102,8 @@
         "name": "SAB",
         "label": "40.Surgically altered breast",
         "type": "radio",
-        "divider":true,
+        "section": "Indication",
+        "divider": true,
         "options": [
             { "label": "S/P biopsy / wide excision / BCS", "value": "sp_biopsy", "type": "checkbox" },
             { "label": "S/P breast", "value": "sp_breast", "type": "checkbox" }
@@ -101,7 +113,8 @@
         "name": "AR",
         "label": "50.Augmentation / Reconstruction",
         "type": "radio",
-        "divider":true,
+        "section": "Indication",
+        "divider": true,
         "options": [
             {
                 "label": "Other reasons for breast sono examination",
@@ -114,6 +127,7 @@
         "name": "USCATEGORY",
         "label": "US Category",
         "type": "select",
+
         "options": [
             { "label": "Category 0", "value": "c0", "type": "checkbox" },
             { "label": "Category 1", "value": "c1", "type": "checkbox" },
