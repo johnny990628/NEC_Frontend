@@ -24,7 +24,7 @@ const ReportFormHtml = ({ print }) => {
         <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
             <tbody>
                 <tr>
-                    <td colSpan="4" className={classes.table}>
+                    <td colSpan="4" className={classes.table} style={{ textAlign: 'center' }}>
                         <b>檢查適應症</b>
                     </td>
                 </tr>
