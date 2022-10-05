@@ -127,6 +127,7 @@
         "name": "USCATEGORY",
         "label": "US Category",
         "type": "select",
+        "section": "Other",
 
         "options": [
             { "label": "Category 0", "value": "c0", "type": "checkbox" },
@@ -144,6 +145,7 @@
         "name": "CMAUSFC",
         "label": "Combined mammogram and US final category",
         "type": "select",
+        "section": "Other",
         "options": [
             { "label": "Category 0", "value": "c0", "type": "checkbox" },
             { "label": "Category 1", "value": "c1", "type": "checkbox" },
@@ -160,6 +162,7 @@
         "name": "BAOES",
         "label": "Biopsy an other Evaluation Suggestion",
         "type": "select",
+        "section": "Other",
         "options": [
             { "label": "不用做biopsy", "value": "nobiopsy", "type": "checkbox" },
             { "label": "Aspiration cytology", "value": "aspiration_cytology", "type": "checkbox" },
@@ -174,6 +177,7 @@
         "name": "PR",
         "label": "Pathology Results",
         "type": "select",
+        "section": "Other",
         "options": [
             { "label": "未做biopsy", "value": "nobiopsy", "type": "checkbox" },
             { "label": "Benign", "value": "benign", "type": "checkbox" },

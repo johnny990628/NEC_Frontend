@@ -5,12 +5,13 @@ import REPORTCOLS from '../../Assets/Json/ReportCols.json'
 import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 
 import { useSelector } from 'react-redux'
+import { Announcement } from '@mui/icons-material'
 
 export const ReportFormForPDF = React.forwardRef((_, ref) => {
     return (
         <div style={{ width: '100%', padding: '3rem' }} ref={ref}>
-            {/* <FormHeader /> */}
-            {/* <PatientForm /> */}
+            <FormHeader />
+            <PatientForm />
             <ReportFormHtml print={true} />
             <FormFooter />
         </div>
@@ -28,52 +29,21 @@ const ReportFormHtml = ({ print }) => {
                         <b>檢查適應症</b>
                     </td>
                 </tr>
-                {REPORTCOLS.filter(list => list.section === 'Indication').map(list => (
-                    <IndicationSection key={list.name} col={list} />
+                {REPORTCOLS.filter(l => l.section === 'Indication').map(list => (
+                    <IndicationSection key={list.name} list={list} />
                 ))}
 
                 {[...REPORTCOLS, ...REPORTCOLS2]
-                    .filter(list => list.section !== 'Indication')
+                    .filter(l => l.section !== 'Indication')
                     .map(list => (
-                        <tr className={classes.table}>
-                            <td>
-                                <input type="checkbox" readOnly />
-                                {list.label}
-                            </td>
-
-                            <td>
-                                {list?.options?.map(option => (
-                                    <div>
-                                        <input
-                                            type="radio"
-                                            value={option.value}
-                                            // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
-                                            readOnly
-                                        />
-                                        {option.label}
-                                    </div>
-                                ))}
-                            </td>
-                        </tr>
+                        <OtherSection list={list} />
                     ))}
-                {print && (
-                    <tr>
-                        <td className={classes.table} style={{ fontSize: '1.5rem' }}>
-                            醫師簽章
-                        </td>
-                        <td colSpan="3" className={classes.table}>
-                            <div>
-                                <img src="./docSign.png" alt="docSign" style={{ width: '15rem', height: '3rem' }} />
-                            </div>
-                        </td>
-                    </tr>
-                )}
             </tbody>
         </table>
     )
 }
 
-const IndicationSection = ({ col }) => {
+const IndicationSection = ({ list }) => {
     const classes = useStyles()
     const report = useSelector(state => state.reportForm.edit)
     const [cancerArr, setCancerArr] = useState([])
@@ -84,66 +54,79 @@ const IndicationSection = ({ col }) => {
     // }, [report])
 
     return (
-        <div>
-            {col.type === 'radio' && (
-                <tr>
-                    <td>
+        <tr>
+            <td colSpan="4" className={classes.table}>
+                {(list.type === 'radio' || list.type === 'select') && (
+                    <>
                         <input type="checkbox" readOnly />
-                        {col.label}
-                        <div>
-                            {col.options.map(option => (
+                        {list.label}
+                        <>
+                            {list.options.map(option => (
                                 <>
                                     <input
                                         type="radio"
                                         value={option.value}
-                                        // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
+                                        // checked={cancerArr?.some(c => c.name === list.name && c.value?.includes(option.value))}
                                         readOnly
                                     />
                                     {option.label}
                                 </>
                             ))}
-                        </div>
-                    </td>
-                </tr>
-            )}
-            {col.type === 'checkbox' && (
-                <tr>
+                        </>
+                    </>
+                )}
+                {list.type === 'checkbox' && (
+                    <>
+                        <input type="checkbox" readOnly />
+                        {list.label}
+                    </>
+                )}
+                {list.type === 'text' && (
+                    <>
+                        <input type="checkbox" readOnly />
+                        {list.label}:{cancerArr?.find(c => c.name === list.name)?.value}
+                    </>
+                )}
+            </td>
+        </tr>
+    )
+}
+
+const OtherSection = ({ list }) => {
+    const classes = useStyles()
+    return (
+        <>
+            {(list.type === 'redio' || list.type === 'select') && (
+                <tr className={classes.table}>
                     <td>
                         <input type="checkbox" readOnly />
-                        {col.label}
+                        {list.label}
+                    </td>
+
+                    <td className={classes.table}>
+                        {list?.options?.map(option => (
+                            <div>
+                                <input
+                                    type="radio"
+                                    value={option.value}
+                                    // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
+                                    readOnly
+                                />
+                                {option.label}
+                            </div>
+                        ))}
                     </td>
                 </tr>
             )}
-            {col.type === 'text' && (
+            {list.type === 'text' && (
                 <tr>
-                    <td>
-                        <input type="checkbox" readOnly />
-                        {col.label}:{cancerArr?.find(c => c.name === col.name)?.value}
+                    <td style={{ width: '10%', height: '3rem' }} className={classes.table}>
+                        {list.label}
                     </td>
+                    <td style={{ width: '10%' }} className={classes.table}></td>
                 </tr>
             )}
-            {col.type === 'select' && (
-                <tr>
-                    <td colSpan="3">
-                        <input type="checkbox" readOnly />
-                        {col.label}
-                        <div>
-                            {col.options.map(option => (
-                                <>
-                                    <input
-                                        type="radio"
-                                        value={option.value}
-                                        // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
-                                        readOnly
-                                    />
-                                    {option.label}
-                                </>
-                            ))}
-                        </div>
-                    </td>
-                </tr>
-            )}
-        </div>
+        </>
     )
 }
 
@@ -209,11 +192,7 @@ const FormHeader = () => {
     } = useSelector(state => state.dialog.report)
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img alt="logo" src="./print_logo.png" style={{ width: '2rem' }} />
-                <b style={{ fontSize: '1.5rem' }}>財團法人肝病防治學術基金會</b>
-            </div>
-            <b style={{ fontSize: '1.5rem' }}>腹部超音波檢查報告</b>
+            <b style={{ fontSize: '1.5rem' }}>乳房超音波檢查報告單</b>
             <hr></hr>
             <div style={{ width: '90%', display: 'flex', justifyContent: 'space-between' }}>
                 <div>檢查日期 : {new Date(createdAt).toLocaleDateString()}</div>
