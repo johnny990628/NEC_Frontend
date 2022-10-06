@@ -14,6 +14,13 @@ const useStyles = makeStyles(theme => ({
     actionButton: {
         fontSize: '1.3rem',
     },
+    printBreak: {
+        '@media print': {
+            breakAfter: 'always !important',
+            pageBreakAfter: 'always !important',
+            pageBreakInside: 'avoid !important',
+        },
+    },
 }))
 
 export default useStyles

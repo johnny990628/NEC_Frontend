@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 
 import useStyles from './Style'
+import './print.css'
 import REPORTCOLS from '../../Assets/Json/ReportCols.json'
 import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 
@@ -9,7 +10,7 @@ import { Announcement } from '@mui/icons-material'
 
 export const ReportFormForPDF = React.forwardRef((_, ref) => {
     return (
-        <div style={{ width: '100%', padding: '3rem' }} ref={ref}>
+        <div style={{ width: '100%' }} ref={ref}>
             <FormHeader />
             <PatientForm />
             <ReportFormHtml print={true} />
@@ -18,19 +19,23 @@ export const ReportFormForPDF = React.forwardRef((_, ref) => {
     )
 })
 
-const ReportFormHtml = ({ print }) => {
+const ReportFormHtml = ({}) => {
     const classes = useStyles()
 
     return (
         <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
             <tbody>
-                <tr>
-                    <td colSpan="4" className={classes.table} style={{ textAlign: 'center' }}>
-                        <b>檢查適應症</b>
-                    </td>
-                </tr>
-                {REPORTCOLS.filter(l => l.section === 'Indication').map(list => (
-                    <IndicationSection key={list.name} list={list} />
+                {REPORTCOLS.filter(l => l.section === 'Indication').map((list, i) => (
+                    <>
+                        {i === 1 && (
+                            <tr>
+                                <td colSpan="4" className={classes.table} style={{ textAlign: 'center', height: '2rem' }}>
+                                    <b>檢查適應症</b>
+                                </td>
+                            </tr>
+                        )}
+                        <IndicationSection key={list.name} list={list} />
+                    </>
                 ))}
 
                 {[...REPORTCOLS, ...REPORTCOLS2]
@@ -54,7 +59,7 @@ const IndicationSection = ({ list }) => {
     // }, [report])
 
     return (
-        <tr>
+        <tr className={classes.parentContainer}>
             <td colSpan="4" className={classes.table}>
                 {(list.type === 'radio' || list.type === 'select') && (
                     <>
@@ -95,9 +100,9 @@ const IndicationSection = ({ list }) => {
 const OtherSection = ({ list }) => {
     const classes = useStyles()
     return (
-        <>
+        <tr className={`${classes.table} ${classes.printBreak}`}>
             {(list.type === 'redio' || list.type === 'select') && (
-                <tr className={classes.table}>
+                <>
                     <td>
                         <input type="checkbox" readOnly />
                         {list.label}
@@ -116,17 +121,17 @@ const OtherSection = ({ list }) => {
                             </div>
                         ))}
                     </td>
-                </tr>
+                </>
             )}
             {list.type === 'text' && (
-                <tr>
+                <>
                     <td style={{ width: '10%', height: '3rem' }} className={classes.table}>
                         {list.label}
                     </td>
                     <td style={{ width: '10%' }} className={classes.table}></td>
-                </tr>
+                </>
             )}
-        </>
+        </tr>
     )
 }
 
