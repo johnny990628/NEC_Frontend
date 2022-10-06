@@ -9,12 +9,12 @@ const useStyles = makeStyles(theme => ({
         border: `1px solid ${theme.palette.border.main}`,
     },
     status: {
-        backgroundColor: theme.palette.status.yet,
+        backgroundColor: theme.palette.status.processing,
         padding: '8px',
         marginRight: '.6rem',
         borderRadius: '1rem',
         '&.processing': {
-            backgroundColor: theme.palette.status.processing,
+            backgroundColor: theme.palette.status.yet,
         },
     },
     statusBox: {

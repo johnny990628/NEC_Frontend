@@ -42,43 +42,8 @@ const Report = () => {
             })
         )
 
-    // const renderSubRow = useCallback(({ row }) => {
-    //     return (
-    //         <Box>
-    //             <Box sx={{ fontSize: '1.5rem' }}>報告紀錄</Box>
-    //             <List sx={{ maxHeight: '200123.rem', overflowY: 'auto' }}>
-    //                 {row.original.reports.map((report, index) => (
-    //                     <ListItem
-    //                         key={report.id}
-    //                         disablePadding
-    //                         onClick={() => handleClick({ patient: row.original, reports: { id: report._id, records: report.records } })}
-    //                     >
-    //                         <ListItemButton>
-    //                             <ListItemIcon>
-    //                                 <Assignment />
-    //                             </ListItemIcon>
-    //                             <ListItemText
-    //                                 primary={`第${index + 1}次報告`}
-    //                                 secondary={`${new Date(report.updatedAt).toLocaleDateString()}_v${report.records.length}`}
-    //                             />
-    //                         </ListItemButton>
-    //                     </ListItem>
-    //                 ))}
-    //             </List>
-    //         </Box>
-    //     )
-    // }, [])
-
     const columns = useMemo(
         () => [
-            // {
-            //     // Build our expander column
-            //     id: 'expander', // Make sure it has an ID
-            //     Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
-            //         <span {...getToggleAllRowsExpandedProps()}>{isAllRowsExpanded ? <ArrowDropDown /> : <ArrowRight />}</span>
-            //     ),
-            //     Cell: ({ row }) => <span {...row.getToggleRowExpandedProps()}>{row.isExpanded ? <ArrowDropDown /> : <ArrowRight />}</span>,
-            // },
             {
                 accessor: 'status',
                 Header: '狀態',

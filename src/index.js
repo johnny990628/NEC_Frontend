@@ -10,65 +10,40 @@ import 'react-day-picker/dist/style.css'
 import store from './Redux/store'
 import { Provider } from 'react-redux'
 
-const pinkTheme = createTheme({
-    palette: {
-        primary: {
-            main: '#A34059',
-            light: 'rgba(163, 64, 89,.2)',
-        },
-        secondary: {
-            main: 'rgba(245, 215, 222)', //hex: #F5D7DE
-        },
-        background: {
-            default: '#EAA7B8',
-        },
-        text: {
-            primary: 'rgba(0,0,0,.8)',
-            secondary: '#A34059',
-            // secondary: '#EAA7B8',
-        },
-    },
-    typography: {
-        fontFamily: `'cwTeXYen', sans-serif`,
-    },
-})
-
 const whiteTheme = createTheme({
     palette: {
         primary: {
-            main: '#A34059',
-            light: 'rgba(223, 142, 162 , .2)',
-            light_secondary: 'rgba(223, 142, 162 , .5)',
+            main: 'rgba(79, 114, 147)',
+            light: 'rgba(169, 191, 211 , .2)',
+            light_secondary: 'rgba(169, 191, 211 , .5)',
         },
         secondary: {
             main: 'rgba(255,253,254)',
         },
         background: {
-            default: 'rgba(255, 238, 247 )',
+            default: 'rgba(217, 227, 238)',
         },
         text: {
-            primary: 'rgba(36, 31, 33)',
-            secondary: '#A34059',
+            primary: 'rgba(8, 40, 71)',
+            secondary: '#7895B2',
         },
         border: {
             main: 'rgba(193, 181, 184 , .5)',
         },
         contrast: {
-            main: 'rgba(64, 127, 127,.9)',
-            dark: 'rgba(64, 127, 127)',
+            main: 'rgba(100, 151, 151,.9)',
+            dark: 'rgba(100, 151, 151)',
         },
         status: {
-            processing: 'rgba(163, 64, 89,.2)',
-            finish: 'rgba(46, 67, 114,.2)',
-            yet: 'rgba(64, 127, 127,.2)',
+            processing: 'rgba(169, 191, 211,.2)',
+            finish: 'rgba(95, 91, 160,.2)',
+            yet: 'rgba(100, 151, 151,.2)',
         },
     },
     typography: {
         fontFamily: `'cwTeXYen', sans-serif`,
     },
 })
-
-// store.dispatch(fetchPatients()) //Fetch Initial Data
 
 ReactDOM.render(
     <Provider store={store}>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useTheme } from '@mui/styles'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
@@ -12,6 +13,7 @@ const ProgressProvider = ({ valueStart, valueEnd, children }) => {
 }
 
 const Progressbar = ({ value, total }) => {
+    const theme = useTheme()
     return (
         <ProgressProvider valueStart={0} valueEnd={value}>
             {num => (
@@ -23,9 +25,9 @@ const Progressbar = ({ value, total }) => {
                         strokeLinecap: 'round',
                         textSize: '1.3rem',
                         pathTransitionDuration: 4,
-                        pathColor: `#A34059`,
-                        textColor: '#A34059',
-                        trailColor: 'rgba(163, 64, 89,.2)',
+                        pathColor: theme.palette.primary.main,
+                        textColor: theme.palette.primary.main,
+                        trailColor: theme.palette.primary.light_secondary,
                     })}
                 />
             )}

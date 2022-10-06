@@ -71,14 +71,14 @@ const Sidebar = () => {
                     <DoubleArrow sx={{ transform: 'rotate(180deg)' }} />
                 </Box>
             )}
-            {isOpen && (
+            {/* {isOpen && (
                 <img
                     src="./logo.jpg"
                     className={classes.logo}
                     alt="logo"
                     style={{ width: '3.8rem', height: '4rem', position: 'fixed', top: 2 }}
                 />
-            )}
+            )} */}
         </Drawer>
     )
 }

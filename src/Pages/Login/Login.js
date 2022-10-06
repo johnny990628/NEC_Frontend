@@ -123,7 +123,7 @@ const Login = () => {
             <CssBaseline />
 
             {com && (
-                <IconButton className={classes.iconButton} sx={{ backgroundColor: '#72B2B2' }} onClick={() => setPage('login')}>
+                <IconButton className={classes.iconButton} sx={{ backgroundColor: 'contrast.main' }} onClick={() => setPage('login')}>
                     <Person className={classes.icons} />
                 </IconButton>
             )}
@@ -144,7 +144,7 @@ const Login = () => {
                 </Grow>
             )}
             {com && (
-                <IconButton className={classes.iconButton} sx={{ backgroundColor: '#EAA7B8' }} onClick={() => setPage('register')}>
+                <IconButton className={classes.iconButton} sx={{ backgroundColor: 'primary.main' }} onClick={() => setPage('register')}>
                     <PersonAdd className={classes.icons} />
                 </IconButton>
             )}
