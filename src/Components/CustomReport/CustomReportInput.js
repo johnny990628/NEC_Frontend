@@ -88,16 +88,6 @@ const CustomReportInput = ({ row, input, mode }) => {
         <Box>
             {type === 'checkbox' && (
                 <>
-                    {/* <ToggleButton
-                    color="primary"
-                    value="check"
-                    selected={input?.value}
-                    onChange={handleChange}
-                    className={classes.toggleButton}
-                    sx={{ color: input?.value && theme.palette.text.secondary }}
-                >
-                    <Box className={classes.inputLabel}>{label}</Box>
-                </ToggleButton> */}
                     <FormControlLabel
                         control={
                             <Checkbox

@@ -11,12 +11,9 @@ const useSpeech2Text = () => {
     let SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList
     let recognition = new SpeechRecognition()
     let speechRecognitionList = new SpeechGrammarList()
-    let moods = ['左葉', '右葉', '左腎', '右腎']
-    let grammar = '#JSGF V1.0; grammar moods; public <moods> = ' + moods.join(' | ') + ';'
-    speechRecognitionList.addFromString(grammar, 1)
 
     recognition.grammars = speechRecognitionList
-    recognition.lang = 'zh-TW'
+    recognition.lang = 'en-US'
     recognition.continuous = true
     recognition.interimResults = false
     recognition.maxAlternatives = 1
