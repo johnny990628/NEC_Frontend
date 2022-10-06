@@ -31,9 +31,9 @@ const CustomReportInput = ({ row, input, mode }) => {
 
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     input ? setText(input.value) : setText('')
-    // }, [input])
+    useEffect(() => {
+        input ? setText(input.value) : setText('')
+    }, [input])
 
     //debounce the input while onchange
     const handleDispatch = useDebouncedCallback(value => {

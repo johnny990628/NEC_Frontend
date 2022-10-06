@@ -27,6 +27,9 @@ import { openAlert } from '../../Redux/Slices/Alert'
 import { Box } from '@mui/system'
 import Authorized from './../Authorized/Authorized'
 
+import REPORTCOLS from '../../Assets/Json/ReportCols.json'
+import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
+
 const ReportDialog = ({ mode }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -43,19 +46,19 @@ const ReportDialog = ({ mode }) => {
     // 當Dialog開啟時，將最新的報告紀錄寫入Report State，並記錄該報告的ID
     useEffect(() => {
         if (records.length > 0 && isOpen) {
-            dispatch(fillReport({ report: records[0] }))
+            dispatch(fillReport({ report: records[0].report }))
             setVersion(records[0].id)
         }
     }, [isOpen])
 
     useEffect(() => {
-        if (isOpen) dispatch(fillReport({ report: records.find(r => r.id === version) }))
+        if (isOpen) dispatch(fillReport({ report: records.find(r => r.id === version).report }))
     }, [version])
 
     const handleEdit = () => {
         // 點擊編輯按鈕後判斷目前Dialog狀態，如果為編輯狀態則儲存
         if (isEditing) {
-            dispatch(updateReport({ reportID, data: { report: { ...report, id: v4() }, status: 'finished' } }))
+            dispatch(updateReport({ reportID, data: { report: { report, id: v4() }, status: 'finished' } }))
             dispatch(
                 openAlert({
                     toastTitle: '報告修改成功',
@@ -121,9 +124,7 @@ const ReportDialog = ({ mode }) => {
             </DialogTitle>
             <DialogContent sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
                 {isEditing ? (
-                    {
-                        /* <CustomReportForm lists={[Liver, Gallbladder, Kidney, Pancreas, Spleen, Suggestion]} patient={patient} mode="edit" /> */
-                    }
+                    <CustomReportForm cols1={REPORTCOLS} cols2={REPORTCOLS2} patient={patient} mode="edit" />
                 ) : (
                     <>
                         <ReportFormHtml />

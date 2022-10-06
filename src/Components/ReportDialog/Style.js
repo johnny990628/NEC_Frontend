@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
         border: '1px solid #000000',
         borderCollapse: 'collapse',
         padding: '.15rem',
-        fontSize: '.5rem',
+        fontSize: '.8rem',
     },
     title: {
         color: theme.palette.primary.main,

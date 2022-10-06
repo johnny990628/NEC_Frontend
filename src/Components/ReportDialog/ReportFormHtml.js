@@ -13,19 +13,26 @@ export const ReportFormForPDF = React.forwardRef((_, ref) => {
         <div style={{ width: '100%' }} ref={ref}>
             <FormHeader />
             <PatientForm />
-            <ReportFormHtml print={true} />
+            <ReportFormHtml />
             <FormFooter />
         </div>
     )
 })
 
-const ReportFormHtml = ({}) => {
+const ReportFormHtml = () => {
     const classes = useStyles()
+    const report = useSelector(state => state.reportForm.edit)
+    const [cancerArr, setCancerArr] = useState([])
+    useEffect(() => {
+        if (report) {
+            setCancerArr(report)
+        }
+    }, [report])
 
     return (
         <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
             <tbody>
-                {REPORTCOLS.filter(l => l.section === 'Indication').map((list, i) => (
+                {[...REPORTCOLS, ...REPORTCOLS2].map((list, i) => (
                     <>
                         {i === 1 && (
                             <tr>
@@ -34,89 +41,68 @@ const ReportFormHtml = ({}) => {
                                 </td>
                             </tr>
                         )}
-                        <IndicationSection key={list.name} list={list} />
+                        <FormSection
+                            key={list.name}
+                            list={list}
+                            checked={cancerArr?.some(c => c.name === list.name)}
+                            options={cancerArr?.find(c => c.name === list.name)?.value}
+                            text={cancerArr?.find(c => c.name === list.name)?.value}
+                        />
                     </>
                 ))}
-
-                {[...REPORTCOLS, ...REPORTCOLS2]
-                    .filter(l => l.section !== 'Indication')
-                    .map(list => (
-                        <OtherSection list={list} />
-                    ))}
             </tbody>
         </table>
     )
 }
 
-const IndicationSection = ({ list }) => {
+const FormSection = ({ list, checked, options, text }) => {
     const classes = useStyles()
-    const report = useSelector(state => state.reportForm.edit)
-    const [cancerArr, setCancerArr] = useState([])
-    // useEffect(() => {
-    //     if (report) {
-    //         setCancerArr(report[list.name])
-    //     }
-    // }, [report])
-
-    return (
-        <tr className={classes.parentContainer}>
-            <td colSpan="4" className={classes.table}>
+    return list.section === 'Indication' ? (
+        <tr>
+            <td colSpan="4">
                 {(list.type === 'radio' || list.type === 'select') && (
                     <>
-                        <input type="checkbox" readOnly />
-                        {list.label}
+                        <input type="checkbox" checked={checked} readOnly />
+                        <b>{list.label}</b>
                         <>
-                            {list.options.map(option => (
-                                <>
-                                    <input
-                                        type="radio"
-                                        value={option.value}
-                                        // checked={cancerArr?.some(c => c.name === list.name && c.value?.includes(option.value))}
-                                        readOnly
-                                    />
-                                    {option.label}
-                                </>
-                            ))}
+                            {list.options.map(option => {
+                                return (
+                                    <>
+                                        <input type="radio" value={option.value} checked={options?.includes(option.value)} readOnly />
+                                        {option.label}
+                                    </>
+                                )
+                            })}
                         </>
                     </>
                 )}
                 {list.type === 'checkbox' && (
                     <>
-                        <input type="checkbox" readOnly />
-                        {list.label}
+                        <input type="checkbox" checked={checked} readOnly />
+                        <b>{list.label}</b>
                     </>
                 )}
                 {list.type === 'text' && (
                     <>
-                        <input type="checkbox" readOnly />
-                        {list.label}:{cancerArr?.find(c => c.name === list.name)?.value}
+                        <input type="checkbox" checked={checked} readOnly />
+                        <b>{list.label} :</b> {text}
                     </>
                 )}
             </td>
         </tr>
-    )
-}
-
-const OtherSection = ({ list }) => {
-    const classes = useStyles()
-    return (
+    ) : (
         <tr className={`${classes.table} ${classes.printBreak}`}>
             {(list.type === 'redio' || list.type === 'select') && (
                 <>
                     <td>
-                        <input type="checkbox" readOnly />
-                        {list.label}
+                        <input type="checkbox" checked={checked} readOnly />
+                        <b>{list.label}</b>
                     </td>
 
                     <td className={classes.table}>
                         {list?.options?.map(option => (
                             <div>
-                                <input
-                                    type="radio"
-                                    value={option.value}
-                                    // checked={cancerArr?.some(c => c.name === col.name && c.value?.includes(option.value))}
-                                    readOnly
-                                />
+                                <input type="radio" value={option.value} checked={options?.includes(option.value)} readOnly />
                                 {option.label}
                             </div>
                         ))}
@@ -126,9 +112,11 @@ const OtherSection = ({ list }) => {
             {list.type === 'text' && (
                 <>
                     <td style={{ width: '10%', height: '3rem' }} className={classes.table}>
-                        {list.label}
+                        <b>{list.label}</b>
                     </td>
-                    <td style={{ width: '10%' }} className={classes.table}></td>
+                    <td style={{ width: '10%' }} className={classes.table}>
+                        {text}
+                    </td>
                 </>
             )}
         </tr>
@@ -143,7 +131,7 @@ const PatientForm = () => {
     } = useSelector(state => state.dialog.report)
 
     return (
-        <table className={classes.table} style={{ width: '90%', margin: 'auto', marginBottom: '1rem' }}>
+        <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
             <tr>
                 <td className={classes.table}>
                     <b>姓名</b>

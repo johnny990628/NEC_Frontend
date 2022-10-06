@@ -1,21 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import {
-    Box,
-    Tabs,
-    Tab,
-    ToggleButton,
-    useMediaQuery,
-    Grid,
-    Chip,
-    IconButton,
-    Button,
-    Stack,
-    CircularProgress,
-    Tooltip,
-    Badge,
-    Popover,
-    Popper,
-} from '@mui/material'
+import { Box, useMediaQuery, Grid, Chip, IconButton, Button, Stack, CircularProgress, Tooltip, Badge, Popover, Popper } from '@mui/material'
 import { useTheme } from '@mui/styles'
 import Scrollspy from 'react-scrollspy'
 import { useDebouncedCallback } from 'use-debounce'
@@ -24,7 +8,7 @@ import useStyles from './Style'
 import CustomReportInput from './CustomReportInput'
 import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCancer, clearCancer } from '../../Redux/Slices/ReportForm'
+
 import ReportList from './ReportList'
 import { Cast, History, Mic } from '@mui/icons-material'
 import useSpeech2Text from '../../Hooks/useSpeech2Text'
@@ -32,18 +16,8 @@ import useSpeech2Text from '../../Hooks/useSpeech2Text'
 const FormSection = ({ list, mode }) => {
     const classes = useStyles()
 
-    const dispatch = useDispatch()
     const editReport = useSelector(state => state.reportForm.edit)
     const createReport = useSelector(state => state.reportForm.create)
-
-    const setupNormal = () => {
-        if (mode === 'create') {
-            return createReport.length === 0
-        }
-        if (mode === 'edit') {
-            return editReport.length === 0
-        }
-    }
 
     const setupValue = list => {
         if (mode === 'create') {
@@ -234,34 +208,32 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
             )}
 
             <Box className={classes.container}>
-                {mode === 'create' && (
-                    <Grid container sx={{ height: '100%' }}>
-                        <Grid item xs={12} xl={10}>
-                            <CustomScrollbar>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} xl={7}>
-                                        {cols1?.map(col => (
-                                            <FormSection key={col.name} list={col} mode={mode} />
-                                        ))}
-                                    </Grid>
-                                    <Grid item xs={12} xl={5}>
-                                        {cols2?.map(col => (
-                                            <FormSection key={col.name} list={col} mode={mode} />
-                                        ))}
-                                    </Grid>
+                <Grid container sx={{ height: '100%' }}>
+                    <Grid item xs={12} xl={10}>
+                        <CustomScrollbar>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} xl={7}>
+                                    {cols1?.map(col => (
+                                        <FormSection key={col.name} list={col} mode={mode} />
+                                    ))}
                                 </Grid>
+                                <Grid item xs={12} xl={5}>
+                                    {cols2?.map(col => (
+                                        <FormSection key={col.name} list={col} mode={mode} />
+                                    ))}
+                                </Grid>
+                            </Grid>
+                        </CustomScrollbar>
+                    </Grid>
+                    {isComputer && (
+                        <Grid item xs={2}>
+                            <CustomScrollbar>
+                                <Box className={classes.formLabel}>歷史報告</Box>
+                                <ReportList patient={patient} />
                             </CustomScrollbar>
                         </Grid>
-                        {isComputer && (
-                            <Grid item xs={2}>
-                                <CustomScrollbar>
-                                    <Box className={classes.formLabel}>歷史報告</Box>
-                                    <ReportList patient={patient} />
-                                </CustomScrollbar>
-                            </Grid>
-                        )}
-                    </Grid>
-                )}
+                    )}
+                </Grid>
             </Box>
         </>
     )

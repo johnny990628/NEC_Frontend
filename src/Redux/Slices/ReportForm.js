@@ -46,9 +46,10 @@ const reportFormSlice = createSlice({
         },
         fillReport: (state, action) => {
             const { report } = action.payload
+            console.log(report)
             return {
                 ...state,
-                edit: { ...report },
+                edit: report,
             }
         },
         resetReport: (state, action) => {
