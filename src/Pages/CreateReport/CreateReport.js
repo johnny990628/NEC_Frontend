@@ -166,13 +166,13 @@ const CreateReport = () => {
                         <CustomDataGrid data={patients} columns={columns} selection={selection} setSelection={setSelection} />
                     )}
                     {currentStep === 1 && (
-                        <>
+                        <Box sx={{ height: '100%' }}>
                             <CustomReportForm cols1={REPORTCOLS} cols2={REPORTCOLS2} patient={patient} mode="create" />
-                            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'end' }}>
+                            <Box sx={{ width: '100%', height: '8%', display: 'flex', justifyContent: 'end' }}>
                                 <Button
                                     variant="contained"
                                     startIcon={<Check />}
-                                    sx={{ borderRadius: '2rem', height: 'auto', marginRight: '1rem' }}
+                                    sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
                                     onClick={() => setCurrentStep(2)}
                                 >
                                     完成報告
@@ -180,13 +180,13 @@ const CreateReport = () => {
                                 <Button
                                     variant="outlined"
                                     startIcon={<Close />}
-                                    sx={{ borderRadius: '2rem', height: 'auto' }}
+                                    sx={{ borderRadius: '2rem', height: '2.5rem' }}
                                     onClick={() => setCurrentStep(0)}
                                 >
                                     取消
                                 </Button>
                             </Box>
-                        </>
+                        </Box>
                     )}
                     {currentStep === 2 && <FinishSection />}
                 </Box>

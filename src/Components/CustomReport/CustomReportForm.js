@@ -38,7 +38,7 @@ const FormSection = ({ list, mode }) => {
 const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     const classes = useStyles()
     const theme = useTheme()
-    const isComputer = useMediaQuery(theme.breakpoints.up('xl'))
+    const isComputer = useMediaQuery(theme.breakpoints.up('lg'))
     const dispatch = useDispatch()
 
     const [audio] = useState(new Audio('./audio.mp3'))
@@ -158,7 +158,11 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     return (
         <>
             {mode === 'create' && (
-                <Stack direction="row" spacing={1} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', m: 1 }}>
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', m: 1, height: '2%' }}
+                >
                     <Box className={classes.patientInfo}>
                         <Chip
                             label={`${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '男' : '女'}`}
@@ -195,13 +199,13 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                         超音波影像
                     </Button>
 
-                    {!isComputer && patient.reports.length > 1 && (
-                        <Badge badgeContent={patient.reports.length - 1} color="primary">
+                    {
+                        <Badge badgeContent={patient.reports.length - 1 > 0 ? patient.reports.length - 1 : 0} color="primary">
                             <IconButton onClick={handleHistoryClick}>
                                 <History />
                             </IconButton>
                         </Badge>
-                    )}
+                    }
                     <HistoryPopover />
                     {DicomPopperCom}
                 </Stack>
@@ -209,10 +213,10 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
 
             <Box className={classes.container}>
                 <Grid container sx={{ height: '100%' }}>
-                    <Grid item xs={12} xl={10}>
+                    <Grid item xs={12}>
                         <CustomScrollbar>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} xl={7}>
+                                <Grid item xs={12} xl={6}>
                                     {cols1?.map(col => (
                                         <FormSection key={col.name} list={col} mode={mode} />
                                     ))}
@@ -225,14 +229,14 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                             </Grid>
                         </CustomScrollbar>
                     </Grid>
-                    {isComputer && (
+                    {/* {isComputer && patient.reports.length > 1 && (
                         <Grid item xs={2}>
                             <CustomScrollbar>
                                 <Box className={classes.formLabel}>歷史報告</Box>
                                 <ReportList patient={patient} />
                             </CustomScrollbar>
                         </Grid>
-                    )}
+                    )} */}
                 </Grid>
             </Box>
         </>
