@@ -35,6 +35,8 @@ const CreateReport = () => {
     const classes = useStyles()
     const theme = useTheme()
 
+    console.log(patient)
+
     useEffect(() => {
         if (selection.length > 0) {
             const { patient, reportID, reports } = schedules.find(s => s.patientID === selection[0])
@@ -167,6 +169,7 @@ const CreateReport = () => {
                     )}
                     {currentStep === 1 && (
                         <Box sx={{ height: '100%' }}>
+                            {console.log(REPORTCOLS)}
                             <CustomReportForm cols1={REPORTCOLS} cols2={REPORTCOLS2} patient={patient} mode="create" />
                             <Box sx={{ width: '100%', height: '8%', display: 'flex', justifyContent: 'end' }}>
                                 <Button

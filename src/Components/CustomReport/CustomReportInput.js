@@ -14,6 +14,7 @@ import {
     InputLabel,
     Divider,
     Chip,
+    Button,
 } from '@mui/material'
 import { useTheme } from '@mui/styles'
 import { useDispatch } from 'react-redux'
@@ -21,6 +22,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import useStyles from './Style'
 import { addCancer, removeCancer } from '../../Redux/Slices/ReportForm'
+import ModalView from './ModalView'
 
 const CustomReportInput = ({ row, input, mode }) => {
     const classes = useStyles()
@@ -173,6 +175,13 @@ const CustomReportInput = ({ row, input, mode }) => {
                     </Select>
                 </FormControl>
             )}
+            {
+                type === "modal" && (
+                    <FormControl variant="standard" sx={{ width: 360, ml: 2 }}>
+                        <ModalView label={label} name={name}/>
+                    </FormControl>
+                )
+            }
             {divider && <Divider sx={{ ml: 2, mt: 4, mb: 4, width: 500 }} />}
         </Box>
     )
