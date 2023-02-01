@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Box, Button, Typography, Modal } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, IconButton, Modal } from '@mui/material';
 import ChestMarker from './Component/ChestMarker';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const style = {
     position: 'absolute',
@@ -14,12 +15,11 @@ const style = {
     p: 4,
 };
 
-const ModalView = ({ label, name }) => {
-    const [open, setOpen] = React.useState(false);
+const ModalView = ({ label, name, handleChange, value }) => {
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-
+    
     return (
         <div>
             <Button onClick={handleOpen} variant="contained">{label}</Button>
@@ -30,8 +30,11 @@ const ModalView = ({ label, name }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style} >
+                    <IconButton color="primary" component="label" onClick={handleClose} style={{ position: "absolute", right: "10px", top: "5px" }}>
+                        <ClearIcon />
+                    </IconButton>
                     {
-                        name === "RADARMARK" ? <ChestMarker /> : null
+                        name === "RADARMARK" ? <ChestMarker Modalopen={open} handleChange={handleChange} value={value} /> : null
                     }
                 </Box>
             </Modal>

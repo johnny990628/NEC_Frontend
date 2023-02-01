@@ -57,6 +57,10 @@ const CustomReportInput = ({ row, input, mode }) => {
             case 'select_multiple':
                 dispatch(addCancer({ name, type, value, mode }))
                 break
+            case 'modal':
+                Boolean(value) ? dispatch(addCancer({ name, type, value, mode })) : dispatch(removeCancer({ name, mode }))
+                break
+
             default:
                 break
         }
@@ -80,6 +84,9 @@ const CustomReportInput = ({ row, input, mode }) => {
                 break
             case 'select_multiple':
                 handleDispatch(e.target.value)
+                break
+            case 'modal':
+                handleDispatch(e)
                 break
             default:
                 break
@@ -178,7 +185,7 @@ const CustomReportInput = ({ row, input, mode }) => {
             {
                 type === "modal" && (
                     <FormControl variant="standard" sx={{ width: 360, ml: 2 }}>
-                        <ModalView label={label} name={name}/>
+                        <ModalView label={label} name={name} handleChange={handleChange} value={input?.value}/>
                     </FormControl>
                 )
             }

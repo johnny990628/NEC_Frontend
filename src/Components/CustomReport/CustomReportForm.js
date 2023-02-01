@@ -40,7 +40,6 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     const theme = useTheme()
     const isComputer = useMediaQuery(theme.breakpoints.up('lg'))
     const dispatch = useDispatch()
-
     const [audio] = useState(new Audio('./audio.mp3'))
     const [historyAnchorEl, setHistoryAnchorEl] = useState(null)
     const [dicomAnchorEl, setDicomAnchorEl] = useState(null)

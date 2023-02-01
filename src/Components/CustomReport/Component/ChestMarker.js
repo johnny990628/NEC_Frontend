@@ -5,7 +5,8 @@ import { Box, Grid, List, ListItem, Typography, ListSubheader } from "@mui/mater
 import Main from "./component/Main";
 import MarkEdit from "./component/MarkEdit";
 import { listText } from "./js/calculate";
-function ChestMarker() {
+
+function ChestMarker({ handleChange, value, Modalopen }) {
     const [azimut, setAzimut] = useState({
         L: [],
         R: [],
@@ -17,14 +18,27 @@ function ChestMarker() {
     const [onEditMark, setOnEditMark] = useState({ side: "L", index: 0 });
 
     useEffect(() => {
-        console.log(azimut);
-    }, [azimut]);
+        handleChange(JSON.stringify(azimut));
+        console.log("azimuth", azimut);
+    }, [azimut])
+
+    //最大modal
+    useEffect(() => {
+        setAzimut(value ? JSON.parse(value) : { L: [], R: [] })
+    }, [Modalopen])
+
+    //edit modal
+    useEffect(() => {
+        console.log("azimuth", azimut); 
+        handleChange(JSON.stringify(azimut));
+    }, [open])
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={3}>
                 <Grid item xs={3} md={3}>
                     {
-                        ["L", "R"].map((side) => {
+                        ["R", "L"].map((side) => {
                             return (
                                 <Box style={{ textAlign: "left" }}>
                                     <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
@@ -42,7 +56,7 @@ function ChestMarker() {
                         })
                     }
                 </Grid>
-                {["L", "R"].map((side) => {
+                {["R", "L"].map((side) => {
                     return (
                         <Grid item xs={4} md={4} key={side}>
                             <Main

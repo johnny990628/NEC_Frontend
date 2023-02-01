@@ -35,7 +35,6 @@ const Main = ({ side, EditModalOpen, azimut, setAzimut, setOnEditMark }) => {
     };
 
     const handClick = (event) => {
-        console.log(event.nativeEvent);
         const x = event.nativeEvent.pageX - ClockRef.current.getBoundingClientRect().x;
         const y = event.nativeEvent.pageY - ClockRef.current.getBoundingClientRect().y;
         var Azimut = {

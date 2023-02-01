@@ -29,8 +29,8 @@ const MarkEdit = ({
     const handleDelete = () => {
         let tempAzimut = azimut;
         tempAzimut[onEditMark.side].splice(onEditMark.index, 1);
-        setAzimut(tempAzimut);
         setOnEditMark({ side: "L", index: 0 });
+        setAzimut(tempAzimut);
         EditModalClose();
     };
 
