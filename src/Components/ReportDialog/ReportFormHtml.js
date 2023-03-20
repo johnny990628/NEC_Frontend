@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useRef, useState, useEffect } from 'react'
 
 import useStyles from './Style'
 import './print.css'
@@ -8,6 +8,8 @@ import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 import { useSelector } from 'react-redux'
 import { Announcement } from '@mui/icons-material'
 import Main from '../CustomReport/Component/component/Main'
+import Chest from './component/Chest'
+import DataShows from '../CustomReport/Component/component/DataShows'
 
 export const ReportFormForPDF = React.forwardRef((_, ref) => {
   return (
@@ -131,17 +133,23 @@ const FormSection = ({ list, checked, options, text }) => {
         <>
           {text && (
             <td colSpan="4" className={classes.table} style={{ height: '2rem' }}>
-              {/* #TODO:
-                需要製作顯示邏輯
-              */}
-              {/* <b textAlign>L : </b>
-              {JSON.parse(text).L.map((item) => (
-                <li>Size：{item.Size} mm。</li>
-              ))}
-              <b textAlign>R : </b>
-              {JSON.parse(text).R.map((item) => (
-                <li>Size：{item.Size} mm</li>
-              ))} */}
+              <div style={{ display: 'flex' }}>
+                {['R', 'L'].map((side) => {
+                  return (
+                    <div
+                      style={{
+                        width: '50%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <DataShows azimut={JSON.parse(text)} side={side} />
+                      <Chest azimut={JSON.parse(text)} side={side} />
+                    </div>
+                  )
+                })}
+              </div>
             </td>
           )}
         </>
