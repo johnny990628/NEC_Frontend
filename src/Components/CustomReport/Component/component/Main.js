@@ -58,7 +58,7 @@ const Main = ({ side, EditModalOpen, azimut, setAzimut, setOnEditMark }) => {
     <Box style={{ textAlign: 'center' }} ref={PageRef}>
       <h2>{side}</h2>
       <div id="container" style={containerStyle} ref={ClockRef} onClick={handClick}>
-        <div style={halfContainerStyle}></div>
+        <div style={halfContainerStyle} />
         {[1, 2, 3, 4, 5, 6].map((item) => {
           return PageRef.current ? (
             <Line width={ChestMaxSize * pxToMM} angle={item} top={(ChestMaxSize * pxToMM) / 2} key={item} />
