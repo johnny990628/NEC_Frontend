@@ -348,5 +348,11 @@
         "label": "BI-RADS",
         "type": "text",
         "section": "Other"
+    },
+    {
+        "name":"RADARMARK",
+        "label":"腫瘤雷達圖",
+        "type":"modal",
+        "section": "Other"
     }
 ]
