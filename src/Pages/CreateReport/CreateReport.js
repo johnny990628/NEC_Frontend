@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Stepper, Step, StepLabel, IconButton, Button } from '@mui/material'
 import { ArrowBack, ArrowForward, CheckCircleOutline, Cancel, Check, Close } from '@mui/icons-material'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useTheme } from '@mui/styles'
 import useStyles from './Style'
 
@@ -19,6 +20,7 @@ import { fetchReportByReportID } from '../../Redux/Slices/Dialog'
 import { openAlert } from '../../Redux/Slices/Alert'
 import { fetchSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
 import success from '../../Assets/Animation/success.json'
+import { apiAddWorklist } from '../../Axios/WorkList'
 
 const CreateReport = () => {
     const [currentStep, setCurrentStep] = useState(0)
@@ -27,9 +29,9 @@ const CreateReport = () => {
     const [patient, setPatient] = useState({})
     const [reportDialogMode, setReportDialogMode] = useState('create')
 
-    const { schedules, patients, count } = useSelector(state => state.schedule)
-    const { user } = useSelector(state => state.auth)
-    const report = useSelector(state => state.reportForm.create)
+    const { schedules, patients, count } = useSelector((state) => state.schedule)
+    const { user } = useSelector((state) => state.auth)
+    const report = useSelector((state) => state.reportForm.create)
 
     const dispatch = useDispatch()
     const classes = useStyles()
@@ -37,7 +39,7 @@ const CreateReport = () => {
 
     useEffect(() => {
         if (selection.length > 0) {
-            const { patient, reportID, reports } = schedules.find(s => s.patientID === selection[0])
+            const { patient, reportID, reports } = schedules.find((s) => s.patientID === selection[0])
             setPatient({ ...patient, reportID, reports })
             if (!selectTrigger) setCurrentStep(1)
             setSelectTrigger(false)
@@ -75,7 +77,7 @@ const CreateReport = () => {
         {
             field: 'processing',
             headerName: '取消排程',
-            renderCell: params => {
+            renderCell: (params) => {
                 return (
                     <IconButton
                         onClick={() => {
@@ -98,6 +100,22 @@ const CreateReport = () => {
                 )
             },
         },
+        {
+            field: 'workList',
+            headerName: '超音波開單',
+            renderCell: (params) => {
+                return (
+                    <IconButton
+                        onClick={() => {
+                            apiAddWorklist(params.row.id)
+                            setSelectTrigger(true)
+                        }}
+                    >
+                        <PhotoCameraIcon />
+                    </IconButton>
+                )
+            },
+        },
         { field: 'id', headerName: '身分證字號', flex: 2 },
         { field: 'blood', headerName: '抽血編號', flex: 1 },
         { field: 'name', headerName: '姓名', flex: 1 },
@@ -105,7 +123,7 @@ const CreateReport = () => {
             field: 'gender',
             headerName: '性別',
             flex: 1,
-            renderCell: params => {
+            renderCell: (params) => {
                 return <div>{params.row.gender === 'm' ? '男' : '女'}</div>
             },
         },
@@ -113,7 +131,7 @@ const CreateReport = () => {
             field: 'birth',
             headerName: '生日',
             flex: 1,
-            renderCell: params => {
+            renderCell: (params) => {
                 return <Box>{new Date(params.row.birth).toLocaleDateString()}</Box>
             },
         },
@@ -163,7 +181,12 @@ const CreateReport = () => {
             <Box className={classes.container}>
                 <Box className={classes.tableContainer}>
                     {currentStep === 0 && (
-                        <CustomDataGrid data={patients} columns={columns} selection={selection} setSelection={setSelection} />
+                        <CustomDataGrid
+                            data={patients}
+                            columns={columns}
+                            selection={selection}
+                            setSelection={setSelection}
+                        />
                     )}
                     {currentStep === 1 && (
                         <Box sx={{ height: '100%' }}>
