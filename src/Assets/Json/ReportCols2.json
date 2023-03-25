@@ -1,36 +1,5 @@
 [
     {
-        "name": "TN",
-        "label": "腫瘤編號",
-        "type": "text",
-        "section": "Other"
-    },
-    {
-        "name": "LR",
-        "label": "左右側",
-        "type": "text",
-        "section": "Other"
-    },
-    {
-        "name": "POSITION",
-        "label": "方位",
-        "type": "text",
-        "section": "Other"
-    },
-    {
-        "name": "DISTANCE",
-        "label": "距離乳頭距離(cm)",
-        "type": "text",
-        "section": "Other"
-    },
-    {
-        "name": "MAXRADIUS",
-        "label": "最大徑(cm)",
-        "type": "text",
-        "section": "Other",
-        "divider": true
-    },
-    {
         "name": "SHAPE",
         "label": "Shape",
         "type": "radio",
@@ -350,9 +319,9 @@
         "section": "Other"
     },
     {
-        "name":"RADARMARK",
-        "label":"腫瘤雷達圖",
-        "type":"modal",
+        "name": "RADARMARK",
+        "label": "腫瘤雷達圖",
+        "type": "modal",
         "section": "Other"
     }
 ]

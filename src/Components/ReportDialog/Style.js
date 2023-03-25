@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     table: {
         border: '1px solid #000000',
         borderCollapse: 'collapse',
@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     },
     printBreak: {
         '@media print': {
-            breakAfter: 'always !important',
-            pageBreakAfter: 'always !important',
+            // breakAfter: 'always !important',
+            // pageBreakAfter: 'always !important',
             pageBreakInside: 'avoid !important',
         },
     },
