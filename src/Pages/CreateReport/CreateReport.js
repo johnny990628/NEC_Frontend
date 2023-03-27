@@ -45,9 +45,11 @@ const CreateReport = () => {
             const { _id, patient, reportID, reports } = schedules.find((s) => s.patientID === selection[0])
             setPatient({ ...patient, reportID, reports })
             setScheduleID(_id)
-            if (!selectTrigger) setCurrentStep(1)
-            setSelectTrigger(false)
-            dispatch(changeScheduleStatus({ scheduleID: _id, status: 'on-call' }))
+            if (!selectTrigger) {
+                setCurrentStep(1)
+                dispatch(changeScheduleStatus({ scheduleID: _id, status: 'on-call' }))
+                setSelectTrigger(false)
+            }
         }
     }, [selection])
 
@@ -72,14 +74,16 @@ const CreateReport = () => {
         const handleBeforeUnload = (e) => {
             e.preventDefault()
             dispatch(resetReport({ mode: 'create' }))
-            if (scheduleIDRef.current) dispatch(removeSchedule(scheduleIDRef.current))
+            if (scheduleIDRef.current)
+                dispatch(changeScheduleStatus({ scheduleID: scheduleIDRef.current, status: 'wait-examination' }))
             return ''
         }
 
         window.addEventListener('beforeunload', handleBeforeUnload)
         return () => {
             dispatch(resetReport({ mode: 'create' }))
-            if (scheduleIDRef.current) dispatch(removeSchedule(scheduleIDRef.current))
+            if (scheduleIDRef.current)
+                dispatch(changeScheduleStatus({ scheduleID: scheduleIDRef.current, status: 'wait-examination' }))
             window.removeEventListener('beforeunload', handleBeforeUnload)
         }
     }, [])

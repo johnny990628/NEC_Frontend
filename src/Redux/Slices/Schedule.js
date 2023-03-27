@@ -13,10 +13,11 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (_
 
         return {
             schedules: scheduleList,
-            patients: scheduleList.map(({ patient, blood }) => ({ ...patient, blood: blood.number })),
+            patients: scheduleList.map(({ patient, blood }) => ({ ...patient, blood: blood?.number })),
             count,
         }
     } catch (e) {
+        console.log(e)
         thunkAPI.dispatch(tokenExpirationHandler(e.response))
         return thunkAPI.rejectWithValue()
     }
@@ -28,8 +29,8 @@ export const addSchedule = createAsyncThunk(
         try {
             const reportResponse = await apiCreateReport({ patientID, procedureCode, blood })
             const reportID = reportResponse.data._id
-            await apiAddSchedule({ patientID, reportID, procedureCode, status: 'wait-examination' })
             await apiAddBlood({ patientID, number: blood })
+            await apiAddSchedule({ patientID, reportID, procedureCode, status: 'wait-examination' })
         } catch (e) {
             thunkAPI.dispatch(tokenExpirationHandler(e.response))
             return thunkAPI.rejectWithValue()
@@ -67,6 +68,11 @@ const scheduleSlice = createSlice({
         [fetchSchedule.fulfilled]: (state, action) => {
             return {
                 ...action.payload,
+            }
+        },
+        [fetchSchedule.rejected]: (state, action) => {
+            return {
+                ...state,
             }
         },
     },

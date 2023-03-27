@@ -1,11 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { apiGetDepartments } from '../../Axios/Department'
 
 import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
 import { apiGetStats, apiGetStatsByDepartmentID } from './../../Axios/Stats'
 
 const initialState = {
-    departments: [],
     numsOfPeople: [
         {
             name: 'total',
@@ -169,39 +167,26 @@ const initialState = {
     ],
 }
 
-export const fetchDepartment = createAsyncThunk('statistic/fetchDepartment', async (_, thunkAPI) => {
-    try {
-        const departments = await apiGetDepartments({ limit: 100, offset: 0, sort: 'createdAt', desc: -1 })
-        return { departments: departments.data.results }
-    } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
-        return thunkAPI.rejectWithValue()
+export const fetchStatistic = createAsyncThunk(
+    'statistic/fetchStatistic',
+    async ({ departmentID, params }, thunkAPI) => {
+        try {
+            const stats = departmentID
+                ? await apiGetStatsByDepartmentID(departmentID, params)
+                : await apiGetStats(params)
+            return stats.data
+        } catch (e) {
+            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            return thunkAPI.rejectWithValue()
+        }
     }
-})
-export const fetchStatistic = createAsyncThunk('statistic/fetchStatistic', async ({ departmentID, params }, thunkAPI) => {
-    try {
-        const stats = departmentID ? await apiGetStatsByDepartmentID(departmentID, params) : await apiGetStats(params)
-        return stats.data
-    } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
-        return thunkAPI.rejectWithValue()
-    }
-})
+)
 
 const statisticSlice = createSlice({
     name: 'statistic',
     initialState,
     reducers: {},
     extraReducers: {
-        [fetchDepartment.fulfilled]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload,
-            }
-        },
-        [fetchDepartment.rejected]: (state, action) => {
-            return initialState
-        },
         [fetchStatistic.fulfilled]: (state, action) => {
             return {
                 ...state,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { departmentTrigger } from '../Redux/Slices/Department'
+import { fetchDepartments4List } from '../Redux/Slices/Department4List'
 import { patientTrigger } from '../Redux/Slices/Patient'
 import { reportTrigger } from '../Redux/Slices/Report'
 import { userTrigger } from '../Redux/Slices/User'
@@ -43,14 +44,13 @@ function WebSocketComponent() {
             case 'patients':
                 dispatch(patientTrigger())
                 break
-            case 'bloods':
-                dispatch(patientTrigger())
-                break
             case 'schedules':
+                dispatch(patientTrigger())
                 dispatch(fetchSchedule())
                 break
             case 'departments':
                 dispatch(departmentTrigger())
+                dispatch(fetchDepartments4List())
                 break
             case 'reports':
                 dispatch(reportTrigger())

@@ -13,7 +13,6 @@ import { openAlert } from '../../Redux/Slices/Alert'
 import { verifyID, verifyPhone } from '../../Utils/Verify'
 import { apiCheckExists } from '../../Axios/Exists'
 import { addSchedule } from '../../Redux/Slices/Schedule'
-import { patientTrigger } from '../../Redux/Slices/Patient'
 
 const CustomForm = ({ title, row, mode, sendData }) => {
     const [id, setId] = useState('')
