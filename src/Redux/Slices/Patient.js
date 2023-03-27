@@ -1,4 +1,9 @@
-import { apiCreatePatient, apiDeletePatientAndBloodAndSchedule, apiGetPatients, apiUpdatePatient } from '../../Axios/Patient'
+import {
+    apiCreatePatient,
+    apiDeletePatientAndBloodAndSchedule,
+    apiGetPatients,
+    apiUpdatePatient,
+} from '../../Axios/Patient'
 import { apiDeleteScheduleAndBloodAndReport } from '../../Axios/Schedule'
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
@@ -7,15 +12,18 @@ import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
 
 const initialState = { loading: false, data: [], count: 0, page: 1 }
 
-export const fetchPatients = createAsyncThunk('patients/fetchPatients', async ({ limit, offset, search, sort, desc, status }, thunkAPI) => {
-    try {
-        const response = await apiGetPatients({ limit, offset, search, sort, desc, status })
-        return { ...response.data, page: Math.ceil(response.data.count / limit) }
-    } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
-        return thunkAPI.rejectWithValue()
+export const fetchPatients = createAsyncThunk(
+    'patients/fetchPatients',
+    async ({ limit, offset, search, sort, desc, status }, thunkAPI) => {
+        try {
+            const response = await apiGetPatients({ limit, offset, search, sort, desc, status })
+            return { ...response.data, page: Math.ceil(response.data.count / limit) }
+        } catch (e) {
+            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            return thunkAPI.rejectWithValue()
+        }
     }
-})
+)
 
 export const createPatient = createAsyncThunk('patients/createPatient', async (data, thunkAPI) => {
     try {
@@ -84,27 +92,6 @@ const patientsSlice = createSlice({
             return {
                 ...state,
                 loading: false,
-            }
-        },
-        [createPatient.fulfilled]: (state, action) => {
-            return {
-                ...state,
-                loading: false,
-                count: state.count + 1,
-            }
-        },
-        [updatePatient.fulfilled]: (state, action) => {
-            return {
-                ...state,
-                loading: false,
-                count: 0,
-            }
-        },
-        [deletePatient.fulfilled]: (state, action) => {
-            return {
-                ...state,
-                loading: false,
-                count: state.count - 1,
             }
         },
     },

@@ -1,21 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiUpdateReport } from '../../Axios/Report'
 import { apiDeleteScheduleAndBloodAndReport } from '../../Axios/Schedule'
+import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
 const initialState = {
     create: [],
     edit: [],
 }
 
-export const createReport = createAsyncThunk('reportForm/createReport', async ({ patientID, reportID, data }) => {
-    try {
-        const response = await apiUpdateReport({ reportID, data })
-        await apiDeleteScheduleAndBloodAndReport(patientID)
-        return response.data
-    } catch (e) {
-        return e
+export const createReport = createAsyncThunk(
+    'reportForm/createReport',
+    async ({ patientID, scheduleID, reportID, data }) => {
+        try {
+            const response = await apiUpdateReport({ reportID, data })
+            await apiDeleteScheduleAndBloodAndReport(patientID)
+            // await apiUpdateScheduleStatus({ patientID, scheduleID, status: 'finish' })
+            return response.data
+        } catch (e) {
+            return e
+        }
     }
-})
+)
 
 export const updateReport = createAsyncThunk('reportForm/updateReport', async ({ reportID, data }) => {
     try {
@@ -32,13 +37,13 @@ const reportFormSlice = createSlice({
     reducers: {
         addCancer: (state, action) => {
             const { name, type, value, mode } = action.payload
-            state[mode].find(s => s.name === name) //if has the same name
-                ? (state[mode] = [...state[mode].filter(s => s.name !== name), { name, type, value }]) //replace the name with value
+            state[mode].find((s) => s.name === name) //if has the same name
+                ? (state[mode] = [...state[mode].filter((s) => s.name !== name), { name, type, value }]) //replace the name with value
                 : (state[mode] = [...state[mode], { name, type, value }]) //or add the new one
         },
         removeCancer: (state, action) => {
             const { name, mode } = action.payload
-            state[mode] = state[mode].filter(c => c.name !== name)
+            state[mode] = state[mode].filter((c) => c.name !== name)
         },
         clearCancer: (state, action) => {
             const { mode } = action.payload

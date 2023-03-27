@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     container: {
         position: 'relative',
         display: 'flex',
@@ -23,11 +23,17 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '.8rem',
         borderRadius: '1rem',
         width: '6rem',
-        '&.processing': {
+        '&.yet': {
+            backgroundColor: theme.palette.status.yet,
+        },
+        '&.examination': {
             backgroundColor: theme.palette.status.processing,
         },
         '&.finish': {
             backgroundColor: theme.palette.status.finish,
+        },
+        '&.call': {
+            backgroundColor: theme.palette.status.call,
         },
     },
     statusBox: {
