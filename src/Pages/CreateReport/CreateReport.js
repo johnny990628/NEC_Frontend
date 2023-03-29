@@ -138,6 +138,24 @@ const CreateReport = () => {
                     <IconButton
                         onClick={() => {
                             apiAddWorklist(params.row.id)
+                                .then((res) =>
+                                    dispatch(
+                                        openAlert({
+                                            toastTitle: '開單成功',
+                                            text: `新增workList ${res.data.name}`,
+                                            icon: 'success',
+                                        })
+                                    )
+                                )
+                                .catch((err) =>
+                                    dispatch(
+                                        openAlert({
+                                            toastTitle: '開單失敗',
+                                            text: err.response.data.message,
+                                            icon: 'error',
+                                        })
+                                    )
+                                )
                             setSelectTrigger(true)
                         }}
                     >
