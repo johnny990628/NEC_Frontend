@@ -1,5 +1,15 @@
 import React, { useMemo, useState } from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControlLabel, FormGroup, IconButton, Switch } from '@mui/material'
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Button,
+    FormControlLabel,
+    FormGroup,
+    IconButton,
+    Switch,
+} from '@mui/material'
 import { useDebouncedCallback } from 'use-debounce'
 
 import useStyles from './Style'
@@ -7,7 +17,7 @@ import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import CustomInput from '../../Components/CustomForm/CustomInput'
-import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
+import GlobalFilter from '../../Components/GlobalFilter/GlobalFilter'
 import { ArrowDropDown, Delete } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAlert } from '../../Redux/Slices/Alert'
@@ -20,24 +30,24 @@ const Department = () => {
     const [errorField, setErrorField] = useState([])
     const dispatch = useDispatch()
     const classes = useStyles()
-    const { results, count, page, loading } = useSelector(state => state.department)
+    const { results, count, page, loading } = useSelector((state) => state.department)
 
-    const fetchData = async params => {
+    const fetchData = async (params) => {
         dispatch(fetchDepartment(params))
     }
 
     const hasEmptyField = () => {
         const errorFieldList = Object.entries({ name, address })
             .map(([key, value]) => !value && key)
-            .filter(key => key)
+            .filter((key) => key)
         setErrorField(errorFieldList)
         return errorFieldList.length !== 0
     }
 
-    const handleHelperText = fieldName => {
+    const handleHelperText = (fieldName) => {
         switch (fieldName) {
             case 'name':
-                return results.find(d => d.name === name) && '此部門已存在'
+                return results.find((d) => d.name === name) && '此部門已存在'
             default:
                 return ''
         }
@@ -69,22 +79,24 @@ const Department = () => {
             {
                 accessor: 'active',
                 Header: '啟用',
-                Cell: row => {
+                Cell: (row) => {
                     const { _id, active } = row.row.original
                     return (
                         <Switch
                             checked={active}
-                            onChange={e => dispatch(activeDepartment({ departmentID: _id, active: e.target.checked }))}
+                            onChange={(e) =>
+                                dispatch(activeDepartment({ departmentID: _id, active: e.target.checked }))
+                            }
                         />
                     )
                 },
             },
-            { accessor: 'name', Header: '部門名稱', Cell: row => row.row.original.name },
-            { accessor: 'address', Header: '部門地址', Cell: row => row.row.original.address },
+            { accessor: 'name', Header: '部門名稱', Cell: (row) => row.row.original.name },
+            { accessor: 'address', Header: '部門地址', Cell: (row) => row.row.original.address },
             {
                 accessor: 'action',
                 Header: '操作',
-                Cell: row => {
+                Cell: (row) => {
                     const { _id, name, address } = row.row.original
                     return (
                         <Box>
@@ -126,7 +138,12 @@ const Department = () => {
                         <Box className={classes.formHeader}>新增部門</Box>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Switch checked={activeSwitch} onChange={e => setActiveSwitch(e.target.checked)} />}
+                                control={
+                                    <Switch
+                                        checked={activeSwitch}
+                                        onChange={(e) => setActiveSwitch(e.target.checked)}
+                                    />
+                                }
                                 label={<Box sx={{ fontSize: '1.4rem' }}>自動啟用部門</Box>}
                             />
                         </FormGroup>

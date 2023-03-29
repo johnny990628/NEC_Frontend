@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Box, FormControl, FormControlLabel, FormLabel, MenuItem, Popover, Radio, RadioGroup, TextField } from '@mui/material'
+import {
+    Box,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    MenuItem,
+    Popover,
+    Radio,
+    RadioGroup,
+    TextField,
+} from '@mui/material'
 import { useTheme } from '@mui/styles'
 import { DayPicker } from 'react-day-picker'
 
@@ -7,6 +17,8 @@ import useStyles from './Style'
 
 import { apiGetDepartments } from '../../Axios/Department'
 import { zhTW } from 'date-fns/locale'
+import { ContactlessOutlined } from '@mui/icons-material'
+import { useSelector } from 'react-redux'
 
 const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperText, error, mode, required }) => {
     const classes = useStyles()
@@ -14,7 +26,7 @@ const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperT
 
     const DatePickerCustomInput = ({ value, setValue, error }) => {
         const [dateAnchorEl, setDateAnchorEl] = useState(null)
-        const handleDateClick = event => {
+        const handleDateClick = (event) => {
             setDateAnchorEl(event.currentTarget)
         }
         const DatePickerPopover = () => {
@@ -34,7 +46,7 @@ const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperT
                     <DayPicker
                         mode="single"
                         selected={value}
-                        onDayClick={date => setValue(date)}
+                        onDayClick={(date) => setValue(date)}
                         fromYear={1930}
                         toYear={new Date().getFullYear()}
                         captionLayout="dropdown"
@@ -74,9 +86,22 @@ const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperT
                     <FormLabel id="genderPicker" sx={{ fontSize: '1.5rem' }}>
                         性別
                     </FormLabel>
-                    <RadioGroup row aria-labelledby="genderPicker" value={value} onChange={e => setValue(e.target.value)}>
-                        <FormControlLabel value="男" control={<Radio />} label={<Box className={classes.labelText}>男</Box>} />
-                        <FormControlLabel value="女" control={<Radio />} label={<Box className={classes.labelText}>女</Box>} />
+                    <RadioGroup
+                        row
+                        aria-labelledby="genderPicker"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                    >
+                        <FormControlLabel
+                            value="男"
+                            control={<Radio />}
+                            label={<Box className={classes.labelText}>男</Box>}
+                        />
+                        <FormControlLabel
+                            value="女"
+                            control={<Radio />}
+                            label={<Box className={classes.labelText}>女</Box>}
+                        />
                     </RadioGroup>
                 </FormControl>
                 <Box className={classes.textField} />
@@ -86,12 +111,13 @@ const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperT
 
     const Department = ({ value, setValue, error }) => {
         const [departments, setDepartments] = useState([])
+        const { results } = useSelector((state) => state.department4List)
 
         useEffect(() => {
-            apiGetDepartments({ limit: 100, offset: 0 }).then(res => setDepartments(res.data.results))
-        }, [])
+            setDepartments([...results])
+        }, [results])
 
-        const handleSelectOnChange = e => {
+        const handleSelectOnChange = (e) => {
             setValue(e.target.value)
         }
 
@@ -114,8 +140,8 @@ const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperT
             >
                 {departments.length > 0 &&
                     departments
-                        .filter(department => department.active)
-                        .map(department => (
+                        .filter((department) => department.active)
+                        .map((department) => (
                             <MenuItem
                                 key={department._id}
                                 value={department.name}
@@ -143,7 +169,7 @@ const CustomInput = ({ label, name, value, setValue, handleChange, handleHelperT
             variant="standard"
             required={required}
             value={value}
-            onChange={e => {
+            onChange={(e) => {
                 setValue(e.target.value)
                 handleChange(e.target.value, name)
             }}

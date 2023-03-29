@@ -38,6 +38,7 @@ const whiteTheme = createTheme({
             processing: 'rgba(169, 191, 211,.2)',
             finish: 'rgba(95, 91, 160,.2)',
             yet: 'rgba(100, 151, 151,.2)',
+            call: 'rgba(95, 91, 160,.2)',
         },
     },
     typography: {

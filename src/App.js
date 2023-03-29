@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { HashRouter, useLocation, Routes, Route } from "react-router-dom";
+import React, { useEffect } from 'react'
 
-import Layout from "./Components/Layout/Layout";
-import Login from "./Pages/Login/Login";
-import { apiVerify } from "./Axios/Auth";
-import { fillAuthState } from "./Redux/Slices/Auth";
-import CustomAlert from "./Components/CustomAlert/CustomAlert";
-import PatientForm from "./Pages/PatientForm";
+import Layout from './Components/Layout/Layout'
+
+import CustomAlert from './Components/CustomAlert/CustomAlert'
+import useWebsocket from './Hooks/useWebsocket'
+import { useDispatch } from 'react-redux'
+import { fetchDepartments4List } from './Redux/Slices/Department4List'
 
 const App = () => {
-   
-
+    useWebsocket()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchDepartments4List())
+    }, [])
     return (
         <>
-            <Layout/>
+            <Layout />
             <CustomAlert />
         </>
-    );
-};
+    )
+}
 
-
-export default App;
+export default App

@@ -25,7 +25,17 @@ import useStyles from './Style'
 
 import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
 
-const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPage, totalCount, StatusRadioGroup, GlobalFilter }) => {
+const CustomTable = ({
+    columns,
+    renderSubRow,
+    fetchData,
+    data,
+    loading,
+    totalPage,
+    totalCount,
+    StatusRadioGroup,
+    GlobalFilter,
+}) => {
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('all')
 
@@ -71,13 +81,24 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
 
     useEffect(() => {
         if (search) setStatus('all')
-        fetchData({ limit: pageSize, offset: pageIndex, search, status, sort: sortBy[0]?.id, desc: sortBy[0]?.desc ? -1 : 1 })
+        fetchData({
+            limit: pageSize,
+            offset: pageIndex,
+            search,
+            status,
+            sort: sortBy[0]?.id,
+            desc: sortBy[0]?.desc ? -1 : 1,
+        })
     }, [pageIndex, pageSize, sortBy, search, totalCount, status])
 
     return (
         <Grid container direction="column" wrap="nowrap" className={classes.container}>
             <Grid container item xs={1}>
-                <Grid item xs={StatusRadioGroup ? 7 : 12} sx={{ display: 'flex', justifyContent: StatusRadioGroup ? 'right' : 'center' }}>
+                <Grid
+                    item
+                    xs={StatusRadioGroup ? 7 : 12}
+                    sx={{ display: 'flex', justifyContent: StatusRadioGroup ? 'right' : 'center' }}
+                >
                     {GlobalFilter && <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} />}
                 </Grid>
                 <Grid item xs={StatusRadioGroup ? 5 : 0} sx={{ display: 'flex', justifyContent: 'right' }}>
@@ -85,65 +106,69 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                 </Grid>
             </Grid>
             <Grid item xs={9} {...getTableProps()}>
-                {loading ? (
-                    <Box sx={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <CircularProgress />
-                    </Box>
-                ) : (
-                    <CustomScrollbar>
-                        <Table stickyHeader>
-                            <TableHead>
-                                {headerGroups.map(headerGroup => (
-                                    <TableRow {...headerGroup.getHeaderGroupProps()}>
-                                        {headerGroup.headers.map(column => (
-                                            <TableCell
-                                                {...column.getHeaderProps(column.getSortByToggleProps())}
-                                                className={classes.tableHeader}
-                                            >
-                                                <Box sx={{ display: 'flex' }}>
-                                                    {column.render('Header')}
-                                                    <Box>
-                                                        {column.isSorted ? column.isSortedDesc ? <ArrowDropDown /> : <ArrowDropUp /> : ''}
-                                                    </Box>
+                <CustomScrollbar>
+                    <Table stickyHeader>
+                        <TableHead>
+                            {headerGroups.map((headerGroup) => (
+                                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                                    {headerGroup.headers.map((column) => (
+                                        <TableCell
+                                            {...column.getHeaderProps(column.getSortByToggleProps())}
+                                            className={classes.tableHeader}
+                                        >
+                                            <Box sx={{ display: 'flex' }}>
+                                                {column.render('Header')}
+                                                <Box>
+                                                    {column.isSorted ? (
+                                                        column.isSortedDesc ? (
+                                                            <ArrowDropDown />
+                                                        ) : (
+                                                            <ArrowDropUp />
+                                                        )
+                                                    ) : (
+                                                        ''
+                                                    )}
                                                 </Box>
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableHead>
+                                            </Box>
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </TableHead>
 
-                            <TableBody {...getTableBodyProps()}>
-                                {page.map(row => {
-                                    prepareRow(row)
-                                    return (
-                                        <Fragment key={row.getRowProps().key}>
-                                            <TableRow {...row.getRowProps()}>
-                                                {row.cells.map(cell => (
-                                                    <TableCell
-                                                        {...cell.getCellProps()}
-                                                        sx={{
-                                                            fontSize: '1rem',
-                                                            [theme.breakpoints.down('lg')]: {
-                                                                fontSize: '.9rem',
-                                                            },
-                                                        }}
-                                                    >
-                                                        {cell.render('Cell')}
-                                                    </TableCell>
-                                                ))}
+                        <TableBody {...getTableBodyProps()}>
+                            {page.map((row) => {
+                                prepareRow(row)
+                                return (
+                                    <Fragment key={row.getRowProps().key}>
+                                        <TableRow {...row.getRowProps()}>
+                                            {row.cells.map((cell) => (
+                                                <TableCell
+                                                    {...cell.getCellProps()}
+                                                    sx={{
+                                                        fontSize: '1rem',
+                                                        [theme.breakpoints.down('lg')]: {
+                                                            fontSize: '.9rem',
+                                                        },
+                                                    }}
+                                                >
+                                                    {cell.render('Cell')}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                        {row.isExpanded ? (
+                                            <TableRow>
+                                                <TableCell colSpan={visibleColumns.length}>
+                                                    {renderSubRow({ row })}
+                                                </TableCell>
                                             </TableRow>
-                                            {row.isExpanded ? (
-                                                <TableRow>
-                                                    <TableCell colSpan={visibleColumns.length}>{renderSubRow({ row })}</TableCell>
-                                                </TableRow>
-                                            ) : null}
-                                        </Fragment>
-                                    )
-                                })}
-                            </TableBody>
-                        </Table>
-                    </CustomScrollbar>
-                )}
+                                        ) : null}
+                                    </Fragment>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </CustomScrollbar>
             </Grid>
             <Grid item xs={2} className={classes.tableFooter}>
                 {/* <Box className={classes.tableFooterItem}>
@@ -168,19 +193,22 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                             labelId="rows"
                             label="列數"
                             value={pageSize}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPageSize(Number(e.target.value))
                             }}
                             className={classes.tableFooterItem}
                         >
-                            {[5, 10, 20, 30, 40].map(pageSize => (
+                            {[5, 10, 20, 30, 40].map((pageSize) => (
                                 <MenuItem key={pageSize} value={pageSize}>
                                     {pageSize}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
-                    <Box className={classes.tableFooterItem} sx={{ fontSize: '1.1rem' }}>{`總共${totalCount}筆資料`}</Box>
+                    <Box
+                        className={classes.tableFooterItem}
+                        sx={{ fontSize: '1.1rem' }}
+                    >{`總共${totalCount}筆資料`}</Box>
                     <Box className={classes.tableFooterItem} sx={{ fontSize: '1.1rem' }}>
                         {`第${pageIndex + 1}/${pageOptions.length}頁`}
                     </Box>

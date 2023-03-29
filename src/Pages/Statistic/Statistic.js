@@ -79,14 +79,25 @@ const Statistic = () => {
         [`${('0' + i).slice(-2)}:00`, `${('0' + i).slice(-2)}:30`],
         [`${('0' + i).slice(-2)}:30`, `${('0' + (i + 1)).slice(-2)}:00`],
     ])
-    const COLORS = ['#C7B8EA', '#F896D8', '#CEA2AC', '#CA7DF9', '#52D1DC', '#FF8552', '#73A6AD', '#A3A9AA', '#8CD867', '#F1AB86']
+    const COLORS = [
+        '#C7B8EA',
+        '#F896D8',
+        '#CEA2AC',
+        '#CA7DF9',
+        '#52D1DC',
+        '#FF8552',
+        '#73A6AD',
+        '#A3A9AA',
+        '#8CD867',
+        '#F1AB86',
+    ]
 
     const classes = useStyles()
     const dispatch = useDispatch()
     const theme = useTheme()
-    const { departments, numsOfPeople, numsOfReport, numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay } = useSelector(
-        state => state.statistic
-    )
+    const { numsOfPeople, numsOfReport, numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay } =
+        useSelector((state) => state.statistic)
+    const { results: departments } = useSelector((state) => state.department4List)
 
     useEffect(() => {
         const departmentID = selectDepartment === 'all' ? null : selectDepartment
@@ -134,11 +145,7 @@ const Statistic = () => {
         if (organActiveName) setChartType('bar')
     }, [organActiveName])
 
-    useEffect(() => {
-        dispatch(fetchDepartment())
-    }, [])
-
-    const handleSelectDepartment = e => {
+    const handleSelectDepartment = (e) => {
         setSelectDepartment(e.target.value)
     }
 
@@ -152,7 +159,7 @@ const Statistic = () => {
             : setPeopleActiveName(name)
     }
 
-    const handleDateSelect = range => {
+    const handleDateSelect = (range) => {
         setDate(range)
         if (range?.from) {
             setRangeDateFrom(format(range.from, 'y-MM-dd'))
@@ -166,7 +173,7 @@ const Statistic = () => {
         }
     }
 
-    const handleFromChange = e => {
+    const handleFromChange = (e) => {
         setRangeDateFrom(e.target.value)
         const today = parse(e.target.value, 'y-MM-dd', new Date())
         if (!isValid(date)) {
@@ -179,7 +186,7 @@ const Statistic = () => {
         }
     }
 
-    const handleToChange = e => {
+    const handleToChange = (e) => {
         setRangeDateTo(e.target.value)
         const today = parse(e.target.value, 'y-MM-dd', new Date())
 
@@ -199,7 +206,7 @@ const Statistic = () => {
         setRangeDateTo('')
     }
 
-    const handlePickerMode = e => {
+    const handlePickerMode = (e) => {
         resetDateState()
         setPickerMode(e.target.value)
     }
@@ -219,7 +226,7 @@ const Statistic = () => {
                     name: 'people',
                     ref: 'A1',
                     columns: [{ name: '日期' }, { name: '時間' }, { name: '男' }, { name: '女' }, { name: '總數' }],
-                    rows: numsOfPeopleGroupByDay.map(people => [
+                    rows: numsOfPeopleGroupByDay.map((people) => [
                         people.date,
                         people.time,
                         people.male.value,
@@ -240,7 +247,7 @@ const Statistic = () => {
                         { name: '脾臟異常' },
                         { name: '需進一步檢查' },
                     ],
-                    rows: numsOfOrganGroupByDay.map(organ => [
+                    rows: numsOfOrganGroupByDay.map((organ) => [
                         organ.date,
                         organ.time,
                         organ.liver.amount,
@@ -307,7 +314,7 @@ const Statistic = () => {
                             name: '請至各大醫院近一步詳細檢查',
                         },
                     ],
-                    rows: numsOfCancerGroupByDay.map(cancer => [
+                    rows: numsOfCancerGroupByDay.map((cancer) => [
                         cancer.date,
                         cancer.time,
                         cancer?.FLD?.value || 0,
@@ -334,7 +341,12 @@ const Statistic = () => {
                     name: 'people',
                     ref: 'A1',
                     columns: [{ name: '日期' }, { name: '男' }, { name: '女' }, { name: '總數' }],
-                    rows: numsOfPeopleGroupByDay.map(people => [people.date, people.male.value, people.female.value, people.total.value]),
+                    rows: numsOfPeopleGroupByDay.map((people) => [
+                        people.date,
+                        people.male.value,
+                        people.female.value,
+                        people.total.value,
+                    ]),
                 })
                 organSheet.addTable({
                     name: 'organ',
@@ -348,7 +360,7 @@ const Statistic = () => {
                         { name: '脾臟異常' },
                         { name: '需進一步檢查' },
                     ],
-                    rows: numsOfOrganGroupByDay.map(organ => [
+                    rows: numsOfOrganGroupByDay.map((organ) => [
                         organ.date,
                         organ.liver.amount,
                         organ.gallbladder.amount,
@@ -413,7 +425,7 @@ const Statistic = () => {
                             name: '請至各大醫院近一步詳細檢查',
                         },
                     ],
-                    rows: numsOfCancerGroupByDay.map(cancer => [
+                    rows: numsOfCancerGroupByDay.map((cancer) => [
                         cancer.date,
                         cancer?.FLD?.value || 0,
                         cancer?.SLPL?.value || 0,
@@ -441,12 +453,13 @@ const Statistic = () => {
                     rangeDateTo && pickerMode !== 'all'
                         ? `${rangeDateTo.replaceAll('-', '')}-${rangeDateTo.replaceAll('-', '')}`
                         : format(date, 'y-MM-dd').replaceAll('-', '')
-                const titleDepartment = selectDepartment !== 'all' ? `(${departments.find(d => d._id === selectDepartment).name})` : ''
+                const titleDepartment =
+                    selectDepartment !== 'all' ? `(${departments.find((d) => d._id === selectDepartment).name})` : ''
 
                 return titleDate + '好心肝超音波檢查報告統計報表' + titleDepartment
             }
 
-            workbook.xlsx.writeBuffer().then(content => {
+            workbook.xlsx.writeBuffer().then((content) => {
                 const link = document.createElement('a')
                 const blobData = new Blob([content], {
                     type: 'application/vnd.ms-excel;charset=utf-8;',
@@ -495,7 +508,10 @@ const Statistic = () => {
                 <GridToolbarFilterButton />
                 <GridToolbarDensitySelector />
                 <GridToolbarExport
-                    csvOptions={{ fileName: `${new Date(date).toLocaleDateString()}好心肝報告統計資料`, utf8WithBom: true }}
+                    csvOptions={{
+                        fileName: `${new Date(date).toLocaleDateString()}好心肝報告統計資料`,
+                        utf8WithBom: true,
+                    }}
                     printOptions={{ hideToolbar: true, hideFooter: true }}
                 />
             </GridToolbarContainer>
@@ -511,7 +527,12 @@ const Statistic = () => {
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                        <ToggleButtonGroup color="primary" value={pickerMode} onChange={handlePickerMode} sx={{ mr: 2 }}>
+                        <ToggleButtonGroup
+                            color="primary"
+                            value={pickerMode}
+                            onChange={handlePickerMode}
+                            sx={{ mr: 2 }}
+                        >
                             <ToggleButton value="all" key="all">
                                 全部
                             </ToggleButton>
@@ -539,11 +560,11 @@ const Statistic = () => {
                                 <Select
                                     labelId="time"
                                     value={time}
-                                    onChange={e => setTime(e.target.value)}
+                                    onChange={(e) => setTime(e.target.value)}
                                     MenuProps={{ classes: { paper: classes.menu } }}
                                 >
                                     <MenuItem value={'all'}>整天</MenuItem>
-                                    {TIMELIST.map(item => (
+                                    {TIMELIST.map((item) => (
                                         <MenuItem key={item[0]} value={item.toString()}>
                                             {`${item[0]} - ${item[1]}`}
                                         </MenuItem>
@@ -557,7 +578,7 @@ const Statistic = () => {
                             <Select labelId="department" value={selectDepartment} onChange={handleSelectDepartment}>
                                 <MenuItem value={'all'}>全部</MenuItem>
                                 {departments &&
-                                    departments.map(department => (
+                                    departments.map((department) => (
                                         <MenuItem key={department._id} value={department._id}>
                                             {department.name}
                                         </MenuItem>
@@ -569,7 +590,7 @@ const Statistic = () => {
 
                 <Grid container wrap="nowrap">
                     <Grid container item xs={6} spacing={2} sx={{ m: 2 }}>
-                        {numsOfPeople.map(d => (
+                        {numsOfPeople.map((d) => (
                             <Grid item xs={4} key={d.name}>
                                 <Card
                                     className={`${classes.card} ${d.name === peopleActiveName && 'active'}`}
@@ -586,7 +607,7 @@ const Statistic = () => {
                         ))}
                     </Grid>
                     <Grid container item xs={6} spacing={2} sx={{ m: 2 }}>
-                        {numsOfReport.map(d => (
+                        {numsOfReport.map((d) => (
                             <Grid item xs={4} key={d.name}>
                                 <Card
                                     className={`${classes.card} ${d.name === organActiveName && 'active'}`}
@@ -606,7 +627,12 @@ const Statistic = () => {
                 </Grid>
 
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3, mr: 3 }}>
-                    <ToggleButtonGroup color="primary" exclusive value={chartType} onChange={e => setChartType(e.target.value)}>
+                    <ToggleButtonGroup
+                        color="primary"
+                        exclusive
+                        value={chartType}
+                        onChange={(e) => setChartType(e.target.value)}
+                    >
                         <ToggleButton value="bar">長條圖</ToggleButton>
                         <ToggleButton value="radar">雷達圖</ToggleButton>
                         <ToggleButton value="table">表格</ToggleButton>
@@ -641,8 +667,8 @@ const Statistic = () => {
 
                                             {organActiveName &&
                                                 index === 1 &&
-                                                Object.values(numsOfReport.find(d => d.name === organActiveName))
-                                                    .filter(value => typeof value === 'object')
+                                                Object.values(numsOfReport.find((d) => d.name === organActiveName))
+                                                    .filter((value) => typeof value === 'object')
                                                     .sort((a, b) => b.value - a.value)
                                                     .map((child, index) => (
                                                         <Bar
@@ -655,8 +681,8 @@ const Statistic = () => {
                                                     ))}
                                             {peopleActiveName &&
                                                 index === 0 &&
-                                                Object.values(numsOfPeople.find(d => d.name === peopleActiveName))
-                                                    .filter(value => typeof value === 'object')
+                                                Object.values(numsOfPeople.find((d) => d.name === peopleActiveName))
+                                                    .filter((value) => typeof value === 'object')
                                                     .sort((a, b) => b.value - a.value)
                                                     .map((child, index) => (
                                                         <Bar
@@ -690,7 +716,12 @@ const Statistic = () => {
                                 )}
                                 {chartType === 'table' && (
                                     <ResponsiveContainer>
-                                        <CustomDataGrid data={data} columns={columns} getRowId={row => row.name} Toolbar={CustomToolbar} />
+                                        <CustomDataGrid
+                                            data={data}
+                                            columns={columns}
+                                            getRowId={(row) => row.name}
+                                            Toolbar={CustomToolbar}
+                                        />
                                     </ResponsiveContainer>
                                 )}
                             </Grid>

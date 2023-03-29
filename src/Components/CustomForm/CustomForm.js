@@ -13,7 +13,6 @@ import { openAlert } from '../../Redux/Slices/Alert'
 import { verifyID, verifyPhone } from '../../Utils/Verify'
 import { apiCheckExists } from '../../Axios/Exists'
 import { addSchedule } from '../../Redux/Slices/Schedule'
-import { patientTrigger } from '../../Redux/Slices/Patient'
 
 const CustomForm = ({ title, row, mode, sendData }) => {
     const [id, setId] = useState('')
@@ -55,7 +54,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
         }
     }, [qrcode])
 
-    const checkExists = data => apiCheckExists(data).then(res => res.data)
+    const checkExists = (data) => apiCheckExists(data).then((res) => res.data)
 
     const handleDelete = () => {
         setId('')
@@ -70,7 +69,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             case 'id':
                 const isValid = verifyID(value)
                 setValidID(isValid)
-                isValid && checkExists({ type: 'patient', value }).then(exist => setIdUsed(exist))
+                isValid && checkExists({ type: 'patient', value }).then((exist) => setIdUsed(exist))
                 break
             case 'phone':
                 setValidPhone(verifyPhone(value))
@@ -80,7 +79,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
         }
     }, 500)
 
-    const handleHelperText = name => {
+    const handleHelperText = (name) => {
         switch (name) {
             case 'id':
                 return validID ? idUsed && '此號碼已存在' : '不合法的格式'
@@ -94,12 +93,12 @@ const CustomForm = ({ title, row, mode, sendData }) => {
     const hasEmptyField = () => {
         const errorFieldList = Object.entries({ id, name, phone, birth })
             .map(([key, value]) => !value && key)
-            .filter(key => key)
+            .filter((key) => key)
         setErrorField(errorFieldList)
         return errorFieldList.length !== 0
     }
 
-    const handleSubmit = async data => {
+    const handleSubmit = async (data) => {
         try {
             if (hasEmptyField() || idUsed || !validID || !validPhone) return
             //身份證字號判斷性別
@@ -114,11 +113,8 @@ const CustomForm = ({ title, row, mode, sendData }) => {
                         toastTitle: '加入排程',
                         text: `${name} ${mr}`,
                         type: 'input',
-                        event: text =>
-                            dispatch(addSchedule({ patientID: id, procedureCode: '19009C', blood: text })).then(() =>
-                                dispatch(patientTrigger())
-                            ),
-                        preConfirm: async text => {
+                        event: (text) => dispatch(addSchedule({ patientID: id, procedureCode: '19009C', blood: text })),
+                        preConfirm: async (text) => {
                             const { data: blood } = await apiCheckExists({ type: 'blood', value: text })
                             const { data: schedule } = await apiCheckExists({ type: 'schedule', value: id })
                             const regex = new RegExp('^[A-Za-z0-9]*$')
@@ -166,7 +162,12 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             {mode === 'create' && (
                 <FormGroup>
                     <FormControlLabel
-                        control={<Switch checked={autoProcessSwitch} onChange={e => setAutoProcessSwitch(e.target.checked)} />}
+                        control={
+                            <Switch
+                                checked={autoProcessSwitch}
+                                onChange={(e) => setAutoProcessSwitch(e.target.checked)}
+                            />
+                        }
                         label={<Box sx={{ fontSize: '1.4rem' }}>自動加入排程</Box>}
                     />
                 </FormGroup>
@@ -190,7 +191,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
                     ))}
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%', alignItems: 'center' }}>
-                        {mode === 'create' && <QRScanner onResult={res => setQrcode(JSON.parse(res))} />}
+                        {mode === 'create' && <QRScanner onResult={(res) => setQrcode(JSON.parse(res))} />}
                         <Button
                             variant="contained"
                             className={classes.button}

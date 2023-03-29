@@ -49,12 +49,6 @@ const reportSlice = createSlice({
                 loading: false,
             }
         },
-        [deleteReport.fulfilled]: (state, action) => {
-            return {
-                ...state,
-                count: state.count - 1,
-            }
-        },
     },
 })
 
