@@ -8,10 +8,15 @@ import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
 export const fetchDashboard = createAsyncThunk('report/fetchDashboard', async (_, thunkAPI) => {
     try {
         const patients = await apiGetPatients({ limit: 5, offset: 0, sort: 'createdAt', desc: -1 })
-        const reports = await apiGetReports({ limit: 5, offset: 0 })
-        const schedules = await apiGetSchdules({ procedureCode: '19009C' })
+        const reports = await apiGetReports({ limit: 5, offset: 0, sort: 'createdAt', desc: -1 })
+        const schedules = await apiGetSchdules()
         const count = await apiGetCounts()
-        return { patients: patients.data.results, reports: reports.data.results, schedules: schedules.data.results, count: count.data }
+        return {
+            patients: patients.data.results,
+            reports: reports.data.results,
+            schedules: schedules.data.results,
+            count: count.data,
+        }
     } catch (e) {
         thunkAPI.dispatch(tokenExpirationHandler(e.response))
         return thunkAPI.rejectWithValue()

@@ -7,7 +7,7 @@ import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
 export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (_, thunkAPI) => {
     try {
-        const response = await apiGetSchdules({ procedureCode: '19009C' })
+        const response = await apiGetSchdules()
         const { results, count } = response.data
         const scheduleList = results.filter((r) => r.status === 'wait-examination')
 
@@ -23,20 +23,16 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (_
     }
 })
 
-export const addSchedule = createAsyncThunk(
-    'schedule/addSchedule',
-    async ({ patientID, procedureCode, blood }, thunkAPI) => {
-        try {
-            const reportResponse = await apiCreateReport({ patientID, procedureCode, blood })
-            const reportID = reportResponse.data._id
-            await apiAddBlood({ patientID, number: blood })
-            await apiAddSchedule({ patientID, reportID, procedureCode, status: 'wait-examination' })
-        } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
-            return thunkAPI.rejectWithValue()
-        }
+export const addSchedule = createAsyncThunk('schedule/addSchedule', async ({ patientID, procedureCode }, thunkAPI) => {
+    try {
+        const reportResponse = await apiCreateReport({ patientID })
+        const reportID = reportResponse.data._id
+        await apiAddSchedule({ patientID, reportID, procedureCode, status: 'wait-examination' })
+    } catch (e) {
+        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        return thunkAPI.rejectWithValue()
     }
-)
+})
 
 export const changeScheduleStatus = createAsyncThunk(
     'schedule/changeScheduleStatus',

@@ -55,14 +55,14 @@ const routerList = [
         Component: User,
         authority: [3],
     },
-    {
-        display_name: '部門管理',
-        name: 'department',
-        icon: <AccountBalanceOutlined />,
-        path: '/department',
-        Component: Department,
-        authority: [3, 1],
-    },
+    // {
+    //     display_name: '部門管理',
+    //     name: 'department',
+    //     icon: <AccountBalanceOutlined />,
+    //     path: '/department',
+    //     Component: Department,
+    //     authority: [3, 1],
+    // },
     {
         display_name: '影像管理',
         name: 'image',

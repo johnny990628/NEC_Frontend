@@ -98,7 +98,7 @@ const CreateReport = () => {
                 patientID: patient.id,
                 reportID: patient.reportID,
                 scheduleID,
-                data: { report: { report, id: v4() }, userID: user._id, status: 'finished' },
+                data: { report: { report, id: v4() }, userID: user._id },
             })
         )
     }
@@ -165,7 +165,6 @@ const CreateReport = () => {
             },
         },
         { field: 'id', headerName: '身分證字號', flex: 2 },
-        { field: 'blood', headerName: '抽血編號', flex: 1 },
         { field: 'name', headerName: '姓名', flex: 1 },
         {
             field: 'gender',

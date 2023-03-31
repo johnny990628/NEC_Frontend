@@ -44,18 +44,23 @@ const Patient = () => {
                     const mr = gender === 'm' ? '先生' : '小姐'
 
                     const scheduleStatus = () => {
-                        switch (row.row.original?.schedule?.status) {
-                            case 'yet':
-                                return { status: 'yet', class: 'yet', text: '等待排程' }
-                            case 'wait-examination':
-                                return { status: 'wait-examination', class: 'examination', text: '等待檢查' }
-                            case 'on-call':
-                                return { status: 'on-call', class: 'call', text: '檢查中' }
-                            case 'finish':
-                                return { status: 'finish', class: 'finish', text: '完成報告' }
-                            default:
-                                return { status: 'yet', class: 'yet', text: '等待排程' }
-                        }
+                        const onCall = row.row.original?.schedule?.find(({ status }) => status === 'on-call')
+                        const wait = row.row.original?.schedule?.find(({ status }) => status === 'wait-examination')
+                        if (onCall) return { status: 'on-call', class: 'call', text: '檢查中' }
+                        if (wait) return { status: 'wait-examination', class: 'examination', text: '等待檢查' }
+                        return { status: 'yet', class: 'yet', text: '等待排程' }
+                        // switch (row.row.original?.schedule?.status) {
+                        //     case 'yet':
+                        //         return { status: 'yet', class: 'yet', text: '等待排程' }
+                        //     case 'wait-examination':
+                        //         return { status: 'wait-examination', class: 'examination', text: '等待檢查' }
+                        //     case 'on-call':
+                        //         return { status: 'on-call', class: 'call', text: '檢查中' }
+                        //     case 'finish':
+                        //         return { status: 'finish', class: 'finish', text: '完成報告' }
+                        //     default:
+                        //         return { status: 'yet', class: 'yet', text: '等待排程' }
+                        // }
                     }
                     const status = scheduleStatus()
 
@@ -83,35 +88,22 @@ const Patient = () => {
                                     onClick={() => {
                                         dispatch(
                                             openAlert({
-                                                alertTitle: `請輸入${name}的抽血編號`,
+                                                alertTitle: `請輸入${name}的醫令`,
                                                 toastTitle: '加入排程',
                                                 text: `${name} ${mr}`,
-                                                type: 'input',
+                                                type: 'select',
+                                                options: {
+                                                    '19014C': '19014C(健保)',
+                                                    '19014CNE1': '19014CNE1(自費1)',
+                                                    '19014CNE2': '19014CNE2(自費2)',
+                                                },
                                                 event: (text) =>
                                                     dispatch(
                                                         addSchedule({
                                                             patientID: id,
-                                                            procedureCode: '19009C',
-                                                            blood: text,
+                                                            procedureCode: text,
                                                         })
                                                     ),
-                                                preConfirm: async (text) => {
-                                                    const { data: blood } = await apiCheckExists({
-                                                        type: 'blood',
-                                                        value: text,
-                                                    })
-                                                    const { data: schedule } = await apiCheckExists({
-                                                        type: 'schedule',
-                                                        value: id,
-                                                    })
-                                                    const regex = new RegExp('^[A-Za-z0-9]*$')
-                                                    const isIllegal = !regex.test(text)
-                                                    let warning = ''
-                                                    if (blood) warning += '此編號已被使用 '
-                                                    if (schedule) warning += '此病人已在排程中'
-                                                    if (isIllegal) warning += ' 含有非法字元'
-                                                    return { exists: blood || schedule || isIllegal, warning }
-                                                },
                                             })
                                         )
                                     }}
@@ -235,12 +227,12 @@ const Patient = () => {
 
     return (
         <Box className={classes.container}>
-            <Accordion elevation={0} className={classes.accordion}>
+            {/* <Accordion elevation={0} className={classes.accordion}>
                 <AccordionSummary expandIcon={<ArrowDropDown />} sx={{ flexDirection: 'column-reverse' }} />
                 <AccordionDetails>
                     <CustomForm title="新增病人" sendData={sendData} mode="create" />
                 </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
 
             <CustomTable
                 columns={columns}

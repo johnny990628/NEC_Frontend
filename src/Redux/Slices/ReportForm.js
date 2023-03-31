@@ -13,8 +13,8 @@ export const createReport = createAsyncThunk(
     async ({ patientID, scheduleID, reportID, data }) => {
         try {
             const response = await apiUpdateReport({ reportID, data })
-            await apiDeleteScheduleAndBloodAndReport(patientID)
-            // await apiUpdateScheduleStatus({ patientID, scheduleID, status: 'finish' })
+            // await apiDeleteScheduleAndBloodAndReport(patientID)
+            await apiUpdateScheduleStatus({ patientID, scheduleID, status: 'finish' })
             return response.data
         } catch (e) {
             return e
