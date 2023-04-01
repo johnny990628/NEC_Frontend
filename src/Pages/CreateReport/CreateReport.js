@@ -43,14 +43,15 @@ const CreateReport = () => {
 
     useEffect(() => {
         if (selection.length > 0) {
-            const { _id, patient, reportID, reports, procedureCode } = schedules.find((s) => s._id === selection[0])
-            setPatient({ ...patient, reportID, reports, procedureCode })
-            setScheduleID(_id)
             if (!selectTrigger) {
+                const { _id, patient, reportID, reports, procedureCode } = schedules.find((s) => s._id === selection[0])
+                setPatient({ ...patient, reportID, reports, procedureCode })
+                setScheduleID(_id)
                 setCurrentStep(1)
                 dispatch(changeScheduleStatus({ scheduleID: _id, status: 'on-call' }))
             }
             setSelectTrigger(false)
+            scheduleIDRef.current = ''
         }
     }, [selection])
 
