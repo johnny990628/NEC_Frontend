@@ -1,15 +1,16 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     container: {
-        borderRadius: '0 2rem 2rem 0',
+        // borderRadius: '0 2rem 2rem 0',
+        border: 0,
         width: 'var(--sidebar-open-width)',
         height: '100vh',
         transition: 'width .4s ease-in',
         '&.close': {
             width: 'var(--sidebar-close-width)',
         },
-        boxShadow: '6px 6px 10px rgba(0,0,0,0.1)',
+        // boxShadow: '6px 6px 10px rgba(0,0,0,0.1)',
     },
     list: {
         height: '100%',

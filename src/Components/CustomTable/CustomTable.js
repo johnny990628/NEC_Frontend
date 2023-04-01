@@ -107,7 +107,7 @@ const CustomTable = ({
                     {StatusRadioGroup && <StatusRadioGroup status={status} setStatus={setStatus} />}
                 </Grid>
             </Grid>
-            <Grid item xs={9} {...getTableProps()}>
+            <Grid item xs={9} {...getTableProps()} className={classes.tableBody}>
                 <CustomScrollbar>
                     <Table stickyHeader>
                         <TableHead>
@@ -118,7 +118,7 @@ const CustomTable = ({
                                             {...column.getHeaderProps(column.getSortByToggleProps())}
                                             className={classes.tableHeader}
                                         >
-                                            <Box sx={{ display: 'flex' }}>
+                                            <Box className={classes.headerFont} sx={{ display: 'flex' }}>
                                                 {column.render('Header')}
                                                 <Box>
                                                     {column.isSorted ? (
@@ -143,10 +143,11 @@ const CustomTable = ({
                                 prepareRow(row)
                                 return (
                                     <Fragment key={row.getRowProps().key}>
-                                        <TableRow {...row.getRowProps()}>
+                                        <TableRow {...row.getRowProps()} className={classes.tableRow}>
                                             {row.cells.map((cell) => (
                                                 <TableCell
                                                     {...cell.getCellProps()}
+                                                    className={classes.tableCell}
                                                     sx={{
                                                         fontSize: '1rem',
                                                         [theme.breakpoints.down('lg')]: {
@@ -188,7 +189,7 @@ const CustomTable = ({
                     />
                 </Box> */}
 
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.gray' }}>
                     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                         <InputLabel id="rows">列數</InputLabel>
                         <Select
@@ -199,6 +200,7 @@ const CustomTable = ({
                                 setPageSize(Number(e.target.value))
                             }}
                             className={classes.tableFooterItem}
+                            sx={{ color: 'text.gray' }}
                         >
                             {[5, 10, 20, 30, 40].map((pageSize) => (
                                 <MenuItem key={pageSize} value={pageSize}>

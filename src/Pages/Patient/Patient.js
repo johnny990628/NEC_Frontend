@@ -188,6 +188,7 @@ const Patient = () => {
                     aria-labelledby="demo-radio-buttons-group-label"
                     value={status}
                     onChange={handleOnChange}
+                    sx={{ color: 'text.gray' }}
                 >
                     <FormControlLabel value="all" control={<Radio />} label="全部" />
                     <FormControlLabel value="yet" control={<Radio />} label="未排程" />

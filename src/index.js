@@ -19,16 +19,19 @@ const whiteTheme = createTheme({
         },
         secondary: {
             main: 'rgba(255,253,254)',
+            // main: 'rgba(240, 240, 240)',
         },
         background: {
-            default: 'rgba(217, 227, 238)',
+            // default: 'rgba(217, 227, 238)',
+            default: 'rgba(240, 240, 240)',
         },
         text: {
             primary: 'rgba(8, 40, 71)',
             secondary: '#7895B2',
+            gray: '#7C8693',
         },
         border: {
-            main: 'rgba(193, 181, 184 , .5)',
+            main: 'rgba(193, 181, 184 , .3)',
         },
         contrast: {
             main: 'rgba(100, 151, 151,.9)',

@@ -24,14 +24,14 @@ import { apiVerify } from '../../Axios/Auth'
 import Login from '../../Pages/Login/Login'
 
 const Layout = () => {
-    const { verify } = useSelector(state => state.auth)
+    const { verify } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
 
     const isLoggedIn = localStorage.getItem('isLoggedIn')
 
     useEffect(() => {
         if (isLoggedIn)
-            apiVerify().then(res =>
+            apiVerify().then((res) =>
                 dispatch(
                     fillAuthState({
                         user: res.data.user,
@@ -56,7 +56,7 @@ const Main = () => {
     const location = useLocation()
     const pathName = location.pathname
 
-    const { isOpen } = useSelector(state => state.sidebar)
+    const { isOpen } = useSelector((state) => state.sidebar)
 
     const [page, setPage] = useState({})
 
@@ -91,7 +91,7 @@ const Main = () => {
     ]
 
     useEffect(() => {
-        setPage(SidebarItem.find(item => item.path === pathName))
+        setPage(SidebarItem.find((item) => item.path === pathName))
     }, [location.pathname])
 
     return (
@@ -100,9 +100,18 @@ const Main = () => {
             <CustomScrollbar>
                 <Box className={`${classes.container} ${isOpen || 'close'}`}>
                     <Router />
-                    <SpeedDial ariaLabel="SpeedDial basic example" sx={{ position: 'fixed', bottom: 25, right: 25 }} icon={<Dehaze />}>
-                        {actions.map(action => (
-                            <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} onClick={action.event} />
+                    <SpeedDial
+                        ariaLabel="SpeedDial basic example"
+                        sx={{ position: 'fixed', bottom: 25, right: 25 }}
+                        icon={<Dehaze />}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={action.event}
+                            />
                         ))}
                     </SpeedDial>
                 </Box>
