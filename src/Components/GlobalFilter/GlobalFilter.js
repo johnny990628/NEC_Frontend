@@ -1,10 +1,10 @@
-import { Box, TextField, Button } from '@mui/material'
+import { Box, TextField, Button, CircularProgress } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { useState } from 'react'
 
 import useStyles from './Style'
 
-const GlobalFilter = ({ setSearch, search, totalCount }) => {
+const GlobalFilter = ({ setSearch, search, totalCount, loading }) => {
     const classes = useStyles()
     const [value, setValue] = useState('')
 
@@ -14,10 +14,10 @@ const GlobalFilter = ({ setSearch, search, totalCount }) => {
             <TextField
                 variant="standard"
                 value={value}
-                onChange={e => {
+                onChange={(e) => {
                     setValue(e.target.value)
                 }}
-                onKeyPress={e => {
+                onKeyPress={(e) => {
                     e.key === 'Enter' && setSearch(value)
                 }}
                 placeholder={`${search && `${search}...`}${totalCount}筆資料`}
@@ -45,6 +45,9 @@ const GlobalFilter = ({ setSearch, search, totalCount }) => {
             >
                 清除
             </Button>
+            <Box style={{ marginLeft: '1rem' }}>
+                {loading ? <CircularProgress color="primary" size={20} /> : <Box style={{ width: '20px' }}></Box>}
+            </Box>
         </Box>
     )
 }

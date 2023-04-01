@@ -99,7 +99,9 @@ const CustomTable = ({
                     xs={StatusRadioGroup ? 7 : 12}
                     sx={{ display: 'flex', justifyContent: StatusRadioGroup ? 'right' : 'center' }}
                 >
-                    {GlobalFilter && <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} />}
+                    {GlobalFilter && (
+                        <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} loading={loading} />
+                    )}
                 </Grid>
                 <Grid item xs={StatusRadioGroup ? 5 : 0} sx={{ display: 'flex', justifyContent: 'right' }}>
                     {StatusRadioGroup && <StatusRadioGroup status={status} setStatus={setStatus} />}
