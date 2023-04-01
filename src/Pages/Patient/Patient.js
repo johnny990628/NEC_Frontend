@@ -93,13 +93,18 @@ const Patient = () => {
                                                 toastTitle: '取消檢查狀態',
                                                 text: `${name} ${mr}`,
                                                 type: 'confirm',
-                                                event: () =>
+                                                event: () => {
+                                                    const onCall = row.row.original?.schedule?.find(
+                                                        ({ status }) => status === 'on-call'
+                                                    )
+                                                    console.log(onCall)
                                                     dispatch(
                                                         changeScheduleStatus({
-                                                            scheduleID: row.row.original?.schedule?._id,
+                                                            scheduleID: onCall._id,
                                                             status: 'wait-examination',
                                                         })
-                                                    ),
+                                                    )
+                                                },
                                             })
                                         )
                                     }
@@ -178,27 +183,6 @@ const Patient = () => {
 
     const sendData = useCallback((data) => dispatch(createPatient(data)), [])
 
-    const StatusRadioGroup = ({ status, setStatus }) => {
-        const handleOnChange = (e) => setStatus(e.target.value)
-        return (
-            <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">狀態</FormLabel>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    value={status}
-                    onChange={handleOnChange}
-                    sx={{ color: 'text.gray' }}
-                >
-                    <FormControlLabel value="all" control={<Radio />} label="全部" />
-                    <FormControlLabel value="yet" control={<Radio />} label="未排程" />
-                    <FormControlLabel value="processing" control={<Radio />} label="排程中" />
-                    <FormControlLabel value="finish" control={<Radio />} label="已完成" />
-                </RadioGroup>
-            </FormControl>
-        )
-    }
-
     return (
         <Box className={classes.container}>
             {/* <Accordion elevation={0} className={classes.accordion}>
@@ -215,7 +199,6 @@ const Patient = () => {
                 loading={loading}
                 totalPage={page}
                 totalCount={count}
-                StatusRadioGroup={StatusRadioGroup}
                 GlobalFilter={GlobalFilter}
             />
             <EditDialog />

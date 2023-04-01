@@ -38,10 +38,14 @@ const whiteTheme = createTheme({
             dark: 'rgba(100, 151, 151)',
         },
         status: {
-            processing: 'rgba(169, 191, 211,.2)',
-            finish: 'rgba(95, 91, 160,.2)',
-            yet: 'rgba(100, 151, 151,.2)',
-            call: 'rgba(95, 91, 160,.2)',
+            processing: 'rgba(169, 191, 211,.1)',
+            processing_dark: 'rgb(110, 127, 183)',
+            finish: 'rgba(95, 91, 160,.1)',
+            finish_dark: 'rgba(95, 91, 160)',
+            yet: 'rgba(100, 151, 151,.1)',
+            yet_dark: 'rgba(100, 151, 151)',
+            call: 'rgba(95, 91, 160,.1)',
+            call_dark: 'rgba(95, 91, 160)',
         },
     },
     typography: {

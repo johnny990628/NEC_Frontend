@@ -16,11 +16,15 @@ const useStyles = makeStyles((theme) => ({
     },
     status: {
         backgroundColor: theme.palette.status.processing,
+        border: `1px solid ${theme.palette.status.processing_dark}`,
+        color: theme.palette.status.processing_dark,
         padding: '8px',
         marginRight: '.6rem',
         borderRadius: '1rem',
         '&.processing': {
             backgroundColor: theme.palette.status.yet,
+            border: `1px solid ${theme.palette.status.yet_dark}`,
+            color: theme.palette.status.yet_dark,
         },
     },
     statusBox: {

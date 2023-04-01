@@ -6,18 +6,22 @@ import useStyles from './Style'
 import { fetchReportByReportID } from '../../Redux/Slices/Dialog'
 import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
 
-const ReportList = ({ patient }) => {
+const ReportList = ({ reports }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const handleClick = reportID => {
+    const handleClick = (reportID) => {
         dispatch(fetchReportByReportID(reportID))
     }
     return (
         <List>
-            {patient.reports.map((report, index) => (
+            {reports.map((report, index) => (
                 <>
-                    {report.status === 'finished' && (
-                        <ListItem key={report._id} classes={{ root: classes.reportListItem }} onClick={() => handleClick(report._id)}>
+                    {
+                        <ListItem
+                            key={report._id}
+                            classes={{ root: classes.reportListItem }}
+                            onClick={() => handleClick(report._id)}
+                        >
                             <ListItemButton>
                                 <ListItemIcon>
                                     <Assignment />
@@ -28,7 +32,7 @@ const ReportList = ({ patient }) => {
                                 />
                             </ListItemButton>
                         </ListItem>
-                    )}
+                    }
                 </>
             ))}
         </List>

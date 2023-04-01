@@ -25,17 +25,7 @@ import useStyles from './Style'
 
 import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
 
-const CustomTable = ({
-    columns,
-    renderSubRow,
-    fetchData,
-    data,
-    loading,
-    totalPage,
-    totalCount,
-    StatusRadioGroup,
-    GlobalFilter,
-}) => {
+const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPage, totalCount, GlobalFilter }) => {
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('all')
 
@@ -94,17 +84,10 @@ const CustomTable = ({
     return (
         <Grid container direction="column" wrap="nowrap" className={classes.container}>
             <Grid container item xs={1}>
-                <Grid
-                    item
-                    xs={StatusRadioGroup ? 7 : 12}
-                    sx={{ display: 'flex', justifyContent: StatusRadioGroup ? 'right' : 'center' }}
-                >
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                     {GlobalFilter && (
                         <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} loading={loading} />
                     )}
-                </Grid>
-                <Grid item xs={StatusRadioGroup ? 5 : 0} sx={{ display: 'flex', justifyContent: 'right' }}>
-                    {StatusRadioGroup && <StatusRadioGroup status={status} setStatus={setStatus} />}
                 </Grid>
             </Grid>
             <Grid item xs={9} {...getTableProps()} className={classes.tableBody}>

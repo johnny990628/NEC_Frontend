@@ -7,12 +7,11 @@ import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
 export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (_, thunkAPI) => {
     try {
-        const response = await apiGetSchdules()
+        const response = await apiGetSchdules({ status: 'wait-examination' })
         const { results, count } = response.data
-        const schedules = results.filter((r) => r.status === 'wait-examination')
 
         return {
-            schedules,
+            schedules: results,
             count,
         }
     } catch (e) {
@@ -55,7 +54,7 @@ export const removeSchedule = createAsyncThunk('schedule/removeSchedule', async 
     }
 })
 
-const initialState = { schedules: [], patients: [], count: 0 }
+const initialState = { schedules: [], count: 0 }
 const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,

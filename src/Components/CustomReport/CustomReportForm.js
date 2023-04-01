@@ -1,5 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Box, useMediaQuery, Grid, Chip, IconButton, Button, Stack, CircularProgress, Tooltip, Badge, Popover, Popper } from '@mui/material'
+import {
+    Box,
+    useMediaQuery,
+    Grid,
+    Chip,
+    IconButton,
+    Button,
+    Stack,
+    CircularProgress,
+    Tooltip,
+    Badge,
+    Popover,
+    Popper,
+} from '@mui/material'
 import { useTheme } from '@mui/styles'
 import Scrollspy from 'react-scrollspy'
 import { useDebouncedCallback } from 'use-debounce'
@@ -16,15 +29,15 @@ import useSpeech2Text from '../../Hooks/useSpeech2Text'
 const FormSection = ({ list, mode }) => {
     const classes = useStyles()
 
-    const editReport = useSelector(state => state.reportForm.edit)
-    const createReport = useSelector(state => state.reportForm.create)
+    const editReport = useSelector((state) => state.reportForm.edit)
+    const createReport = useSelector((state) => state.reportForm.create)
 
-    const setupValue = list => {
+    const setupValue = (list) => {
         if (mode === 'create') {
-            return createReport.find(r => r.name === list.name)
+            return createReport.find((r) => r.name === list.name)
         }
         if (mode === 'edit') {
-            return editReport.find(r => r.name === list.name)
+            return editReport.find((r) => r.name === list.name)
         }
     }
 
@@ -111,23 +124,25 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     // }, [transcript])
 
     const [toolkitOpen, setToolkitOpen] = useState(false)
-    const handleRecordClick = e => {
-        setRecord(s => !s)
-        setToolkitOpen(b => !b)
+    const handleRecordClick = (e) => {
+        setRecord((s) => !s)
+        setToolkitOpen((b) => !b)
     }
 
-    const handleHistoryClick = event => {
+    const handleHistoryClick = (event) => {
         setHistoryAnchorEl(event.currentTarget)
     }
 
-    const handleDicomClick = event => {
-        setDicomAnchorEl(dicom => (dicom ? null : event.currentTarget))
+    const handleDicomClick = (event) => {
+        setDicomAnchorEl((dicom) => (dicom ? null : event.currentTarget))
     }
 
     const HistoryPopover = () => {
         const handleClose = () => {
             setHistoryAnchorEl(null)
         }
+        const { reports, reportID } = patient
+
         return (
             <Popover
                 open={Boolean(historyAnchorEl)}
@@ -139,7 +154,7 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                 }}
                 classes={{ paper: classes.popover }}
             >
-                <ReportList patient={patient} />
+                <ReportList reports={reports.filter((r) => r._id !== reportID)} />
             </Popover>
         )
     }
@@ -193,13 +208,20 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                         onClick={handleDicomClick}
                         startIcon={Boolean(dicomAnchorEl) ? <CircularProgress color="contrast" size={20} /> : <Cast />}
                         color="contrast"
-                        sx={{ borderRadius: '2rem', height: 'auto', color: Boolean(dicomAnchorEl) ? 'contrast.main' : 'white' }}
+                        sx={{
+                            borderRadius: '2rem',
+                            height: 'auto',
+                            color: Boolean(dicomAnchorEl) ? 'contrast.main' : 'white',
+                        }}
                     >
                         超音波影像
                     </Button>
 
                     {
-                        <Badge badgeContent={patient.reports.length - 1 > 0 ? patient.reports.length - 1 : 0} color="primary">
+                        <Badge
+                            badgeContent={patient.reports.length - 1 > 0 ? patient.reports.length - 1 : 0}
+                            color="primary"
+                        >
                             <IconButton onClick={handleHistoryClick}>
                                 <History />
                             </IconButton>
@@ -216,12 +238,12 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                         <CustomScrollbar>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} xl={6}>
-                                    {cols1?.map(col => (
+                                    {cols1?.map((col) => (
                                         <FormSection key={col.name} list={col} mode={mode} />
                                     ))}
                                 </Grid>
                                 <Grid item xs={12} xl={5}>
-                                    {cols2?.map(col => (
+                                    {cols2?.map((col) => (
                                         <FormSection key={col.name} list={col} mode={mode} />
                                     ))}
                                 </Grid>

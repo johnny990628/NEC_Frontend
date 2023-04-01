@@ -106,14 +106,9 @@ const CreateReport = () => {
 
     const columns = [
         {
-            field: 'patientID',
-            headerName: '身分證字號',
-            flex: 2,
-        },
-        {
             field: 'procedureCode',
             headerName: '醫令代碼',
-            flex: 1.5,
+            flex: 2,
             renderCell: (params) => {
                 const { procedureCode } = params.row
                 return (
@@ -122,6 +117,11 @@ const CreateReport = () => {
                     </Box>
                 )
             },
+        },
+        {
+            field: 'patientID',
+            headerName: '身分證字號',
+            flex: 2,
         },
 
         // {

@@ -26,15 +26,23 @@ const useStyles = makeStyles((theme) => ({
         width: '6rem',
         '&.yet': {
             backgroundColor: theme.palette.status.yet,
+            border: `1px solid ${theme.palette.status.yet_dark}`,
+            color: theme.palette.status.yet_dark,
         },
         '&.examination': {
             backgroundColor: theme.palette.status.processing,
+            border: `1px solid ${theme.palette.status.processing_dark}`,
+            color: theme.palette.status.processing_dark,
         },
         '&.finish': {
             backgroundColor: theme.palette.status.finish,
+            border: `1px solid ${theme.palette.status.finish_dark}`,
+            color: theme.palette.status.finish_dark,
         },
         '&.call': {
             backgroundColor: theme.palette.status.call,
+            border: `1px solid ${theme.palette.status.call_dark}`,
+            color: theme.palette.status.call_dark,
         },
     },
     statusBox: {
