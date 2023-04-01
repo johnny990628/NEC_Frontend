@@ -28,7 +28,7 @@ const whiteTheme = createTheme({
         text: {
             primary: 'rgba(8, 40, 71)',
             secondary: '#7895B2',
-            gray: '#7C8693',
+            gray: '#6c747f',
         },
         border: {
             main: 'rgba(193, 181, 184 , .3)',

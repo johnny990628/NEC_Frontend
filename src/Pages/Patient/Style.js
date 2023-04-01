@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '1rem',
         // boxShadow: '6px 6px 10px rgba(0,0,0,0.2)',
         // border: `.5px solid ${theme.palette.border.main}`,
-        padding: '.5rem',
+        // padding: '.5rem',
 
         // height: '100%',
     },
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '1rem',
         width: '80%',
         fontSize: '1rem',
+        fontWeight: 'bold',
         '&.yet': {
             backgroundColor: theme.palette.status.yet,
             border: `1px solid ${theme.palette.status.yet_dark}`,

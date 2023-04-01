@@ -18,9 +18,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.status.processing,
         border: `1px solid ${theme.palette.status.processing_dark}`,
         color: theme.palette.status.processing_dark,
-        padding: '8px',
+        padding: '.5rem 1rem',
         marginRight: '.6rem',
         borderRadius: '1rem',
+        fontSize: '1rem',
+        fontWeight: 'bold',
         '&.processing': {
             backgroundColor: theme.palette.status.yet,
             border: `1px solid ${theme.palette.status.yet_dark}`,
