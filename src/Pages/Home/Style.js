@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
     box: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.box.primary,
         height: '100%',
         borderRadius: '2rem',
         // marginRight: theme.spacing(2),

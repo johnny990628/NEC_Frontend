@@ -1,16 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Stepper, Step, StepLabel, IconButton, Button } from '@mui/material'
-import {
-    ArrowBack,
-    ArrowForward,
-    CheckCircleOutline,
-    Cancel,
-    Check,
-    Close,
-    ArrowBackIosNewOutlined,
-    ClearOutlined,
-} from '@mui/icons-material'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import { Box, Button } from '@mui/material'
+import Avatar, { genConfig } from 'react-nice-avatar'
+import { Check, Close, ClearOutlined } from '@mui/icons-material'
 import { useTheme } from '@mui/styles'
 import useStyles from './Style'
 
@@ -115,16 +106,12 @@ const CreateReport = () => {
 
     const columns = [
         {
-            field: 'procedureCode',
-            headerName: '醫令代碼',
-            flex: 2,
+            field: 'avatar',
+            headerName: '',
+            flex: 1,
             renderCell: (params) => {
-                const { procedureCode } = params.row
-                return (
-                    <Box className={`${classes.status} ${procedureCode === '19014C' && 'yet'}`}>
-                        {PROCEDURECODE[procedureCode]}
-                    </Box>
-                )
+                const config = genConfig(params.row.patient.id)
+                return <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
             },
         },
         {
@@ -199,6 +186,19 @@ const CreateReport = () => {
             renderCell: (params) => {
                 const { phone } = params.row.patient
                 return <Box>{phone}</Box>
+            },
+        },
+        {
+            field: 'procedureCode',
+            headerName: '醫令代碼',
+            flex: 2,
+            renderCell: (params) => {
+                const { procedureCode } = params.row
+                return (
+                    <Box className={`${classes.status} ${procedureCode === '19014C' && 'yet'}`}>
+                        {PROCEDURECODE[procedureCode]}
+                    </Box>
+                )
             },
         },
         {

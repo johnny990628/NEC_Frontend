@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'left',
         padding: '2rem 6rem 2rem 2rem',
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.secondary.main,
         // backgroundColor: theme.palette.background.default,
         transition: 'all .4s ease-in',
         '&.close': {

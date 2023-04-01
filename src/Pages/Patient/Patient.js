@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
-import { Box, IconButton, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material'
+import { Box, Button, Stack } from '@mui/material'
 import { CalendarToday, Delete, Edit, Cancel, AccessTime, Check, ClearOutlined } from '@mui/icons-material'
+import Avatar, { genConfig } from 'react-nice-avatar'
 
 import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
@@ -24,6 +25,64 @@ const Patient = () => {
 
     const columns = useMemo(
         () => [
+            {
+                accessor: 'avatar',
+                Header: '',
+                Cell: (row) => {
+                    const config = genConfig(row.row.original.id)
+                    return <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
+                },
+            },
+            {
+                accessor: 'name',
+                Header: '姓名',
+            },
+            { accessor: 'id', Header: '身分證字號' },
+
+            { accessor: 'gender', Header: '性別', Cell: (row) => (row.row.original.gender === 'm' ? '男' : '女') },
+
+            {
+                accessor: 'createdAt',
+                Header: '建立日期',
+                Cell: (row) => new Date(row.row.original.createdAt).toLocaleString(),
+            },
+            {
+                accessor: 'action',
+                Header: '操作',
+                Cell: (row) => {
+                    const { name, gender, id } = row.row.original
+                    return (
+                        <Box>
+                            <Button
+                                startIcon={<Edit color="primary" />}
+                                onClick={() => {
+                                    dispatch(openDialog({ row: row.row.original, type: 'patient' }))
+                                }}
+                            >
+                                編輯
+                            </Button>
+                            <Button
+                                sx={{ color: 'red.primary' }}
+                                startIcon={<Delete />}
+                                onClick={() => {
+                                    dispatch(
+                                        openAlert({
+                                            alertTitle: '確定刪除該病患?將會刪除所有相關資料',
+                                            toastTitle: '刪除成功',
+                                            text: `${name} ${gender === 'm' ? '先生' : '小姐'}`,
+                                            icon: 'success',
+                                            type: 'confirm',
+                                            event: () => dispatch(deletePatient({ patientID: id })),
+                                        })
+                                    )
+                                }}
+                            >
+                                刪除
+                            </Button>
+                        </Box>
+                    )
+                },
+            },
             {
                 accessor: 'schedule',
                 Header: '排程狀態',
@@ -111,60 +170,6 @@ const Patient = () => {
                                 }}
                             >
                                 <Box className={classes.statusBox}>{status.text}</Box>
-                            </Button>
-                        </Box>
-                    )
-                },
-            },
-
-            { accessor: 'id', Header: '身分證字號' },
-            { accessor: 'name', Header: '姓名' },
-            { accessor: 'gender', Header: '性別', Cell: (row) => (row.row.original.gender === 'm' ? '男' : '女') },
-            // {
-            //     accessor: 'department',
-            //     Header: '部門',
-            //     Cell: (row) =>
-            //         row.row.original.department.length > 6
-            //             ? row.row.original.department.slice(0, 6) + '...'
-            //             : row.row.original.department,
-            // },
-            {
-                accessor: 'createdAt',
-                Header: '建立日期',
-                Cell: (row) => new Date(row.row.original.createdAt).toLocaleString(),
-            },
-            {
-                accessor: 'action',
-                Header: '操作',
-                Cell: (row) => {
-                    const { name, gender, id } = row.row.original
-                    return (
-                        <Box>
-                            <Button
-                                startIcon={<Edit color="primary" />}
-                                onClick={() => {
-                                    dispatch(openDialog({ row: row.row.original, type: 'patient' }))
-                                }}
-                            >
-                                編輯
-                            </Button>
-                            <Button
-                                sx={{ color: 'red.primary' }}
-                                startIcon={<Delete />}
-                                onClick={() => {
-                                    dispatch(
-                                        openAlert({
-                                            alertTitle: '確定刪除該病患?將會刪除所有相關資料',
-                                            toastTitle: '刪除成功',
-                                            text: `${name} ${gender === 'm' ? '先生' : '小姐'}`,
-                                            icon: 'success',
-                                            type: 'confirm',
-                                            event: () => dispatch(deletePatient({ patientID: id })),
-                                        })
-                                    )
-                                }}
-                            >
-                                刪除
                             </Button>
                         </Box>
                     )

@@ -18,7 +18,7 @@ const whiteTheme = createTheme({
             light_secondary: 'rgba(169, 191, 211 , .5)',
         },
         secondary: {
-            main: 'rgb(254, 254, 254)',
+            main: 'rgb(253, 253, 253)',
             // main: 'rgba(240, 240, 240)',
         },
         background: {
@@ -49,6 +49,9 @@ const whiteTheme = createTheme({
         },
         red: {
             primary: 'rgb(224, 71, 84)',
+        },
+        box: {
+            primary: 'rgba(255,255,255)',
         },
     },
     typography: {
