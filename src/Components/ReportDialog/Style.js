@@ -11,8 +11,14 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.main,
         fontSize: '1rem',
     },
+    patientInfo: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        color: theme.palette.primary.main,
+    },
     actionButton: {
-        fontSize: '1.3rem',
+        fontSize: '1rem',
     },
     printBreak: {
         '@media print': {

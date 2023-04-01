@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Close, Print } from '@mui/icons-material'
 import { v4 } from 'uuid'
 import { useReactToPrint } from 'react-to-print'
+import Avatar, { genConfig } from 'react-nice-avatar'
 
 import useStyles from './Style'
 
@@ -29,6 +30,7 @@ import Authorized from './../Authorized/Authorized'
 
 import REPORTCOLS from '../../Assets/Json/ReportCols.json'
 import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
+import { getConfig } from '@testing-library/react'
 
 const ReportDialog = ({ mode }) => {
     const classes = useStyles()
@@ -36,10 +38,10 @@ const ReportDialog = ({ mode }) => {
     const {
         isOpen,
         row: { patient, user, createdAt, updatedAt, records, reportID },
-    } = useSelector(state => state.dialog.report)
+    } = useSelector((state) => state.dialog.report)
 
-    const report = useSelector(state => state.reportForm.edit)
-    const { user: currentUser } = useSelector(state => state.auth)
+    const report = useSelector((state) => state.reportForm.edit)
+    const { user: currentUser } = useSelector((state) => state.auth)
     const [version, setVersion] = useState('')
     const [isEditing, setIsEditing] = useState(false)
 
@@ -48,11 +50,12 @@ const ReportDialog = ({ mode }) => {
         if (records.length > 0 && isOpen) {
             dispatch(fillReport({ report: records[0].report }))
             setVersion(records[0].id)
+            console.log(patient.id)
         }
     }, [isOpen])
 
     useEffect(() => {
-        if (isOpen) dispatch(fillReport({ report: records.find(r => r.id === version).report }))
+        if (isOpen) dispatch(fillReport({ report: records.find((r) => r.id === version).report }))
     }, [version])
 
     const handleEdit = () => {
@@ -75,7 +78,7 @@ const ReportDialog = ({ mode }) => {
         dispatch(resetReport({ mode: 'edit' }))
         setIsEditing(false)
     }
-    const handleSelectOnChange = e => {
+    const handleSelectOnChange = (e) => {
         setVersion(e.target.value)
     }
 
@@ -83,46 +86,49 @@ const ReportDialog = ({ mode }) => {
     const handlePrint = useReactToPrint({
         content: () => formRef.current,
     })
+    // const config = getConfig(patient.id)
 
     return (
         <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth={'md'}>
-            <DialogTitle sx={{ display: 'flex', alignItems: 'center', padding: '.5rem 2rem' }}>
-                {!isEditing && (
-                    <IconButton onClick={handlePrint} sx={{ marginRight: '1rem' }}>
-                        <Print />
-                    </IconButton>
-                )}
-                <ListItemText
-                    primary={`${
-                        patient ? `${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '先生' : '小姐'}` : '無病人資料'
-                    } (${user ? `${user.name}醫師` : '無醫師資料'})`}
-                    secondary={
-                        <Box>
-                            <Box>{`建立 : ${new Date(createdAt).toLocaleString()}`}</Box>
-                            <Box>{`更新 : ${new Date(updatedAt).toLocaleString()}`}</Box>
+            <DialogTitle sx={{ display: 'flex', alignItems: 'center', padding: '0 2rem' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <Box className={classes.patientInfo}>
+                        {/* <Avatar style={{ width: '4rem', height: '4rem', mr: 2 }} {...config}></Avatar> */}
+                        <Box sx={{ m: 2 }}>
+                            <Box sx={{ fontSize: '1.6rem' }}>{patient.name}</Box>
+                            <Box sx={{ fontSize: '1rem', color: 'text.gray', ml: '.2rem' }}>{patient.id}</Box>
                         </Box>
-                    }
-                />
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        {mode === 'edit' && (
+                            <FormControl variant="standard" sx={{ width: '5rem' }}>
+                                <InputLabel id="select-label">版本</InputLabel>
+                                <Select labelId="select-label" value={version} onChange={handleSelectOnChange}>
+                                    {records.length > 0 &&
+                                        records.map((record, index) => (
+                                            <MenuItem key={record.id} value={record.id}>{`v${
+                                                records.length - index
+                                            }`}</MenuItem>
+                                        ))}
+                                </Select>
+                            </FormControl>
+                        )}
 
-                {mode === 'edit' && (
-                    <FormControl variant="standard" sx={{ width: '5rem' }}>
-                        <InputLabel id="select-label">版本</InputLabel>
-                        <Select labelId="select-label" value={version} onChange={handleSelectOnChange}>
-                            {records.length > 0 &&
-                                records.map((record, index) => (
-                                    <MenuItem key={record.id} value={record.id}>{`v${records.length - index}`}</MenuItem>
-                                ))}
-                        </Select>
-                    </FormControl>
-                )}
+                        {!isEditing && (
+                            <Button startIcon={<Print />} onClick={handlePrint} sx={{ marginRight: '1rem' }}>
+                                列印
+                            </Button>
+                        )}
 
-                {mode === 'create' && (
-                    <IconButton onClick={handleClose} sx={{ padding: '1rem' }}>
-                        <Close />
-                    </IconButton>
-                )}
+                        {mode === 'create' && (
+                            <IconButton onClick={handleClose} sx={{ padding: '1rem' }}>
+                                <Close />
+                            </IconButton>
+                        )}
+                    </Box>
+                </Box>
             </DialogTitle>
-            <DialogContent sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
+            <DialogContent sx={{ height: '100vh', display: 'flex', justifyContent: 'center' }}>
                 {isEditing ? (
                     <CustomReportForm cols1={REPORTCOLS} cols2={REPORTCOLS2} patient={patient} mode="edit" />
                 ) : (
@@ -135,17 +141,23 @@ const ReportDialog = ({ mode }) => {
                     </>
                 )}
             </DialogContent>
-            <DialogActions sx={{ padding: '1rem' }}>
-                {mode === 'edit' && (
-                    <Authorized currentRole={currentUser.role} authority={[3, 2]} noMatch={<></>}>
-                        <Button variant="contained" className={classes.actionButton} onClick={handleEdit}>
-                            {isEditing ? '儲存' : '修改'}
-                        </Button>
-                        <Button variant="text" className={classes.actionButton} onClick={handleClose}>
-                            取消
-                        </Button>
-                    </Authorized>
-                )}
+            <DialogActions sx={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 2rem' }}>
+                <Box sx={{ fontSize: '.8rem' }}>
+                    <Box>{`建立 : ${new Date(createdAt).toLocaleString()}`}</Box>
+                    <Box>{`更新 : ${new Date(updatedAt).toLocaleString()}`}</Box>
+                </Box>
+                <Box>
+                    {mode === 'edit' && (
+                        <Authorized currentRole={currentUser.role} authority={[3, 2]} noMatch={<></>}>
+                            <Button variant="contained" className={classes.actionButton} onClick={handleEdit}>
+                                {isEditing ? '儲存' : '修改'}
+                            </Button>
+                            <Button variant="text" className={classes.actionButton} onClick={handleClose}>
+                                取消
+                            </Button>
+                        </Authorized>
+                    )}
+                </Box>
             </DialogActions>
         </Dialog>
     )

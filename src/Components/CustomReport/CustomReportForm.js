@@ -14,8 +14,7 @@ import {
     Popper,
 } from '@mui/material'
 import { useTheme } from '@mui/styles'
-import Scrollspy from 'react-scrollspy'
-import { useDebouncedCallback } from 'use-debounce'
+import Avatar, { genConfig } from 'react-nice-avatar'
 import useStyles from './Style'
 
 import CustomReportInput from './CustomReportInput'
@@ -171,34 +170,37 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     // Prevent Component Rerender
     const DicomPopperCom = useMemo(() => <DicomPopper />, [dicomAnchorEl])
 
+    const config = genConfig(patient.id)
+
     return (
         <>
             {mode === 'create' && (
                 <Box
                     sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 1, height: '2%' }}
                 >
-                    <Chip
-                        label={`${PROCEDURECODE[patient.procedureCode]}`}
-                        className={classes.chip}
-                        variant="outlined"
-                        sx={{
-                            color: patient.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
-                            backgroundColor: patient.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
-                        }}
-                    />
+                    <Box className={classes.patientInfo}>
+                        <Avatar style={{ width: '4rem', height: '4rem', mr: 2 }} {...config}></Avatar>
+                        <Box sx={{ m: 2 }}>
+                            <Box sx={{ fontSize: '1.6rem' }}>{patient.name}</Box>
+                            <Box sx={{ fontSize: '1rem', color: 'text.gray', ml: '.2rem' }}>{patient.id}</Box>
+                        </Box>
+                    </Box>
                     <Stack
                         direction="row"
                         spacing={1}
                         sx={{ display: 'flex', alignItems: 'center', m: 1, height: '2%' }}
                     >
-                        <Box className={classes.patientInfo}>
-                            <Chip
-                                label={`${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '男' : '女'}`}
-                                color="primary"
-                                variant="outlined"
-                                className={classes.chip}
-                            />
-                        </Box>
+                        <Chip
+                            label={`${PROCEDURECODE[patient.procedureCode]}`}
+                            className={classes.chip}
+                            variant="outlined"
+                            sx={{
+                                color:
+                                    patient.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
+                                backgroundColor:
+                                    patient.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
+                            }}
+                        />
 
                         <Tooltip
                             onClose={() => setToolkitOpen(false)}

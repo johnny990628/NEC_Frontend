@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
-    container: { display: 'flex', alignItems: 'center', height: '90%', width: '100%', padding: '2rem 0' },
+    container: { display: 'flex', alignItems: 'center', height: '96%', width: '100%', padding: '2rem 0' },
     scrollspy: { marginRight: '1rem', padding: '.3rem' },
     scrollspyButton: {
         fontSize: '1.5rem',
@@ -58,8 +58,9 @@ const useStyles = makeStyles((theme) => ({
     chip: {
         // borderColor: theme.palette.primary.main,
         // color: theme.palette.primary.main,
-        fontSize: '1.1rem',
-        padding: '.6rem',
+        fontSize: '1rem',
+        padding: '1rem',
+
         [theme.breakpoints.down('lg')]: {
             fontSize: '.8rem',
             padding: '.3rem',
