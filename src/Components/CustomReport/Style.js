@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     container: { display: 'flex', alignItems: 'center', height: '90%', width: '100%', padding: '2rem 0' },
     scrollspy: { marginRight: '1rem', padding: '.3rem' },
     scrollspyButton: {
@@ -56,8 +56,8 @@ const useStyles = makeStyles(theme => ({
         padding: '1rem',
     },
     chip: {
-        borderColor: theme.palette.primary.main,
-        color: theme.palette.primary.main,
+        // borderColor: theme.palette.primary.main,
+        // color: theme.palette.primary.main,
         fontSize: '1.1rem',
         padding: '.6rem',
         [theme.breakpoints.down('lg')]: {

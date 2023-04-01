@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ReportList from './ReportList'
 import { Cast, History, Mic } from '@mui/icons-material'
 import useSpeech2Text from '../../Hooks/useSpeech2Text'
+import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 
 const FormSection = ({ list, mode }) => {
     const classes = useStyles()
@@ -134,7 +135,8 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     }
 
     const handleDicomClick = (event) => {
-        setDicomAnchorEl((dicom) => (dicom ? null : event.currentTarget))
+        window.open(`${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${patient.id}`, '_blank')
+        // setDicomAnchorEl((dicom) => (dicom ? null : event.currentTarget))
     }
 
     const HistoryPopover = () => {
@@ -182,6 +184,18 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                             label={`${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '男' : '女'}`}
                             variant="outlined"
                             className={classes.chip}
+                        />
+                        <Chip
+                            label={`${PROCEDURECODE[patient.procedureCode]}`}
+                            className={classes.chip}
+                            variant="outlined"
+                            sx={{
+                                marginLeft: '1rem',
+                                color:
+                                    patient.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
+                                backgroundColor:
+                                    patient.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
+                            }}
                         />
                     </Box>
 

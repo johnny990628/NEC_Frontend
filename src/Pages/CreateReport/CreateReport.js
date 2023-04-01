@@ -43,8 +43,8 @@ const CreateReport = () => {
 
     useEffect(() => {
         if (selection.length > 0) {
-            const { _id, patient, reportID, reports } = schedules.find((s) => s._id === selection[0])
-            setPatient({ ...patient, reportID, reports })
+            const { _id, patient, reportID, reports, procedureCode } = schedules.find((s) => s._id === selection[0])
+            setPatient({ ...patient, reportID, reports, procedureCode })
             setScheduleID(_id)
             if (!selectTrigger) {
                 setCurrentStep(1)
