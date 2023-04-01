@@ -11,7 +11,7 @@ import { fetchDashboard } from '../../Redux/Slices/Dashboard'
 const Home = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const { patients, reports, schedules, count } = useSelector(state => state.dashboard)
+    const { patients, reports, schedules, count } = useSelector((state) => state.dashboard)
 
     const patientCol = useMemo(
         () => [
@@ -24,16 +24,14 @@ const Home = () => {
     const scheduleCol = useMemo(
         () => [
             { accessor: 'patientID', Header: '身分證字號' },
-            { accessor: 'procedureCode', Header: '病例代碼' },
+            { accessor: 'procedureCode', Header: '醫令代碼' },
         ],
         []
     )
     const reportCol = useMemo(
         () => [
             { accessor: 'patientID', Header: '身分證字號' },
-            { accessor: 'blood', Header: '抽血編號' },
-            { accessor: 'procedureCode', Header: '病例代碼' },
-            { accessor: 'status', Header: '狀態' },
+            { accessor: 'updatedAt', Header: '完成日期' },
         ],
         []
     )
@@ -72,7 +70,12 @@ const Home = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Box className={classes.box}>
-                            <LittleTable title={'尚未檢查'} rows={schedules} cols={scheduleCol} route={'/createReport'} />
+                            <LittleTable
+                                title={'尚未檢查'}
+                                rows={schedules}
+                                cols={scheduleCol}
+                                route={'/createReport'}
+                            />
                         </Box>
                     </Grid>
                     <Grid item xs={12}>

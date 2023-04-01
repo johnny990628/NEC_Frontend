@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     stepLabel: {
         fontSize: '1.5rem',
     },
@@ -21,9 +21,12 @@ const useStyles = makeStyles(theme => ({
     },
     status: {
         backgroundColor: theme.palette.status.processing,
-        padding: '8px',
+        padding: '6px 10px',
         borderRadius: '1rem',
-        width: '90%',
+        // width: '90%',
+        '&.yet': {
+            backgroundColor: theme.palette.status.yet,
+        },
     },
     statusBox: {
         display: 'flex',

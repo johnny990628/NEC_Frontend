@@ -34,10 +34,6 @@ const Image = () => {
 
     const columns = useMemo(
         () => [
-            { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
-            { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
-            { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
-            { accessor: 'StudyDate', Header: '報告日期', Cell: (row) => row.row.original.StudyDate },
             {
                 accessor: 'StudyInstanceUID',
                 Header: '報告ID',
@@ -57,6 +53,10 @@ const Image = () => {
                     )
                 },
             },
+            { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
+            { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
+            { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
+            { accessor: 'StudyDate', Header: '報告日期', Cell: (row) => row.row.original.StudyDate },
         ],
         []
     )

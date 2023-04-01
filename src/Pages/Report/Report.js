@@ -47,20 +47,23 @@ const Report = () => {
             {
                 accessor: 'status',
                 Header: '狀態',
-                Cell: (row) => (
-                    <Box
-                        className={`${classes.status} ${
-                            row.row.original.schedule.status === 'wait-examination' && 'processing'
-                        }`}
-                    >
-                        {row.row.original.schedule.status === 'wait-examination' ? (
-                            <Box className={classes.statusBox}>未完成</Box>
-                        ) : (
-                            <Box className={classes.statusBox}>已完成</Box>
-                        )}
-                    </Box>
-                ),
+                Cell: (row) => {
+                    return (
+                        <Box
+                            className={`${classes.status} ${
+                                row.row.original?.schedule?.status === 'wait-examination' && 'processing'
+                            }`}
+                        >
+                            {row.row.original?.schedule?.status === 'wait-examination' ? (
+                                <Box className={classes.statusBox}>未完成</Box>
+                            ) : (
+                                <Box className={classes.statusBox}>已完成</Box>
+                            )}
+                        </Box>
+                    )
+                },
             },
+            { accessor: 'procedureCode', Header: '醫令代碼', Cell: (row) => row.row.original.schedule.procedureCode },
             {
                 accessor: 'patientID',
                 Header: '身分證字號',
@@ -72,12 +75,12 @@ const Report = () => {
                 Cell: (row) => (row.row.original.patient ? row.row.original.patient.name : '無病人資料'),
             },
             { accessor: 'version', Header: '報告版本', Cell: (row) => row.row.original.records.length || '無' },
-            // { accessor: 'procedureCode', Header: '病例代碼', Cell: (row) => row.row.original.procedureCode },
+
             // { accessor: 'blood', Header: '抽血編號', Cell: (row) => row.row.original.blood },
             {
                 accessor: 'user',
                 Header: '完成者',
-                Cell: (row) => (row.row.original.user ? row.row.original.user.name : row.row.original.userID || '無'),
+                Cell: (row) => (row.row.original?.user ? row.row.original.user.name : row.row.original.userID || '無'),
             },
             {
                 accessor: 'createdAt',
@@ -89,7 +92,7 @@ const Report = () => {
                 Header: '操作',
                 Cell: (row) => (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        {row.row.original.schedule.status === 'finish' && (
+                        {row.row.original?.schedule?.status === 'finish' && (
                             <>
                                 <IconButton onClick={() => handlePreviewReport(row.row.original._id)}>
                                     <Visibility />

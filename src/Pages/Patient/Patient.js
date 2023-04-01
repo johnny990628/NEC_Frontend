@@ -1,31 +1,20 @@
 import React, { useCallback, useMemo } from 'react'
-import {
-    Box,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    IconButton,
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-} from '@mui/material'
-import { CalendarToday, ArrowDropDown, Delete, Edit, Cancel, AccessTime, Check } from '@mui/icons-material'
+import { Box, IconButton, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
+import { CalendarToday, Delete, Edit, Cancel, AccessTime, Check } from '@mui/icons-material'
 
 import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
-import CustomForm from '../../Components/CustomForm/CustomForm'
 import EditDialog from './EditDialog'
 import GlobalFilter from '../../Components/GlobalFilter/GlobalFilter'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { deletePatient, createPatient, fetchPatients, patientTrigger } from '../../Redux/Slices/Patient'
+import { deletePatient, createPatient, fetchPatients } from '../../Redux/Slices/Patient'
 import { openDialog } from '../../Redux/Slices/Dialog'
 import { openAlert } from '../../Redux/Slices/Alert'
-import { apiCheckExists } from '../../Axios/Exists'
 import { addSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
 import { changeScheduleStatus } from './../../Redux/Slices/Schedule'
+
+import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 
 const Patient = () => {
     const classes = useStyles()
@@ -49,18 +38,6 @@ const Patient = () => {
                         if (onCall) return { status: 'on-call', class: 'call', text: '檢查中' }
                         if (wait) return { status: 'wait-examination', class: 'examination', text: '等待檢查' }
                         return { status: 'yet', class: 'yet', text: '等待排程' }
-                        // switch (row.row.original?.schedule?.status) {
-                        //     case 'yet':
-                        //         return { status: 'yet', class: 'yet', text: '等待排程' }
-                        //     case 'wait-examination':
-                        //         return { status: 'wait-examination', class: 'examination', text: '等待檢查' }
-                        //     case 'on-call':
-                        //         return { status: 'on-call', class: 'call', text: '檢查中' }
-                        //     case 'finish':
-                        //         return { status: 'finish', class: 'finish', text: '完成報告' }
-                        //     default:
-                        //         return { status: 'yet', class: 'yet', text: '等待排程' }
-                        // }
                     }
                     const status = scheduleStatus()
 
@@ -92,11 +69,7 @@ const Patient = () => {
                                                 toastTitle: '加入排程',
                                                 text: `${name} ${mr}`,
                                                 type: 'select',
-                                                options: {
-                                                    '19014C': '19014C(健保)',
-                                                    '19014CNE1': '19014CNE1(自費1)',
-                                                    '19014CNE2': '19014CNE2(自費2)',
-                                                },
+                                                options: PROCEDURECODE,
                                                 event: (text) =>
                                                     dispatch(
                                                         addSchedule({
@@ -150,14 +123,14 @@ const Patient = () => {
             { accessor: 'id', Header: '身分證字號' },
             { accessor: 'name', Header: '姓名' },
             { accessor: 'gender', Header: '性別', Cell: (row) => (row.row.original.gender === 'm' ? '男' : '女') },
-            {
-                accessor: 'department',
-                Header: '部門',
-                Cell: (row) =>
-                    row.row.original.department.length > 6
-                        ? row.row.original.department.slice(0, 6) + '...'
-                        : row.row.original.department,
-            },
+            // {
+            //     accessor: 'department',
+            //     Header: '部門',
+            //     Cell: (row) =>
+            //         row.row.original.department.length > 6
+            //             ? row.row.original.department.slice(0, 6) + '...'
+            //             : row.row.original.department,
+            // },
             {
                 accessor: 'createdAt',
                 Header: '建立日期',

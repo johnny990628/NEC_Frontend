@@ -20,8 +20,9 @@ import { fetchReportByReportID } from '../../Redux/Slices/Dialog'
 import { openAlert } from '../../Redux/Slices/Alert'
 import { fetchSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
 import success from '../../Assets/Animation/success.json'
-import { apiAddWorklist } from '../../Axios/WorkList'
 import { changeScheduleStatus } from './../../Redux/Slices/Schedule'
+
+import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 
 const CreateReport = () => {
     const [currentStep, setCurrentStep] = useState(0)
@@ -31,7 +32,7 @@ const CreateReport = () => {
     const [scheduleID, setScheduleID] = useState('')
     const [reportDialogMode, setReportDialogMode] = useState('create')
 
-    const { schedules, patients, count } = useSelector((state) => state.schedule)
+    const { schedules, count } = useSelector((state) => state.schedule)
     const { user } = useSelector((state) => state.auth)
     const report = useSelector((state) => state.reportForm.create)
 
@@ -42,7 +43,7 @@ const CreateReport = () => {
 
     useEffect(() => {
         if (selection.length > 0) {
-            const { _id, patient, reportID, reports } = schedules.find((s) => s.patientID === selection[0])
+            const { _id, patient, reportID, reports } = schedules.find((s) => s._id === selection[0])
             setPatient({ ...patient, reportID, reports })
             setScheduleID(_id)
             if (!selectTrigger) {
@@ -105,13 +106,100 @@ const CreateReport = () => {
 
     const columns = [
         {
+            field: 'patientID',
+            headerName: '身分證字號',
+            flex: 2,
+        },
+        {
+            field: 'procedureCode',
+            headerName: '醫令代碼',
+            flex: 1.5,
+            renderCell: (params) => {
+                const { procedureCode } = params.row
+                return (
+                    <Box className={`${classes.status} ${procedureCode === '19014C' && 'yet'}`}>
+                        {PROCEDURECODE[procedureCode]}
+                    </Box>
+                )
+            },
+        },
+
+        // {
+        //     field: 'workList',
+        //     headerName: '超音波開單',
+        //     renderCell: (params) => {
+        //         return (
+        //             <IconButton
+        //                 onClick={() => {
+        //                     apiAddWorklist(params.row.patientID)
+        //                         .then((res) =>
+        //                             dispatch(
+        //                                 openAlert({
+        //                                     toastTitle: '開單成功',
+        //                                     text: `新增workList ${res.data.name}`,
+        //                                     icon: 'success',
+        //                                 })
+        //                             )
+        //                         )
+        //                         .catch((err) =>
+        //                             dispatch(
+        //                                 openAlert({
+        //                                     toastTitle: '開單失敗',
+        //                                     text: err.response.data.message,
+        //                                     icon: 'error',
+        //                                 })
+        //                             )
+        //                         )
+        //                     setSelectTrigger(true)
+        //                 }}
+        //             >
+        //                 <PhotoCameraIcon />
+        //             </IconButton>
+        //         )
+        //     },
+        // },
+        {
+            field: 'name',
+            headerName: '姓名',
+            flex: 1,
+            renderCell: (params) => {
+                const { name } = params.row.patient
+                return <Box>{name}</Box>
+            },
+        },
+        {
+            field: 'gender',
+            headerName: '性別',
+            flex: 1,
+            renderCell: (params) => {
+                return <Box>{params.row.patient.gender === 'm' ? '男' : '女'}</Box>
+            },
+        },
+        {
+            field: 'birth',
+            headerName: '生日',
+            flex: 1,
+            renderCell: (params) => {
+                return <Box>{new Date(params.row.patient.birth).toLocaleDateString()}</Box>
+            },
+        },
+        {
+            field: 'phone',
+            headerName: '電話',
+            flex: 1,
+            renderCell: (params) => {
+                const { phone } = params.row.patient
+                return <Box>{phone}</Box>
+            },
+        },
+        {
             field: 'processing',
             headerName: '取消排程',
             renderCell: (params) => {
                 return (
                     <IconButton
                         onClick={() => {
-                            const { id, name, gender } = params.row
+                            const { id, name, gender } = params.row.patient
                             setSelectTrigger(true)
                             const mr = gender === 'm' ? '先生' : '小姐'
                             dispatch(
@@ -130,59 +218,6 @@ const CreateReport = () => {
                 )
             },
         },
-        {
-            field: 'workList',
-            headerName: '超音波開單',
-            renderCell: (params) => {
-                return (
-                    <IconButton
-                        onClick={() => {
-                            apiAddWorklist(params.row.id)
-                                .then((res) =>
-                                    dispatch(
-                                        openAlert({
-                                            toastTitle: '開單成功',
-                                            text: `新增workList ${res.data.name}`,
-                                            icon: 'success',
-                                        })
-                                    )
-                                )
-                                .catch((err) =>
-                                    dispatch(
-                                        openAlert({
-                                            toastTitle: '開單失敗',
-                                            text: err.response.data.message,
-                                            icon: 'error',
-                                        })
-                                    )
-                                )
-                            setSelectTrigger(true)
-                        }}
-                    >
-                        <PhotoCameraIcon />
-                    </IconButton>
-                )
-            },
-        },
-        { field: 'id', headerName: '身分證字號', flex: 2 },
-        { field: 'name', headerName: '姓名', flex: 1 },
-        {
-            field: 'gender',
-            headerName: '性別',
-            flex: 1,
-            renderCell: (params) => {
-                return <div>{params.row.gender === 'm' ? '男' : '女'}</div>
-            },
-        },
-        {
-            field: 'birth',
-            headerName: '生日',
-            flex: 1,
-            renderCell: (params) => {
-                return <Box>{new Date(params.row.birth).toLocaleDateString()}</Box>
-            },
-        },
-        { field: 'phone', headerName: '電話', flex: 1 },
     ]
 
     const FinishSection = () => {
@@ -229,7 +264,7 @@ const CreateReport = () => {
                 <Box className={classes.tableContainer}>
                     {currentStep === 0 && (
                         <CustomDataGrid
-                            data={patients}
+                            data={schedules}
                             columns={columns}
                             selection={selection}
                             setSelection={setSelection}
