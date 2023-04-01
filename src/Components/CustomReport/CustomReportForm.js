@@ -174,76 +174,79 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     return (
         <>
             {mode === 'create' && (
-                <Stack
-                    direction="row"
-                    spacing={1}
-                    sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', m: 1, height: '2%' }}
+                <Box
+                    sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 1, height: '2%' }}
                 >
-                    <Box className={classes.patientInfo}>
-                        <Chip
-                            label={`${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '男' : '女'}`}
-                            variant="outlined"
-                            className={classes.chip}
-                        />
-                        <Chip
-                            label={`${PROCEDURECODE[patient.procedureCode]}`}
-                            className={classes.chip}
-                            variant="outlined"
-                            sx={{
-                                marginLeft: '1rem',
-                                color:
-                                    patient.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
-                                backgroundColor:
-                                    patient.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
-                            }}
-                        />
-                    </Box>
-
-                    <Tooltip
-                        onClose={() => setToolkitOpen(false)}
-                        open={toolkitOpen}
-                        disableFocusListener
-                        disableHoverListener
-                        disableTouchListener
-                        title={transcript}
-                    >
-                        <Button
-                            variant={listening ? 'outlined' : 'contained'}
-                            onClick={handleRecordClick}
-                            startIcon={listening ? <CircularProgress size={20} /> : <Mic />}
-                            sx={{ borderRadius: '2rem', height: 'auto' }}
-                        >
-                            {listening ? '辨識中' : '語音辨識'}
-                        </Button>
-                    </Tooltip>
-
-                    <Button
-                        variant={Boolean(dicomAnchorEl) ? 'outlined' : 'contained'}
-                        onClick={handleDicomClick}
-                        startIcon={Boolean(dicomAnchorEl) ? <CircularProgress color="contrast" size={20} /> : <Cast />}
-                        color="contrast"
+                    <Chip
+                        label={`${PROCEDURECODE[patient.procedureCode]}`}
+                        className={classes.chip}
+                        variant="outlined"
                         sx={{
-                            borderRadius: '2rem',
-                            height: 'auto',
-                            color: Boolean(dicomAnchorEl) ? 'contrast.main' : 'white',
+                            color: patient.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
+                            backgroundColor: patient.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
                         }}
+                    />
+                    <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ display: 'flex', alignItems: 'center', m: 1, height: '2%' }}
                     >
-                        超音波影像
-                    </Button>
+                        <Box className={classes.patientInfo}>
+                            <Chip
+                                label={`${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '男' : '女'}`}
+                                variant="outlined"
+                                className={classes.chip}
+                            />
+                        </Box>
 
-                    {
-                        <Badge
-                            badgeContent={patient.reports.length - 1 > 0 ? patient.reports.length - 1 : 0}
-                            color="primary"
+                        <Tooltip
+                            onClose={() => setToolkitOpen(false)}
+                            open={toolkitOpen}
+                            disableFocusListener
+                            disableHoverListener
+                            disableTouchListener
+                            title={transcript}
                         >
-                            <IconButton onClick={handleHistoryClick}>
-                                <History />
-                            </IconButton>
-                        </Badge>
-                    }
-                    <HistoryPopover />
-                    {DicomPopperCom}
-                </Stack>
+                            <Button
+                                variant={listening ? 'outlined' : 'contained'}
+                                onClick={handleRecordClick}
+                                startIcon={listening ? <CircularProgress size={20} /> : <Mic />}
+                                sx={{ borderRadius: '2rem', height: 'auto' }}
+                            >
+                                {listening ? '辨識中' : '語音辨識'}
+                            </Button>
+                        </Tooltip>
+
+                        <Button
+                            variant={Boolean(dicomAnchorEl) ? 'outlined' : 'contained'}
+                            onClick={handleDicomClick}
+                            startIcon={
+                                Boolean(dicomAnchorEl) ? <CircularProgress color="contrast" size={20} /> : <Cast />
+                            }
+                            color="contrast"
+                            sx={{
+                                borderRadius: '2rem',
+                                height: 'auto',
+                                color: Boolean(dicomAnchorEl) ? 'contrast.main' : 'white',
+                            }}
+                        >
+                            超音波影像
+                        </Button>
+
+                        {
+                            <Badge
+                                badgeContent={patient.reports.length - 1 > 0 ? patient.reports.length - 1 : 0}
+                                color="primary"
+                            >
+                                <IconButton onClick={handleHistoryClick}>
+                                    <History />
+                                </IconButton>
+                            </Badge>
+                        }
+                        <HistoryPopover />
+                        {DicomPopperCom}
+                    </Stack>
+                </Box>
             )}
 
             <Box className={classes.container}>
