@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
-import { Box, IconButton, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material'
-import { CalendarToday, Delete, Edit, Cancel, AccessTime, Check } from '@mui/icons-material'
+import { Box, IconButton, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Button } from '@mui/material'
+import { CalendarToday, Delete, Edit, Cancel, AccessTime, Check, ClearOutlined } from '@mui/icons-material'
 
 import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
@@ -35,91 +35,83 @@ const Patient = () => {
                     const scheduleStatus = () => {
                         const onCall = row.row.original?.schedule?.find(({ status }) => status === 'on-call')
                         const wait = row.row.original?.schedule?.find(({ status }) => status === 'wait-examination')
-                        if (onCall) return { status: 'on-call', class: 'call', text: '檢查中' }
-                        if (wait) return { status: 'wait-examination', class: 'examination', text: '等待檢查' }
-                        return { status: 'yet', class: 'yet', text: '等待排程' }
+                        if (onCall) return { status: 'on-call', class: 'call', text: '檢查中', icon: <AccessTime /> }
+                        if (wait)
+                            return {
+                                status: 'wait-examination',
+                                class: 'examination',
+                                text: '等待檢查',
+                                icon: <ClearOutlined />,
+                            }
+                        return { status: 'yet', class: 'yet', text: '等待排程', icon: <CalendarToday /> }
                     }
                     const status = scheduleStatus()
 
                     return (
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            {status.status === 'wait-examination' && (
-                                <IconButton
-                                    onClick={() => {
-                                        dispatch(
-                                            openAlert({
-                                                alertTitle: `確定要取消 ${name} ${mr}的排程?`,
-                                                toastTitle: '取消排程',
-                                                text: `${name} ${mr}`,
-                                                type: 'confirm',
-                                                event: () => dispatch(removeSchedule(id)),
-                                            })
-                                        )
-                                    }}
-                                >
-                                    <Cancel />
-                                </IconButton>
-                            )}
-                            {status.status === 'yet' && (
-                                <IconButton
-                                    onClick={() => {
-                                        dispatch(
-                                            openAlert({
-                                                alertTitle: `請輸入${name}的醫令`,
-                                                toastTitle: '加入排程',
-                                                text: `${name} ${mr}`,
-                                                type: 'select',
-                                                options: PROCEDURECODE,
-                                                event: (text) =>
-                                                    dispatch(
-                                                        addSchedule({
-                                                            patientID: id,
-                                                            procedureCode: text,
-                                                        })
-                                                    ),
-                                            })
-                                        )
-                                    }}
-                                >
-                                    <CalendarToday />
-                                </IconButton>
-                            )}
-                            {status.status === 'on-call' && (
-                                <IconButton
-                                    onClick={() =>
-                                        dispatch(
-                                            openAlert({
-                                                alertTitle: `確定要取消 ${name} ${mr}的檢查狀態(非管理員請勿操作)`,
-                                                toastTitle: '取消檢查狀態',
-                                                text: `${name} ${mr}`,
-                                                type: 'confirm',
-                                                event: () => {
-                                                    const onCall = row.row.original?.schedule?.find(
-                                                        ({ status }) => status === 'on-call'
-                                                    )
-                                                    console.log(onCall)
-                                                    dispatch(
-                                                        changeScheduleStatus({
-                                                            scheduleID: onCall._id,
-                                                            status: 'wait-examination',
-                                                        })
-                                                    )
-                                                },
-                                            })
-                                        )
+                            <Button
+                                className={`${classes.status} ${status.class} `}
+                                startIcon={status.icon}
+                                onClick={() => {
+                                    switch (status.status) {
+                                        case 'wait-examination':
+                                            dispatch(
+                                                openAlert({
+                                                    alertTitle: `確定要取消 ${name} ${mr}的排程?`,
+                                                    toastTitle: '取消排程',
+                                                    text: `${name} ${mr}`,
+                                                    type: 'confirm',
+                                                    event: () => dispatch(removeSchedule(id)),
+                                                })
+                                            )
+                                            break
+                                        case 'yet':
+                                            dispatch(
+                                                openAlert({
+                                                    alertTitle: `請輸入${name}的醫令`,
+                                                    toastTitle: '加入排程',
+                                                    text: `${name} ${mr}`,
+                                                    type: 'select',
+                                                    options: PROCEDURECODE,
+                                                    event: (text) =>
+                                                        dispatch(
+                                                            addSchedule({
+                                                                patientID: id,
+                                                                procedureCode: text,
+                                                            })
+                                                        ),
+                                                })
+                                            )
+                                            break
+                                        case 'on-call':
+                                            dispatch(
+                                                openAlert({
+                                                    alertTitle: `確定要取消 ${name} ${mr}的檢查狀態(非管理員請勿操作)`,
+                                                    toastTitle: '取消檢查狀態',
+                                                    text: `${name} ${mr}`,
+                                                    type: 'confirm',
+                                                    event: () => {
+                                                        const onCall = row.row.original?.schedule?.find(
+                                                            ({ status }) => status === 'on-call'
+                                                        )
+                                                        console.log(onCall)
+                                                        dispatch(
+                                                            changeScheduleStatus({
+                                                                scheduleID: onCall._id,
+                                                                status: 'wait-examination',
+                                                            })
+                                                        )
+                                                    },
+                                                })
+                                            )
+                                            break
+                                        default:
+                                            break
                                     }
-                                >
-                                    <AccessTime />
-                                </IconButton>
-                            )}
-                            {status.status === 'finish' && (
-                                <IconButton>
-                                    <Check />
-                                </IconButton>
-                            )}
-                            <Box className={`${classes.status} ${status.class} `}>
+                                }}
+                            >
                                 <Box className={classes.statusBox}>{status.text}</Box>
-                            </Box>
+                            </Button>
                         </Box>
                     )
                 },
@@ -148,14 +140,17 @@ const Patient = () => {
                     const { name, gender, id } = row.row.original
                     return (
                         <Box>
-                            <IconButton
+                            <Button
+                                startIcon={<Edit color="primary" />}
                                 onClick={() => {
                                     dispatch(openDialog({ row: row.row.original, type: 'patient' }))
                                 }}
                             >
-                                <Edit />
-                            </IconButton>
-                            <IconButton
+                                編輯
+                            </Button>
+                            <Button
+                                sx={{ color: 'red.primary' }}
+                                startIcon={<Delete />}
                                 onClick={() => {
                                     dispatch(
                                         openAlert({
@@ -169,8 +164,8 @@ const Patient = () => {
                                     )
                                 }}
                             >
-                                <Delete />
-                            </IconButton>
+                                刪除
+                            </Button>
                         </Box>
                     )
                 },

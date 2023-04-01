@@ -1,9 +1,7 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
-    clearButton: {
-        backgroundColor: theme.palette.contrast.main,
-    },
+const useStyles = makeStyles((theme) => ({
+    button: {},
 }))
 
 export default useStyles

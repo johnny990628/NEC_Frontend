@@ -1,6 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Stepper, Step, StepLabel, IconButton, Button } from '@mui/material'
-import { ArrowBack, ArrowForward, CheckCircleOutline, Cancel, Check, Close } from '@mui/icons-material'
+import {
+    ArrowBack,
+    ArrowForward,
+    CheckCircleOutline,
+    Cancel,
+    Check,
+    Close,
+    ArrowBackIosNewOutlined,
+    ClearOutlined,
+} from '@mui/icons-material'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useTheme } from '@mui/styles'
 import useStyles from './Style'
@@ -194,10 +203,12 @@ const CreateReport = () => {
         },
         {
             field: 'processing',
-            headerName: '取消排程',
+            headerName: '操作',
             renderCell: (params) => {
                 return (
-                    <IconButton
+                    <Button
+                        startIcon={<ClearOutlined />}
+                        sx={{ color: 'red.primary' }}
                         onClick={() => {
                             const { id, name, gender } = params.row.patient
                             setSelectTrigger(true)
@@ -213,8 +224,8 @@ const CreateReport = () => {
                             )
                         }}
                     >
-                        <Cancel />
-                    </IconButton>
+                        取消排程
+                    </Button>
                 )
             },
         },

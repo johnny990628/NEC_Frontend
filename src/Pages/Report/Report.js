@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
-import { Box, IconButton } from '@mui/material'
-import { Delete, Visibility } from '@mui/icons-material'
+import { Box, Button, IconButton } from '@mui/material'
+import { Delete, FeedOutlined, Visibility } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 
 import useStyles from './Style'
@@ -94,13 +94,22 @@ const Report = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         {row.row.original?.schedule?.status === 'finish' && (
                             <>
-                                <IconButton onClick={() => handlePreviewReport(row.row.original._id)}>
-                                    <Visibility />
-                                </IconButton>
+                                <Button
+                                    color="primary"
+                                    startIcon={<FeedOutlined />}
+                                    onClick={() => handlePreviewReport(row.row.original._id)}
+                                >
+                                    查看報告
+                                </Button>
+
                                 <Authorized currentRole={user.role} authority={[3, 2]} noMatch={<></>}>
-                                    <IconButton onClick={() => handleDeleteReport(row.row.original._id)}>
-                                        <Delete />
-                                    </IconButton>
+                                    <Button
+                                        sx={{ color: 'red.primary' }}
+                                        startIcon={<Delete />}
+                                        onClick={() => handleDeleteReport(row.row.original._id)}
+                                    >
+                                        刪除
+                                    </Button>
                                 </Authorized>
                             </>
                         )}

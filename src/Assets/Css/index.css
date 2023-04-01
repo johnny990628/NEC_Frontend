@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
 :root {
     --main-bg: #e4ece2;
-    --text-color: #000000;
+    --text-color: rgba(8, 40, 71);
     --sidebar-open-width: 15rem;
     --sidebar-close-width: 5rem;
     --sidedrawer-width: 25rem;

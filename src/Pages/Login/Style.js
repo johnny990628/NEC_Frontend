@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     icon: {
         color: theme.palette.primary.main,
     },
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         width: '30rem',
     },
     icons: {
-        color: theme.palette.secondary.main,
+        color: theme.palette.background.default,
         fontSize: 100,
     },
     iconButton: {

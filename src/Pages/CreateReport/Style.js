@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '2rem',
         width: '100%',
         height: '98%',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.background.default,
         borderRadius: '1rem',
         // boxShadow: '6px 6px 10px rgba(0,0,0,0.2)',
         // border: `1px solid ${theme.palette.border.main}`,
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.status.processing,
         border: `1px solid ${theme.palette.status.processing_dark}`,
         color: theme.palette.status.processing_dark,
-        padding: '6px 10px',
+        padding: '.3rem 1rem',
         borderRadius: '1rem',
         // width: '90%',
         '&.yet': {

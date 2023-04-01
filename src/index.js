@@ -18,12 +18,12 @@ const whiteTheme = createTheme({
             light_secondary: 'rgba(169, 191, 211 , .5)',
         },
         secondary: {
-            main: 'rgba(255,253,254)',
+            main: 'rgb(254, 254, 254)',
             // main: 'rgba(240, 240, 240)',
         },
         background: {
-            // default: 'rgba(217, 227, 238)',
-            default: 'rgba(240, 240, 240)',
+            // default: 'rgb(254, 254, 254)',
+            default: 'rgb(252, 252, 254)',
         },
         text: {
             primary: 'rgba(8, 40, 71)',
@@ -42,10 +42,13 @@ const whiteTheme = createTheme({
             processing_dark: 'rgb(110, 127, 183)',
             finish: 'rgba(95, 91, 160,.1)',
             finish_dark: 'rgba(95, 91, 160)',
-            yet: 'rgba(100, 151, 151,.1)',
-            yet_dark: 'rgba(100, 151, 151)',
+            yet: 'rgba(109, 173, 173,.1)',
+            yet_dark: 'rgba(109, 173, 173)',
             call: 'rgba(95, 91, 160,.1)',
             call_dark: 'rgba(95, 91, 160)',
+        },
+        red: {
+            primary: 'rgb(224, 71, 84)',
         },
     },
     typography: {

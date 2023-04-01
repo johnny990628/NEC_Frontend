@@ -1,8 +1,8 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     container: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.background.default,
         height: '100%',
         borderRadius: '2rem',
         padding: theme.spacing(5),
@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         border: `1px solid ${theme.palette.border.main}`,
     },
     card: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.background.default,
         transition: 'all .3s',
         cursor: 'pointer',
         '&:hover': {

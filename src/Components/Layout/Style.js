@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'left',
         padding: '2rem 6rem 2rem 2rem',
-        // backgroundColor: theme.palette.secondary.main,
         backgroundColor: theme.palette.background.default,
+        // backgroundColor: theme.palette.background.default,
         transition: 'all .4s ease-in',
         '&.close': {
             width: 'calc(100% - var(--sidebar-close-width))',
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         top: '50%',
         right: -30,
         borderRadius: '50%',
-        backgroundColor: `${theme.palette.secondary.main} !important`,
+        backgroundColor: `${theme.palette.background.default} !important`,
         '&.hover': {
             backgroundColor: theme.palette.background.default,
         },

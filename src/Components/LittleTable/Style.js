@@ -1,10 +1,10 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     container: {
         width: 'var(--sidedrawer-width)',
         borderRadius: '1rem 0 0 1rem',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.background.default,
         display: 'flex',
         flexDirection: 'column',
     },

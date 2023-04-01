@@ -194,6 +194,7 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                         <Box className={classes.patientInfo}>
                             <Chip
                                 label={`${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '男' : '女'}`}
+                                color="primary"
                                 variant="outlined"
                                 className={classes.chip}
                             />

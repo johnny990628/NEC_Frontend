@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles'
 const useStyles = makeStyles((theme) => ({
     container: {
         // borderRadius: '0 2rem 2rem 0',
-        border: 0,
+
         width: 'var(--sidebar-open-width)',
         height: '100vh',
         transition: 'width .4s ease-in',
