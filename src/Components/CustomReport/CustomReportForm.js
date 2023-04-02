@@ -29,16 +29,10 @@ import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 const FormSection = ({ list, mode }) => {
     const classes = useStyles()
 
-    const editReport = useSelector((state) => state.reportForm.edit)
-    const createReport = useSelector((state) => state.reportForm.create)
+    const report = useSelector((state) => state.reportForm.report)
 
     const setupValue = (list) => {
-        if (mode === 'create') {
-            return createReport.find((r) => r.name === list.name)
-        }
-        if (mode === 'edit') {
-            return editReport.find((r) => r.name === list.name)
-        }
+        return report.find((r) => r.name === list.name)
     }
 
     return (
@@ -48,7 +42,7 @@ const FormSection = ({ list, mode }) => {
     )
 }
 
-const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
+const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
     const classes = useStyles()
     const theme = useTheme()
     const isComputer = useMediaQuery(theme.breakpoints.up('lg'))
@@ -134,31 +128,31 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     }
 
     const handleDicomClick = (event) => {
-        window.open(`${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${patient.id}`, '_blank')
+        window.open(`${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${schedule.patient.id}`, '_blank')
         // setDicomAnchorEl((dicom) => (dicom ? null : event.currentTarget))
     }
 
-    const HistoryPopover = () => {
-        const handleClose = () => {
-            setHistoryAnchorEl(null)
-        }
-        const { reports, reportID } = patient
+    // const HistoryPopover = () => {
+    //     const handleClose = () => {
+    //         setHistoryAnchorEl(null)
+    //     }
+    //     const { reports, reportID } = schedule
 
-        return (
-            <Popover
-                open={Boolean(historyAnchorEl)}
-                anchorEl={historyAnchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                classes={{ paper: classes.popover }}
-            >
-                <ReportList reports={reports.filter((r) => r._id !== reportID)} />
-            </Popover>
-        )
-    }
+    //     return (
+    //         <Popover
+    //             open={Boolean(historyAnchorEl)}
+    //             anchorEl={historyAnchorEl}
+    //             onClose={handleClose}
+    //             anchorOrigin={{
+    //                 vertical: 'bottom',
+    //                 horizontal: 'left',
+    //             }}
+    //             classes={{ paper: classes.popover }}
+    //         >
+    //             <ReportList reports={reports.filter((r) => r._id !== reportID)} />
+    //         </Popover>
+    //     )
+    // }
 
     const DicomPopper = () => {
         return (
@@ -170,7 +164,7 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
     // Prevent Component Rerender
     const DicomPopperCom = useMemo(() => <DicomPopper />, [dicomAnchorEl])
 
-    const config = genConfig(patient.id)
+    // const config = genConfig(schedule.patient.id)
 
     return (
         <>
@@ -178,29 +172,29 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                 <Box
                     sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 1, height: '2%' }}
                 >
-                    <Box className={classes.patientInfo}>
+                    {/* <Box className={classes.patientInfo}>
                         <Avatar style={{ width: '4rem', height: '4rem', mr: 2 }} {...config}></Avatar>
                         <Box sx={{ m: 2 }}>
-                            <Box sx={{ fontSize: '1.6rem' }}>{patient.name}</Box>
-                            <Box sx={{ fontSize: '1rem', color: 'text.gray', ml: '.2rem' }}>{patient.id}</Box>
+                            <Box sx={{ fontSize: '1.6rem' }}>{schedule.patient.name}</Box>
+                            <Box sx={{ fontSize: '1rem', color: 'text.gray', ml: '.2rem' }}>{schedule.patient.id}</Box>
                         </Box>
-                    </Box>
+                    </Box> */}
                     <Stack
                         direction="row"
                         spacing={1}
                         sx={{ display: 'flex', alignItems: 'center', m: 1, height: '2%' }}
                     >
-                        <Chip
-                            label={`${PROCEDURECODE[patient.procedureCode]}`}
+                        {/* <Chip
+                            label={`${PROCEDURECODE[schedule.procedureCode]}`}
                             className={classes.chip}
                             variant="outlined"
                             sx={{
                                 color:
-                                    patient.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
+                                    schedule.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
                                 backgroundColor:
-                                    patient.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
+                                    schedule.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
                             }}
-                        />
+                        /> */}
 
                         <Tooltip
                             onClose={() => setToolkitOpen(false)}
@@ -236,17 +230,17 @@ const CustomReportForm = ({ cols1, cols2, patient, mode }) => {
                             超音波影像
                         </Button>
 
-                        {
+                        {/* {
                             <Badge
-                                badgeContent={patient.reports.length - 1 > 0 ? patient.reports.length - 1 : 0}
+                                badgeContent={schedule.reports.length - 1 > 0 ? schedule.reports.length - 1 : 0}
                                 color="primary"
                             >
                                 <IconButton onClick={handleHistoryClick}>
                                     <History />
                                 </IconButton>
                             </Badge>
-                        }
-                        <HistoryPopover />
+                        } */}
+                        {/* <HistoryPopover /> */}
                         {DicomPopperCom}
                     </Stack>
                 </Box>

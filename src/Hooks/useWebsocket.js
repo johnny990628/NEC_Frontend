@@ -46,7 +46,7 @@ function WebSocketComponent() {
                 break
             case 'schedules':
                 dispatch(patientTrigger())
-                dispatch(fetchSchedule())
+                dispatch(fetchSchedule({ status: '' }))
                 break
             case 'departments':
                 dispatch(departmentTrigger())
@@ -54,6 +54,7 @@ function WebSocketComponent() {
                 break
             case 'reports':
                 dispatch(reportTrigger())
+                dispatch(fetchSchedule({ status: '' }))
                 break
             case 'users':
                 dispatch(userTrigger())

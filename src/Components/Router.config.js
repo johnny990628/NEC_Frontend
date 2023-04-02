@@ -40,13 +40,13 @@ const routerList = [
         Component: CreateReport,
         authority: [3, 2],
     },
-    {
-        display_name: '報告管理',
-        name: 'report',
-        icon: <CreateNewFolderOutlined />,
-        path: '/report',
-        Component: Report,
-    },
+    // {
+    //     display_name: '報告管理',
+    //     name: 'report',
+    //     icon: <CreateNewFolderOutlined />,
+    //     path: '/report',
+    //     Component: Report,
+    // },
     {
         display_name: '使用者管理',
         name: 'user',

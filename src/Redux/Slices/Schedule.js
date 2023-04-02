@@ -1,13 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { apiAddBlood } from '../../Axios/Blood'
-import { apiCreateReport } from '../../Axios/Report'
-import { apiAddSchedule, apiDeleteScheduleAndBloodAndReport, apiGetSchdules } from '../../Axios/Schedule'
+import { apiCreateReport, apiDeleteReport } from '../../Axios/Report'
+import {
+    apiAddSchedule,
+    apiDeleteScheduleAndBloodAndReport,
+    apiGetSchdules,
+    apiRemoveSchedule,
+} from '../../Axios/Schedule'
 import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
 import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
-export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (_, thunkAPI) => {
+export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async ({ status }, thunkAPI) => {
     try {
-        const response = await apiGetSchdules({ status: 'wait-examination' })
+        const response = await apiGetSchdules({ status })
         const { results, count } = response.data
 
         return {
@@ -53,6 +58,19 @@ export const removeSchedule = createAsyncThunk('schedule/removeSchedule', async 
         return thunkAPI.rejectWithValue()
     }
 })
+
+export const removeScheduleByID = createAsyncThunk(
+    'schedule/removeScheduleByID',
+    async ({ reportID, scheduleID }, thunkAPI) => {
+        try {
+            await apiDeleteReport(reportID)
+            await apiRemoveSchedule(scheduleID)
+        } catch (e) {
+            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            return thunkAPI.rejectWithValue()
+        }
+    }
+)
 
 const initialState = { schedules: [], count: 0 }
 const scheduleSlice = createSlice({

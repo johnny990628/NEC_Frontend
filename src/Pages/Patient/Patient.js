@@ -93,14 +93,24 @@ const Patient = () => {
 
                     const scheduleStatus = () => {
                         const onCall = row.row.original?.schedule?.find(({ status }) => status === 'on-call')
-                        const wait = row.row.original?.schedule?.find(({ status }) => status === 'wait-examination')
+                        const wait_examination = row.row.original?.schedule?.find(
+                            ({ status }) => status === 'wait-examination'
+                        )
+                        const wait_finish = row.row.original?.schedule?.find(({ status }) => status === 'wait-finish')
                         if (onCall) return { status: 'on-call', class: 'call', text: '檢查中', icon: <AccessTime /> }
-                        if (wait)
+                        if (wait_examination)
                             return {
                                 status: 'wait-examination',
                                 class: 'examination',
                                 text: '等待檢查',
                                 icon: <ClearOutlined />,
+                            }
+                        if (wait_finish)
+                            return {
+                                status: 'wait-finish',
+                                class: 'call',
+                                text: '等待報告完成',
+                                icon: <AccessTime />,
                             }
                         return { status: 'yet', class: 'yet', text: '等待排程', icon: <CalendarToday /> }
                     }
@@ -153,7 +163,6 @@ const Patient = () => {
                                                         const onCall = row.row.original?.schedule?.find(
                                                             ({ status }) => status === 'on-call'
                                                         )
-                                                        console.log(onCall)
                                                         dispatch(
                                                             changeScheduleStatus({
                                                                 scheduleID: onCall._id,

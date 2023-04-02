@@ -49,6 +49,7 @@ const whiteTheme = createTheme({
         },
         red: {
             primary: 'rgb(224, 71, 84)',
+            main: 'rgb(224, 71, 84)',
         },
         box: {
             primary: 'rgba(255,255,255)',
