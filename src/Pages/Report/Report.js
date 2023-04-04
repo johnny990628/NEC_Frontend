@@ -10,12 +10,13 @@ import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import { fetchReportByReportID } from '../../Redux/Slices/Dialog'
 import { deleteReport, fetchReport, reportTrigger } from '../../Redux/Slices/Report'
-import { openAlert } from '../../Redux/Slices/Alert'
 import Authorized from './../../Components/Authorized/Authorized'
+import useAlert from '../../Hooks/useAlert'
 
 const Report = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
 
     const { results, count, page, loading } = useSelector((state) => state.report)
     const { user } = useSelector((state) => state.auth)
@@ -32,15 +33,13 @@ const Report = () => {
     const handlePreviewReport = (reportID) => dispatch(fetchReportByReportID(reportID))
 
     const handleDeleteReport = (reportID) =>
-        dispatch(
-            openAlert({
-                alertTitle: '確定刪除該報告?',
-                toastTitle: '刪除成功',
-                icon: 'success',
-                type: 'confirm',
-                event: () => dispatch(deleteReport(reportID)),
-            })
-        )
+        showAlert({
+            alertTitle: '確定刪除該報告?',
+            toastTitle: '刪除成功',
+            icon: 'success',
+            type: 'confirm',
+            event: () => dispatch(deleteReport(reportID)),
+        })
 
     const columns = useMemo(
         () => [

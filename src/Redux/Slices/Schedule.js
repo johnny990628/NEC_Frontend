@@ -7,8 +7,9 @@ import {
     apiGetSchdules,
     apiRemoveSchedule,
 } from '../../Axios/Schedule'
-import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
 import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
+
+import { handleError } from './Error'
 
 export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async ({ status }, thunkAPI) => {
     try {
@@ -21,7 +22,7 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async ({
         }
     } catch (e) {
         console.log(e)
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -32,7 +33,7 @@ export const addSchedule = createAsyncThunk('schedule/addSchedule', async ({ pat
         const reportID = reportResponse.data._id
         await apiAddSchedule({ patientID, reportID, procedureCode, status: 'wait-examination' })
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -43,7 +44,7 @@ export const changeScheduleStatus = createAsyncThunk(
         try {
             await apiUpdateScheduleStatus({ scheduleID, status })
         } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            thunkAPI.dispatch(handleError(e.response))
             return thunkAPI.rejectWithValue()
         }
     }
@@ -54,7 +55,7 @@ export const removeSchedule = createAsyncThunk('schedule/removeSchedule', async 
         const response = await apiDeleteScheduleAndBloodAndReport(patientID)
         return response.data
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -66,7 +67,7 @@ export const removeScheduleByID = createAsyncThunk(
             await apiDeleteReport(reportID)
             await apiRemoveSchedule(scheduleID)
         } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            thunkAPI.dispatch(handleError(e.response))
             return thunkAPI.rejectWithValue()
         }
     }

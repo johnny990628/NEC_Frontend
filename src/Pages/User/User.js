@@ -9,12 +9,12 @@ import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import { deleteUser, fetchUser, updateUser } from '../../Redux/Slices/User'
-
-import { openAlert } from '../../Redux/Slices/Alert'
+import useAlert from '../../Hooks/useAlert'
 
 const Report = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
 
     const { results, count, page, loading } = useSelector((state) => state.user)
 
@@ -23,15 +23,13 @@ const Report = () => {
     }
 
     const handleDeleteUser = (userID) =>
-        dispatch(
-            openAlert({
-                alertTitle: '確定刪除該用戶?',
-                toastTitle: '刪除成功',
-                icon: 'success',
-                type: 'confirm',
-                event: () => dispatch(deleteUser(userID)),
-            })
-        )
+        showAlert({
+            alertTitle: '確定刪除該用戶?',
+            toastTitle: '刪除成功',
+            icon: 'success',
+            type: 'confirm',
+            event: () => dispatch(deleteUser(userID)),
+        })
 
     const columns = useMemo(
         () => [
@@ -48,6 +46,7 @@ const Report = () => {
                 Cell: (row) => {
                     const handleChange = (e) => {
                         dispatch(updateUser({ id: row.row.original._id, data: { role: e.target.value } }))
+                        showAlert({ toastTitle: '修改完成', text: `${row.row.original.name}`, icon: 'success' })
                     }
                     return (
                         <Select variant="standard" fullWidth value={row.row.original.role} onChange={handleChange}>

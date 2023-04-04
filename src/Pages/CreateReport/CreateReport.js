@@ -40,9 +40,9 @@ import {
 import { fetchSchedule, removeSchedule, removeScheduleByID } from '../../Redux/Slices/Schedule'
 
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
-import { openAlert } from '../../Redux/Slices/Alert'
 import { deleteReport } from '../../Redux/Slices/Report'
 import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
+import useAlert from '../../Hooks/useAlert'
 
 const CreateReport = () => {
     const [selection, setSelection] = useState(null)
@@ -55,29 +55,42 @@ const CreateReport = () => {
 
     const dispatch = useDispatch()
     const classes = useStyles()
+    const showAlert = useAlert()
 
-    useEffect(() => {
-        if (selection) {
-            const currentSchedule = schedules.find((s) => s._id === selection)
-            setSchedule(currentSchedule)
-            const currentReport = currentSchedule?.report
-            setReport(currentReport)
-            dispatch(setupSchedule(currentSchedule))
+    const initState = () => {
+        setSelection(null)
+        setSchedule({})
+        setReport({})
+        setVersion('')
+        dispatch(resetReport())
+    }
 
-            if (currentSchedule.status !== 'wait-examination') {
-                setVersion(currentReport.records[currentReport.records.length - 1].id)
+    const handleSelectionChange = () => {
+        const currentSchedule = schedules.find((s) => s._id === selection)
+        if (!currentSchedule) {
+            initState()
+            return
+        }
+        setSchedule(currentSchedule)
+        const currentReport = currentSchedule?.report
+        setReport(currentReport)
+        dispatch(setupSchedule(currentSchedule))
+
+        if (currentSchedule.status === 'wait-finish' || currentSchedule.status === 'finish') {
+            if (currentReport) {
+                setVersion(currentReport?.records[currentReport.records.length - 1].id)
                 dispatch(fetchReportByReportID({ reportID: currentSchedule.reportID }))
             }
-        } else {
-            setSchedule({})
-            dispatch(resetReport())
         }
+    }
+
+    useEffect(() => {
+        handleSelectionChange()
     }, [selection, schedules])
 
     useEffect(() => {
         if (version) {
             const currentRecord = report.records.find((record) => record.id === version)
-            console.log(currentRecord)
             dispatch(setupReport(currentRecord.report))
         }
     }, [version])
@@ -96,11 +109,34 @@ const CreateReport = () => {
 
     const handleReportSave = () => {
         dispatch(updateReport())
+        showAlert({ toastTitle: '暫存報告', text: `${schedule.patient.name}`, icon: 'success' })
         setSelection(null)
     }
     const handleReportSubmit = () => {
         dispatch(finishReport())
+        showAlert({ toastTitle: '儲存報告', text: `${schedule.patient.name}`, icon: 'success' })
         setSelection(null)
+    }
+
+    const deleteReportAndSchedule = () => {
+        if (schedule.status === 'wait-examination') {
+            showAlert({
+                alertTitle: '確定刪除該報告?',
+                toastTitle: '刪除成功',
+                icon: 'success',
+                type: 'confirm',
+                event: () => dispatch(removeSchedule(schedule.patientID)),
+            })
+        }
+        if (schedule.status === 'wait-finish' || schedule.status === 'finish') {
+            showAlert({
+                alertTitle: '確定刪除該報告?',
+                toastTitle: '刪除成功',
+                icon: 'success',
+                type: 'confirm',
+                event: () => dispatch(removeScheduleByID({ reportID: schedule.reportID, scheduleID: schedule._id })),
+            })
+        }
     }
 
     const handleSelectionClick = (id) => {
@@ -109,36 +145,6 @@ const CreateReport = () => {
     }
     const handleStatusChange = (event, newAlignment) => {
         setStatus(newAlignment)
-    }
-    const deleteReportAndSchedule = () => {
-        if (schedule.status === 'wait-examination') {
-            dispatch(
-                openAlert({
-                    alertTitle: '確定刪除該報告?',
-                    toastTitle: '刪除成功',
-                    icon: 'success',
-                    type: 'confirm',
-                    event: () => {
-                        dispatch(removeSchedule(schedule.patientID))
-                        setSelection(null)
-                    },
-                })
-            )
-        }
-        if (schedule.status === 'wait-finish' || schedule.status === 'finish') {
-            dispatch(
-                openAlert({
-                    alertTitle: '確定刪除該報告?',
-                    toastTitle: '刪除成功',
-                    icon: 'success',
-                    type: 'confirm',
-                    event: () => {
-                        dispatch(removeScheduleByID({ reportID: schedule.reportID, scheduleID: schedule._id }))
-                        setSelection(null)
-                    },
-                })
-            )
-        }
     }
 
     const handleVersionOnChange = (e) => {

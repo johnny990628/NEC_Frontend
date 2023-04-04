@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
 import { apiGetStats, apiGetStatsByDepartmentID } from './../../Axios/Stats'
+
+import { handleError } from './Error'
 
 const initialState = {
     numsOfPeople: [
@@ -176,7 +177,7 @@ export const fetchStatistic = createAsyncThunk(
                 : await apiGetStats(params)
             return stats.data
         } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            thunkAPI.dispatch(handleError(e.response))
             return thunkAPI.rejectWithValue()
         }
     }

@@ -32,12 +32,12 @@ const Login = () => {
     const theme = useTheme()
     const com = useMediaQuery(theme.breakpoints.up('lg'))
 
-    const handleLoginSubmit = e => {
+    const handleLoginSubmit = (e) => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
         dispatch(login({ username: data.get('username'), password: data.get('password'), remember }))
     }
-    const handleRegisterSubmit = e => {
+    const handleRegisterSubmit = (e) => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
         dispatch(register({ username: data.get('username'), password: data.get('password'), name: data.get('name') }))
@@ -52,7 +52,15 @@ const Login = () => {
                     註冊
                 </Typography>
                 <Box component="form" onSubmit={handleRegisterSubmit} noValidate sx={{ mt: 1 }}>
-                    <TextField margin="normal" required fullWidth label="帳號" name="username" autoComplete="username" autoFocus />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        label="帳號"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                    />
                     <TextField
                         margin="normal"
                         required
@@ -86,7 +94,15 @@ const Login = () => {
                     登入
                 </Typography>
                 <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
-                    <TextField margin="normal" required fullWidth label="帳號" name="username" autoComplete="username" autoFocus />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        label="帳號"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                    />
                     <TextField
                         margin="normal"
                         required
@@ -97,7 +113,13 @@ const Login = () => {
                         autoComplete="current-password"
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} color="primary" />}
+                        control={
+                            <Checkbox
+                                checked={remember}
+                                onChange={(e) => setRemember(e.target.checked)}
+                                color="primary"
+                            />
+                        }
                         label="記住我"
                     />
 
@@ -118,12 +140,21 @@ const Login = () => {
     return (
         <Container
             component="main"
-            sx={{ height: '90vh', display: 'flex', justifyContent: com ? 'space-between' : 'center', alignItems: 'center' }}
+            sx={{
+                height: '90vh',
+                display: 'flex',
+                justifyContent: com ? 'space-between' : 'center',
+                alignItems: 'center',
+            }}
         >
             <CssBaseline />
 
             {com && (
-                <IconButton className={classes.iconButton} sx={{ backgroundColor: 'contrast.main' }} onClick={() => setPage('login')}>
+                <IconButton
+                    className={classes.iconButton}
+                    sx={{ backgroundColor: 'contrast.main' }}
+                    onClick={() => setPage('login')}
+                >
                     <Person className={classes.icons} />
                 </IconButton>
             )}
@@ -144,7 +175,11 @@ const Login = () => {
                 </Grow>
             )}
             {com && (
-                <IconButton className={classes.iconButton} sx={{ backgroundColor: 'primary.main' }} onClick={() => setPage('register')}>
+                <IconButton
+                    className={classes.iconButton}
+                    sx={{ backgroundColor: 'primary.main' }}
+                    onClick={() => setPage('register')}
+                >
                     <PersonAdd className={classes.icons} />
                 </IconButton>
             )}

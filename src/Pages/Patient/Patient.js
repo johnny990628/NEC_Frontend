@@ -11,15 +11,15 @@ import GlobalFilter from '../../Components/GlobalFilter/GlobalFilter'
 import { useDispatch, useSelector } from 'react-redux'
 import { deletePatient, createPatient, fetchPatients } from '../../Redux/Slices/Patient'
 import { openDialog } from '../../Redux/Slices/Dialog'
-import { openAlert } from '../../Redux/Slices/Alert'
 import { addSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
 import { changeScheduleStatus } from './../../Redux/Slices/Schedule'
-
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
+import useAlert from './../../Hooks/useAlert'
 
 const Patient = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
 
     const { data, count, page, loading } = useSelector((state) => state.patients)
 
@@ -65,16 +65,14 @@ const Patient = () => {
                                 sx={{ color: 'red.primary' }}
                                 startIcon={<Delete />}
                                 onClick={() => {
-                                    dispatch(
-                                        openAlert({
-                                            alertTitle: '確定刪除該病患?將會刪除所有相關資料',
-                                            toastTitle: '刪除成功',
-                                            text: `${name} ${gender === 'm' ? '先生' : '小姐'}`,
-                                            icon: 'success',
-                                            type: 'confirm',
-                                            event: () => dispatch(deletePatient({ patientID: id })),
-                                        })
-                                    )
+                                    showAlert({
+                                        alertTitle: '確定刪除該病患?將會刪除所有相關資料',
+                                        toastTitle: '刪除成功',
+                                        text: `${name} ${gender === 'm' ? '先生' : '小姐'}`,
+                                        icon: 'success',
+                                        type: 'confirm',
+                                        event: () => dispatch(deletePatient({ patientID: id })),
+                                    })
                                 }}
                             >
                                 刪除
@@ -124,54 +122,51 @@ const Patient = () => {
                                 onClick={() => {
                                     switch (status.status) {
                                         case 'wait-examination':
-                                            dispatch(
-                                                openAlert({
-                                                    alertTitle: `確定要取消 ${name} ${mr}的排程?`,
-                                                    toastTitle: '取消排程',
-                                                    text: `${name} ${mr}`,
-                                                    type: 'confirm',
-                                                    event: () => dispatch(removeSchedule(id)),
-                                                })
-                                            )
+                                            showAlert({
+                                                alertTitle: `確定要取消 ${name} ${mr}的排程?`,
+                                                toastTitle: '取消排程',
+                                                text: `${name} ${mr}`,
+                                                type: 'confirm',
+                                                event: () => dispatch(removeSchedule(id)),
+                                            })
+
                                             break
                                         case 'yet':
-                                            dispatch(
-                                                openAlert({
-                                                    alertTitle: `請輸入${name}的醫令`,
-                                                    toastTitle: '加入排程',
-                                                    text: `${name} ${mr}`,
-                                                    type: 'select',
-                                                    options: PROCEDURECODE,
-                                                    event: (text) =>
-                                                        dispatch(
-                                                            addSchedule({
-                                                                patientID: id,
-                                                                procedureCode: text,
-                                                            })
-                                                        ),
-                                                })
-                                            )
+                                            showAlert({
+                                                alertTitle: `請輸入${name}的醫令`,
+                                                toastTitle: '加入排程',
+                                                text: `${name} ${mr}`,
+                                                type: 'select',
+                                                options: PROCEDURECODE,
+                                                event: (text) =>
+                                                    dispatch(
+                                                        addSchedule({
+                                                            patientID: id,
+                                                            procedureCode: text,
+                                                        })
+                                                    ),
+                                            })
+
                                             break
                                         case 'on-call':
-                                            dispatch(
-                                                openAlert({
-                                                    alertTitle: `確定要取消 ${name} ${mr}的檢查狀態(非管理員請勿操作)`,
-                                                    toastTitle: '取消檢查狀態',
-                                                    text: `${name} ${mr}`,
-                                                    type: 'confirm',
-                                                    event: () => {
-                                                        const onCall = row.row.original?.schedule?.find(
-                                                            ({ status }) => status === 'on-call'
-                                                        )
-                                                        dispatch(
-                                                            changeScheduleStatus({
-                                                                scheduleID: onCall._id,
-                                                                status: 'wait-examination',
-                                                            })
-                                                        )
-                                                    },
-                                                })
-                                            )
+                                            showAlert({
+                                                alertTitle: `確定要取消 ${name} ${mr}的檢查狀態(非管理員請勿操作)`,
+                                                toastTitle: '取消檢查狀態',
+                                                text: `${name} ${mr}`,
+                                                type: 'confirm',
+                                                event: () => {
+                                                    const onCall = row.row.original?.schedule?.find(
+                                                        ({ status }) => status === 'on-call'
+                                                    )
+                                                    dispatch(
+                                                        changeScheduleStatus({
+                                                            scheduleID: onCall._id,
+                                                            status: 'wait-examination',
+                                                        })
+                                                    )
+                                                },
+                                            })
+
                                             break
                                         default:
                                             break

@@ -61,7 +61,7 @@ import { id, zhTW } from 'date-fns/locale'
 import { format, parse, isValid, isAfter, isBefore, addDays, isMatch, parseISO } from 'date-fns'
 import { fetchDepartment } from './../../Redux/Slices/Statistic'
 import CustomDataGrid from './../../Components/CustomDataGrid/CustomDataGrid'
-import { openAlert } from '../../Redux/Slices/Alert'
+import useAlert from '../../Hooks/useAlert'
 
 const Statistic = () => {
     const [selectDepartment, setSelectDepartment] = useState('all')
@@ -95,6 +95,7 @@ const Statistic = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const theme = useTheme()
+    const showAlert = useAlert()
     const { numsOfPeople, numsOfReport, numsOfPeopleGroupByDay, numsOfOrganGroupByDay, numsOfCancerGroupByDay } =
         useSelector((state) => state.statistic)
     const { results: departments } = useSelector((state) => state.department4List)
@@ -469,13 +470,11 @@ const Statistic = () => {
                 link.click()
             })
         } else {
-            dispatch(
-                openAlert({
-                    toastTitle: '發生錯誤',
-                    text: '無統計資料',
-                    icon: 'error',
-                })
-            )
+            showAlert({
+                toastTitle: '發生錯誤',
+                text: '無統計資料',
+                icon: 'error',
+            })
         }
     }
 

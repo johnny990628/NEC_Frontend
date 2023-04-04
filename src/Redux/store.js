@@ -3,7 +3,7 @@ import patientsReducer from './Slices/Patient'
 import reportFormReducer from './Slices/ReportForm'
 import sidebarReducer from './Slices/Sidebar'
 import dialogReducer from './Slices/Dialog'
-import alertReducer from './Slices/Alert'
+import errorReducer from './Slices/Error'
 import authReducer from './Slices/Auth'
 import reportReducer from './Slices/Report'
 import scheduleReducer from './Slices/Schedule'
@@ -20,7 +20,7 @@ export default configureStore({
         reportForm: reportFormReducer,
         sidebar: sidebarReducer,
         dialog: dialogReducer,
-        alert: alertReducer,
+        error: errorReducer,
         auth: authReducer,
         report: reportReducer,
         schedule: scheduleReducer,

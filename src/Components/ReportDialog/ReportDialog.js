@@ -24,17 +24,18 @@ import { closeDialog } from '../../Redux/Slices/Dialog'
 import CustomReportForm from '../CustomReport/CustomReportForm'
 import ReportFormHtml, { ReportFormForPDF } from './ReportFormHtml'
 import { updateReport, fillReport, resetReport } from '../../Redux/Slices/ReportForm'
-import { openAlert } from '../../Redux/Slices/Alert'
 import { Box } from '@mui/system'
 import Authorized from './../Authorized/Authorized'
 
 import REPORTCOLS from '../../Assets/Json/ReportCols.json'
 import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 import { getConfig } from '@testing-library/react'
+import useAlert from '../../Hooks/useAlert'
 
 const ReportDialog = ({ mode }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
     const {
         isOpen,
         row: { patient, user, createdAt, updatedAt, records, reportID },
@@ -62,12 +63,11 @@ const ReportDialog = ({ mode }) => {
         // 點擊編輯按鈕後判斷目前Dialog狀態，如果為編輯狀態則儲存
         if (isEditing) {
             dispatch(updateReport({ reportID, data: { report: { report, id: v4() }, status: 'finished' } }))
-            dispatch(
-                openAlert({
-                    toastTitle: '報告修改成功',
-                    text: `${patient.name} ${patient.gender === 'm' ? '先生' : '小姐'}`,
-                })
-            )
+            showAlert({
+                toastTitle: '報告修改成功',
+                text: `${patient.name} ${patient.gender === 'm' ? '先生' : '小姐'}`,
+            })
+
             handleClose()
         } else {
             setIsEditing(true)

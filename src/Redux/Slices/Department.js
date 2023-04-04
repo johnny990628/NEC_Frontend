@@ -6,8 +6,7 @@ import {
     apiUpdateDepartment,
 } from '../../Axios/Department'
 
-import { openAlert } from './Alert'
-import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
+import { handleError } from './Error'
 
 export const fetchDepartment = createAsyncThunk('department/fetchDepartment', async (params, thunkAPI) => {
     try {
@@ -15,7 +14,7 @@ export const fetchDepartment = createAsyncThunk('department/fetchDepartment', as
         const { results, count } = response.data
         return { results, count, page: Math.ceil(count / params.limit) }
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -25,16 +24,16 @@ export const createDepartment = createAsyncThunk(
     async ({ name, address, active }, thunkAPI) => {
         try {
             const response = await apiCreateDepartment({ name, address, active })
-            thunkAPI.dispatch(
-                openAlert({
-                    toastTitle: '新增成功',
-                    text: `${name} - ${address}`,
-                    icon: 'success',
-                })
-            )
+            // thunkAPI.dispatch(
+            //     openAlert({
+            //         toastTitle: '新增成功',
+            //         text: `${name} - ${address}`,
+            //         icon: 'success',
+            //     })
+            // )
             return response.data
         } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            thunkAPI.dispatch(handleError(e.response))
             return thunkAPI.rejectWithValue()
         }
     }
@@ -44,7 +43,7 @@ export const deleteDepartment = createAsyncThunk('department/deleteDepartment', 
         const response = await apiDeleteDepartment(departmentID)
         return response.data
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -56,7 +55,7 @@ export const activeDepartment = createAsyncThunk(
             const response = await apiUpdateDepartment(departmentID, { active })
             return response.data
         } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            thunkAPI.dispatch(handleError(e.response))
             return thunkAPI.rejectWithValue()
         }
     }

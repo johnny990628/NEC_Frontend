@@ -9,10 +9,10 @@ import useStyles from './Style'
 import QRScanner from '../QRScanner/QRScanner'
 import CustomInput from './CustomInput'
 import { closeDialog } from '../../Redux/Slices/Dialog'
-import { openAlert } from '../../Redux/Slices/Alert'
 import { verifyID, verifyPhone } from '../../Utils/Verify'
 import { apiCheckExists } from '../../Axios/Exists'
 import { addSchedule } from '../../Redux/Slices/Schedule'
+import useAlert from '../../Hooks/useAlert'
 
 const CustomForm = ({ title, row, mode, sendData }) => {
     const [id, setId] = useState('')
@@ -30,6 +30,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
     const classes = useStyles()
     const theme = useTheme()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
 
     useEffect(() => {
         if (row) {
@@ -50,7 +51,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             setPhone(phone)
             setDepartment(department)
             setBirth(new Date(birth).toISOString())
-            dispatch(openAlert({ message: '掃描成功', icon: 'success' }))
+            showAlert({ message: '掃描成功', icon: 'success' })
         }
     }, [qrcode])
 
@@ -107,41 +108,37 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             await sendData({ ...data, gender })
 
             if (autoProcessSwitch) {
-                dispatch(
-                    openAlert({
-                        alertTitle: `請輸入${data.name}的抽血編號`,
-                        toastTitle: '加入排程',
-                        text: `${name} ${mr}`,
-                        type: 'input',
-                        event: (text) => dispatch(addSchedule({ patientID: id, procedureCode: '19009C', blood: text })),
-                        preConfirm: async (text) => {
-                            const { data: blood } = await apiCheckExists({ type: 'blood', value: text })
-                            const { data: schedule } = await apiCheckExists({ type: 'schedule', value: id })
-                            const regex = new RegExp('^[A-Za-z0-9]*$')
-                            const isIllegal = !regex.test(text)
-                            let warning = ''
-                            if (blood) warning += '此編號已被使用 '
-                            if (schedule) warning += '此病人已在排程中'
-                            if (isIllegal) warning += ' 含有非法字元'
-                            return { exists: blood || schedule || isIllegal, warning }
-                        },
-                    })
-                )
+                showAlert({
+                    alertTitle: `請輸入${data.name}的抽血編號`,
+                    toastTitle: '加入排程',
+                    text: `${name} ${mr}`,
+                    type: 'input',
+                    event: (text) => dispatch(addSchedule({ patientID: id, procedureCode: '19009C', blood: text })),
+                    preConfirm: async (text) => {
+                        const { data: blood } = await apiCheckExists({ type: 'blood', value: text })
+                        const { data: schedule } = await apiCheckExists({ type: 'schedule', value: id })
+                        const regex = new RegExp('^[A-Za-z0-9]*$')
+                        const isIllegal = !regex.test(text)
+                        let warning = ''
+                        if (blood) warning += '此編號已被使用 '
+                        if (schedule) warning += '此病人已在排程中'
+                        if (isIllegal) warning += ' 含有非法字元'
+                        return { exists: blood || schedule || isIllegal, warning }
+                    },
+                })
             }
 
             if (mode === 'create') {
-                dispatch(openAlert({ toastTitle: '新增成功', icon: 'success' }))
+                showAlert({ toastTitle: '新增成功', icon: 'success' })
                 handleDelete()
             }
             if (mode === 'edit') {
                 dispatch(closeDialog({ type: 'patient' }))
-                dispatch(
-                    openAlert({
-                        toastTitle: '修改成功',
-                        text: `${name} ${gender === 'm' ? '先生' : '小姐'}`,
-                        icon: 'success',
-                    })
-                )
+                showAlert({
+                    toastTitle: '修改成功',
+                    text: `${name} ${gender === 'm' ? '先生' : '小姐'}`,
+                    icon: 'success',
+                })
             }
         } catch (err) {
             console.log(err)

@@ -3,7 +3,8 @@ import { apiGetCounts } from '../../Axios/Count'
 import { apiGetPatients } from '../../Axios/Patient'
 import { apiGetReports } from '../../Axios/Report'
 import { apiGetSchdules } from '../../Axios/Schedule'
-import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
+
+import { handleError } from './Error'
 
 export const fetchDashboard = createAsyncThunk('report/fetchDashboard', async (_, thunkAPI) => {
     try {
@@ -18,7 +19,7 @@ export const fetchDashboard = createAsyncThunk('report/fetchDashboard', async (_
             count: count.data,
         }
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })

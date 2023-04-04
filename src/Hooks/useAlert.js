@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTheme } from '@mui/styles'
 import Swal from 'sweetalert2'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { closeAlert } from '../../Redux/Slices/Alert'
-
-const CustomAlert = () => {
-    const dispatch = useDispatch()
+const useAlert = () => {
+    const [alertData, setAlertData] = useState(null)
     const theme = useTheme()
-    const { isOpen, type, options, toastTitle, alertTitle, text, icon, event, preConfirm } = useSelector(
-        (state) => state.alert
-    )
 
     const Toast = Swal.mixin({
         toast: true,
@@ -25,7 +19,8 @@ const CustomAlert = () => {
     })
 
     useEffect(() => {
-        if (isOpen) {
+        if (alertData) {
+            const { type, options, toastTitle, alertTitle, text, icon = 'success', event, preConfirm } = alertData
             switch (type) {
                 case 'confirm':
                     Swal.fire({
@@ -110,11 +105,17 @@ const CustomAlert = () => {
                     }).then(handleClose)
             }
         }
-    }, [isOpen])
+    }, [alertData])
 
-    const handleClose = () => dispatch(closeAlert())
+    const handleClose = () => {
+        setAlertData(null)
+    }
 
-    return <div />
+    const showAlert = (options) => {
+        setAlertData(options)
+    }
+
+    return showAlert
 }
 
-export default CustomAlert
+export default useAlert

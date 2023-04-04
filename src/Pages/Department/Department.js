@@ -20,17 +20,18 @@ import CustomInput from '../../Components/CustomForm/CustomInput'
 import GlobalFilter from '../../Components/GlobalFilter/GlobalFilter'
 import { ArrowDropDown, Delete } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
-import { openAlert } from '../../Redux/Slices/Alert'
 import { activeDepartment, createDepartment, deleteDepartment, fetchDepartment } from '../../Redux/Slices/Department'
+import useAlert from '../../Hooks/useAlert'
 
 const Department = () => {
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
     const [activeSwitch, setActiveSwitch] = useState(true)
     const [errorField, setErrorField] = useState([])
+    const { results, count, page, loading } = useSelector((state) => state.department)
     const dispatch = useDispatch()
     const classes = useStyles()
-    const { results, count, page, loading } = useSelector((state) => state.department)
+    const showAlert = useAlert()
 
     const fetchData = async (params) => {
         dispatch(fetchDepartment(params))
@@ -102,16 +103,14 @@ const Department = () => {
                         <Box>
                             <IconButton
                                 onClick={() => {
-                                    dispatch(
-                                        openAlert({
-                                            alertTitle: '確定刪除該部門?',
-                                            toastTitle: '刪除成功',
-                                            text: `${name} - ${address}`,
-                                            icon: 'success',
-                                            type: 'confirm',
-                                            event: () => dispatch(deleteDepartment(_id)),
-                                        })
-                                    )
+                                    showAlert({
+                                        alertTitle: '確定刪除該部門?',
+                                        toastTitle: '刪除成功',
+                                        text: `${name} - ${address}`,
+                                        icon: 'success',
+                                        type: 'confirm',
+                                        event: () => dispatch(deleteDepartment(_id)),
+                                    })
                                 }}
                             >
                                 <Delete />

@@ -20,7 +20,6 @@ import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import { ArrowDropDown, ContentCopy } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
-import { openAlert } from '../../Redux/Slices/Alert'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
 
 const Image = () => {

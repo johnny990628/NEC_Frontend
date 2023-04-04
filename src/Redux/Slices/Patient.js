@@ -8,7 +8,7 @@ import { apiDeleteScheduleAndBloodAndReport } from '../../Axios/Schedule'
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-import { tokenExpirationHandler } from '../../Utils/ErrorHandle'
+import { handleError } from './Error'
 
 const initialState = { loading: false, data: [], count: 0, page: 1 }
 
@@ -19,7 +19,7 @@ export const fetchPatients = createAsyncThunk(
             const response = await apiGetPatients({ limit, offset, search, sort, desc, status })
             return { ...response.data, page: Math.ceil(response.data.count / limit) }
         } catch (e) {
-            thunkAPI.dispatch(tokenExpirationHandler(e.response))
+            thunkAPI.dispatch(handleError(e.response))
             return thunkAPI.rejectWithValue()
         }
     }
@@ -30,7 +30,7 @@ export const createPatient = createAsyncThunk('patients/createPatient', async (d
         const response = await apiCreatePatient(data)
         return response.data
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -40,7 +40,7 @@ export const updatePatient = createAsyncThunk('patients/updatePatient', async (d
         const response = await apiUpdatePatient(data.id, data)
         return response.data
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -50,7 +50,7 @@ export const deletePatient = createAsyncThunk('patients/deletePatient', async ({
         const response = await apiDeletePatientAndBloodAndSchedule(patientID)
         return response.data
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
@@ -60,7 +60,7 @@ export const removeProcessing = createAsyncThunk('patients/removeProcessing', as
         const response = await apiDeleteScheduleAndBloodAndReport(patientID)
         return response.data
     } catch (e) {
-        thunkAPI.dispatch(tokenExpirationHandler(e.response))
+        thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
 })
