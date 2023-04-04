@@ -6,7 +6,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import useStyles from './Style'
 
-import QRScanner from '../QRScanner/QRScanner'
+// import QRScanner from '../QRScanner/QRScanner'
 import CustomInput from './CustomInput'
 import { closeDialog } from '../../Redux/Slices/Dialog'
 import { verifyID, verifyPhone } from '../../Utils/Verify'
@@ -188,7 +188,7 @@ const CustomForm = ({ title, row, mode, sendData }) => {
                     ))}
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%', alignItems: 'center' }}>
-                        {mode === 'create' && <QRScanner onResult={(res) => setQrcode(JSON.parse(res))} />}
+                        {/* {mode === 'create' && <QRScanner onResult={(res) => setQrcode(JSON.parse(res))} />} */}
                         <Button
                             variant="contained"
                             className={classes.button}
