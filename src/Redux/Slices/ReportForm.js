@@ -111,6 +111,9 @@ const reportFormSlice = createSlice({
         setupSchedule: (state, action) => {
             state['schedule'] = action.payload
         },
+        setupReport: (state, action) => {
+            state['report'] = action.payload
+        },
     },
     extraReducers: {
         [fetchReportByReportID.fulfilled]: (state, action) => {
@@ -128,6 +131,7 @@ const reportFormSlice = createSlice({
     },
 })
 
-export const { addCancer, removeCancer, clearCancer, setupSchedule, fillReport, resetReport } = reportFormSlice.actions
+export const { addCancer, removeCancer, clearCancer, setupSchedule, setupReport, fillReport, resetReport } =
+    reportFormSlice.actions
 
 export default reportFormSlice.reducer

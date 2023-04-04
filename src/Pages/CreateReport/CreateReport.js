@@ -3,12 +3,16 @@ import {
     Box,
     Button,
     Divider,
+    FormControl,
     Grid,
+    InputLabel,
     List,
     ListItem,
     ListItemAvatar,
     ListItemButton,
     ListItemText,
+    MenuItem,
+    Select,
     Stack,
     ToggleButton,
     ToggleButtonGroup,
@@ -30,6 +34,7 @@ import {
     updateReport,
     fetchReportByReportID,
     finishReport,
+    setupReport,
 } from '../../Redux/Slices/ReportForm'
 
 import { fetchSchedule, removeSchedule, removeScheduleByID } from '../../Redux/Slices/Schedule'
@@ -37,12 +42,15 @@ import { fetchSchedule, removeSchedule, removeScheduleByID } from '../../Redux/S
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 import { openAlert } from '../../Redux/Slices/Alert'
 import { deleteReport } from '../../Redux/Slices/Report'
+import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
 
 const CreateReport = () => {
     const [selection, setSelection] = useState(null)
     const [schedule, setSchedule] = useState({})
     const [scheduleList, setScheduleList] = useState([])
     const [status, setStatus] = useState('wait-examination')
+    const [version, setVersion] = useState('')
+    const [report, setReport] = useState({})
     const { schedules } = useSelector((state) => state.schedule)
 
     const dispatch = useDispatch()
@@ -50,18 +58,29 @@ const CreateReport = () => {
 
     useEffect(() => {
         if (selection) {
-            const schedule = schedules.find((s) => s._id === selection)
+            const currentSchedule = schedules.find((s) => s._id === selection)
+            setSchedule(currentSchedule)
+            const currentReport = currentSchedule?.report
+            setReport(currentReport)
+            dispatch(setupSchedule(currentSchedule))
 
-            setSchedule(schedule)
-            dispatch(setupSchedule(schedule))
-            if (schedule.status === 'wait-finish' || schedule.status === 'finish') {
-                dispatch(fetchReportByReportID({ reportID: schedule.reportID }))
+            if (currentSchedule.status !== 'wait-examination') {
+                setVersion(currentReport.records[currentReport.records.length - 1].id)
+                dispatch(fetchReportByReportID({ reportID: currentSchedule.reportID }))
             }
         } else {
             setSchedule({})
             dispatch(resetReport())
         }
-    }, [selection])
+    }, [selection, schedules])
+
+    useEffect(() => {
+        if (version) {
+            const currentRecord = report.records.find((record) => record.id === version)
+            console.log(currentRecord)
+            dispatch(setupReport(currentRecord.report))
+        }
+    }, [version])
 
     useEffect(() => {
         setScheduleList(schedules.filter((schedule) => schedule.status === status))
@@ -71,7 +90,7 @@ const CreateReport = () => {
         dispatch(fetchSchedule({ status: '' }))
 
         return () => {
-            dispatch(updateReport())
+            // dispatch(updateReport())
         }
     }, [])
 
@@ -122,6 +141,10 @@ const CreateReport = () => {
         }
     }
 
+    const handleVersionOnChange = (e) => {
+        setVersion(e.target.value)
+    }
+
     return (
         <Grid container spacing={2} sx={{ height: '100%' }}>
             <Grid item xs={3}>
@@ -130,49 +153,62 @@ const CreateReport = () => {
                     <ToggleButton value="wait-finish">未完成報告</ToggleButton>
                     <ToggleButton value="finish">已完成報告</ToggleButton>
                 </ToggleButtonGroup>
-                <List>
-                    {scheduleList &&
-                        scheduleList.map((schedule) => {
-                            const { id: patientID, name } = schedule.patient
-                            const { _id: scheduleID, procedureCode, updatedAt } = schedule
-                            const config = genConfig(patientID)
-                            return (
-                                <Box key={scheduleID}>
-                                    <ListItemButton
-                                        selected={selection === scheduleID}
-                                        onClick={() => handleSelectionClick(scheduleID)}
-                                    >
-                                        <ListItemAvatar>
-                                            <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            sx={{ ml: 1 }}
-                                            primary={<Box sx={{ fontSize: '1.6rem' }}>{name}</Box>}
-                                            secondary={
-                                                <Stack>
-                                                    <Box>{patientID}</Box>
-                                                    <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
-                                                </Stack>
-                                            }
-                                        ></ListItemText>
-                                        <Stack direction="row" alignItems="center" spacing={1}>
-                                            <Box className={`${classes.status} ${procedureCode === '19014C' && 'yet'}`}>
-                                                {PROCEDURECODE[procedureCode]}
-                                            </Box>
-                                            <ArrowForwardIosOutlined fontSize="1rem" sx={{ color: 'text.gray' }} />
-                                        </Stack>
-                                    </ListItemButton>
-                                    <Divider />
-                                </Box>
-                            )
-                        })}
+                <List sx={{ overflowY: 'auto', height: '90%' }}>
+                    <CustomScrollbar>
+                        {scheduleList &&
+                            scheduleList.map((schedule) => {
+                                const { id: patientID, name } = schedule.patient
+                                const { _id: scheduleID, procedureCode, updatedAt } = schedule
+                                const config = genConfig(patientID)
+                                return (
+                                    <Box key={scheduleID}>
+                                        <ListItemButton
+                                            selected={selection === scheduleID}
+                                            onClick={() => handleSelectionClick(scheduleID)}
+                                        >
+                                            <ListItemAvatar>
+                                                <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                sx={{ ml: 1 }}
+                                                primary={<Box sx={{ fontSize: '1.6rem' }}>{name}</Box>}
+                                                secondary={
+                                                    <Stack>
+                                                        <Box>{patientID}</Box>
+                                                        <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
+                                                    </Stack>
+                                                }
+                                            ></ListItemText>
+                                            <Stack direction="row" alignItems="center" spacing={1}>
+                                                <Box
+                                                    className={`${classes.status} ${
+                                                        procedureCode === '19014C' && 'yet'
+                                                    }`}
+                                                >
+                                                    {PROCEDURECODE[procedureCode]}
+                                                </Box>
+                                                <ArrowForwardIosOutlined fontSize="1rem" sx={{ color: 'text.gray' }} />
+                                            </Stack>
+                                        </ListItemButton>
+                                        <Divider />
+                                    </Box>
+                                )
+                            })}
+                    </CustomScrollbar>
                 </List>
             </Grid>
             <Grid item xs={9}>
                 {selection && (
                     <Box sx={{ height: '100%' }}>
-                        <Box sx={{ width: '100%', height: '1%', display: 'flex', justifyContent: 'end' }}>
-                            {schedule?.status === 'wait-examination' && (
+                        <Box
+                            sx={{
+                                width: '100%',
+                                height: '1%',
+                                display: 'flex',
+                                justifyContent: 'end',
+                            }}
+                        >
+                            {schedule?.status === 'wait-examination' ? (
                                 <Button
                                     variant="outlined"
                                     startIcon={<Check />}
@@ -181,6 +217,16 @@ const CreateReport = () => {
                                 >
                                     暫存報告
                                 </Button>
+                            ) : (
+                                <FormControl variant="standard" sx={{ width: '5rem', mr: 2 }}>
+                                    <InputLabel id="select-label">版本</InputLabel>
+                                    <Select labelId="select-label" value={version} onChange={handleVersionOnChange}>
+                                        {report?.records &&
+                                            report?.records.map((record, index) => (
+                                                <MenuItem key={record.id} value={record.id}>{`v${index + 1}`}</MenuItem>
+                                            ))}
+                                    </Select>
+                                </FormControl>
                             )}
 
                             <Button
@@ -193,13 +239,12 @@ const CreateReport = () => {
                             </Button>
 
                             <Button
-                                variant="contained"
+                                variant="outlined"
                                 color="red"
                                 startIcon={<Close />}
                                 sx={{
                                     borderRadius: '2rem',
                                     height: '2.5rem',
-                                    color: 'secondary.main',
                                 }}
                                 onClick={deleteReportAndSchedule}
                             >
