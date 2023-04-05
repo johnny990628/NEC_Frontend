@@ -28,7 +28,7 @@ const useAlert = () => {
                         backdrop: false,
                         showCancelButton: true,
                         confirmButtonText: '確定',
-                        confirmButtonColor: theme.palette.primary.main,
+                        confirmButtonColor: theme.palette.red.main,
                         cancelButtonText: `取消`,
                     }).then((result) => {
                         if (result.isConfirmed) {

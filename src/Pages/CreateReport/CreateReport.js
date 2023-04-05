@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
     Badge,
     Box,
@@ -52,6 +52,7 @@ const CreateReport = () => {
     const [status, setStatus] = useState('wait-examination')
     const [version, setVersion] = useState('')
     const [report, setReport] = useState({})
+    const [number, setNumber] = useState({})
     const { schedules } = useSelector((state) => state.schedule)
 
     const dispatch = useDispatch()
@@ -100,6 +101,18 @@ const CreateReport = () => {
         setScheduleList(
             schedules.filter((schedule) => (status === 'all' ? true : schedule.status === status)).reverse()
         )
+        const numbers = schedules.reduce(
+            (acc, cur) => {
+                return { ...acc, all: acc['all'] + 1, [cur.status]: acc[cur.status] + 1 }
+            },
+            {
+                all: 0,
+                'wait-examination': 0,
+                'wait-finish': 0,
+                finish: 0,
+            }
+        )
+        setNumber(numbers)
     }, [status, schedules])
 
     useEffect(() => {
@@ -167,15 +180,36 @@ const CreateReport = () => {
         }
     }
 
+    const handleStatusClick = (status) => {
+        setStatus(status)
+    }
+    const statusList = useMemo(
+        () => [
+            { text: 'all', title: '所有報告' },
+            { text: 'wait-examination', title: '待打報告' },
+            { text: 'wait-finish', title: '暫存報告' },
+            { text: 'finish', title: '完成報告' },
+        ],
+        []
+    )
+
     return (
         <Grid container spacing={2} sx={{ height: '100%' }}>
             <Grid item xs={3}>
-                <ToggleButtonGroup color="primary" value={status} exclusive onChange={handleStatusChange}>
-                    <ToggleButton value="all">所有報告</ToggleButton>
-                    <ToggleButton value="wait-examination">待打報告</ToggleButton>
-                    <ToggleButton value="wait-finish">未完成報告</ToggleButton>
-                    <ToggleButton value="finish">已完成報告</ToggleButton>
-                </ToggleButtonGroup>
+                <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
+                    {statusList.map(({ text, title }) => (
+                        <Button
+                            key={text}
+                            className={classes.statusButton}
+                            variant={status === text ? 'outlined' : ''}
+                            color={status === text ? 'primary' : 'gray'}
+                            onClick={() => handleStatusClick(text)}
+                        >
+                            <Box sx={{ color: 'text.gray' }}>{title}</Box>
+                            <Box className={classes.number}>{number[text]}</Box>
+                        </Button>
+                    ))}
+                </Stack>
                 <List sx={{ overflowY: 'auto', height: '90%' }}>
                     <CustomScrollbar>
                         {scheduleList &&

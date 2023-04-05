@@ -42,6 +42,13 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1rem',
         margin: '1rem',
     },
+    number: {
+        fontSize: '2rem',
+    },
+    statusButton: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
 }))
 
 export default useStyles

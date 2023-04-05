@@ -127,7 +127,7 @@ const Patient = () => {
                             return {
                                 status: 'wait-finish',
                                 class: 'call',
-                                text: '等待報告完成',
+                                text: '暫存報告',
                                 icon: <AccessTime />,
                             }
                         return { status: 'yet', class: 'yet', text: '等待排程', icon: <CalendarToday /> }
