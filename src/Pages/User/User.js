@@ -64,7 +64,7 @@ const Report = () => {
                 Cell: (row) => (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Button
-                            sx={{ color: 'red.primary' }}
+                            sx={{ color: 'red.main' }}
                             startIcon={<Delete />}
                             onClick={() => handleDeleteUser(row.row.original._id)}
                         >

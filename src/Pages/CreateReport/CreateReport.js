@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
+    Badge,
     Box,
     Button,
     Divider,
@@ -96,7 +97,9 @@ const CreateReport = () => {
     }, [version])
 
     useEffect(() => {
-        setScheduleList(schedules.filter((schedule) => schedule.status === status))
+        setScheduleList(
+            schedules.filter((schedule) => (status === 'all' ? true : schedule.status === status)).reverse()
+        )
     }, [status, schedules])
 
     useEffect(() => {
@@ -151,10 +154,24 @@ const CreateReport = () => {
         setVersion(e.target.value)
     }
 
+    const badgeColor = (status) => {
+        switch (status) {
+            case 'wait-examination':
+                return 'red'
+            case 'wait-finish':
+                return 'yellow'
+            case 'finish':
+                return 'green'
+            default:
+                return ''
+        }
+    }
+
     return (
         <Grid container spacing={2} sx={{ height: '100%' }}>
             <Grid item xs={3}>
                 <ToggleButtonGroup color="primary" value={status} exclusive onChange={handleStatusChange}>
+                    <ToggleButton value="all">所有報告</ToggleButton>
                     <ToggleButton value="wait-examination">待打報告</ToggleButton>
                     <ToggleButton value="wait-finish">未完成報告</ToggleButton>
                     <ToggleButton value="finish">已完成報告</ToggleButton>
@@ -164,7 +181,7 @@ const CreateReport = () => {
                         {scheduleList &&
                             scheduleList.map((schedule) => {
                                 const { id: patientID, name } = schedule.patient
-                                const { _id: scheduleID, procedureCode, updatedAt } = schedule
+                                const { _id: scheduleID, procedureCode, updatedAt, status } = schedule
                                 const config = genConfig(patientID)
                                 return (
                                     <Box key={scheduleID}>
@@ -173,11 +190,20 @@ const CreateReport = () => {
                                             onClick={() => handleSelectionClick(scheduleID)}
                                         >
                                             <ListItemAvatar>
-                                                <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
+                                                <Badge variant="dot" color={badgeColor(status)}>
+                                                    <Avatar
+                                                        style={{ width: '3rem', height: '3rem' }}
+                                                        {...config}
+                                                    ></Avatar>
+                                                </Badge>
                                             </ListItemAvatar>
                                             <ListItemText
                                                 sx={{ ml: 1 }}
-                                                primary={<Box sx={{ fontSize: '1.6rem' }}>{name}</Box>}
+                                                primary={
+                                                    <Box display="flex">
+                                                        <Box sx={{ fontSize: '1.6rem' }}>{name}</Box>
+                                                    </Box>
+                                                }
                                                 secondary={
                                                     <Stack>
                                                         <Box>{patientID}</Box>
@@ -193,9 +219,11 @@ const CreateReport = () => {
                                                 >
                                                     {PROCEDURECODE[procedureCode]}
                                                 </Box>
+
                                                 <ArrowForwardIosOutlined fontSize="1rem" sx={{ color: 'text.gray' }} />
                                             </Stack>
                                         </ListItemButton>
+
                                         <Divider />
                                     </Box>
                                 )

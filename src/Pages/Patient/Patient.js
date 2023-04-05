@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { Box, Button, Stack } from '@mui/material'
+import { Badge, Box, Button, Stack } from '@mui/material'
 import { CalendarToday, Delete, Edit, Cancel, AccessTime, Check, ClearOutlined } from '@mui/icons-material'
 import Avatar, { genConfig } from 'react-nice-avatar'
 
@@ -23,6 +23,19 @@ const Patient = () => {
 
     const { data, count, page, loading } = useSelector((state) => state.patients)
 
+    const badgeColor = (status) => {
+        switch (status) {
+            case 'wait-examination':
+                return 'red'
+            case 'wait-finish':
+                return 'yellow'
+            case 'finish':
+                return 'green'
+            default:
+                return ''
+        }
+    }
+
     const columns = useMemo(
         () => [
             {
@@ -30,7 +43,14 @@ const Patient = () => {
                 Header: '',
                 Cell: (row) => {
                     const config = genConfig(row.row.original.id)
-                    return <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
+                    const status = row.row.original.schedule.find(
+                        (s) => s.status === 'wait-examination' || s.status === 'wait-finish'
+                    )
+                    return (
+                        <Badge variant="dot" color={status ? badgeColor(status.status) : 'green'}>
+                            <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
+                        </Badge>
+                    )
                 },
             },
             {
@@ -62,7 +82,7 @@ const Patient = () => {
                                 編輯
                             </Button>
                             <Button
-                                sx={{ color: 'red.primary' }}
+                                sx={{ color: 'red.main' }}
                                 startIcon={<Delete />}
                                 onClick={() => {
                                     showAlert({

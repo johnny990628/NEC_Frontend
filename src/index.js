@@ -38,18 +38,26 @@ const whiteTheme = createTheme({
             dark: 'rgba(100, 151, 151)',
         },
         status: {
-            processing: 'rgba(169, 191, 211,.1)',
-            processing_dark: 'rgb(110, 127, 183)',
+            processing: 'rgba(224, 71, 84,.1)',
+            processing_dark: 'rgba(224, 71, 84)',
             finish: 'rgba(95, 91, 160,.1)',
             finish_dark: 'rgba(95, 91, 160)',
             yet: 'rgba(109, 173, 173,.1)',
             yet_dark: 'rgba(109, 173, 173)',
-            call: 'rgba(95, 91, 160,.1)',
-            call_dark: 'rgba(95, 91, 160)',
+            call: 'rgba(244, 209, 80,.1)',
+            call_dark: 'rgba(244, 209, 80)',
+        },
+        green: {
+            main: '#95DBC3',
+        },
+        yellow: {
+            main: 'rgba(244, 209, 80)',
         },
         red: {
-            primary: 'rgb(224, 71, 84)',
             main: 'rgb(224, 71, 84)',
+        },
+        gray: {
+            main: '#9E9EA7',
         },
         box: {
             primary: 'rgba(255,255,255)',

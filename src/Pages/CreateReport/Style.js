@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
         // border: `1px solid ${theme.palette.border.main}`,
     },
     status: {
-        backgroundColor: theme.palette.status.processing,
-        border: `1px solid ${theme.palette.status.processing_dark}`,
-        color: theme.palette.status.processing_dark,
+        backgroundColor: theme.palette.status.finish,
+        border: `1px solid ${theme.palette.status.finish_dark}`,
+        color: theme.palette.status.finish_dark,
         padding: '.3rem .5rem',
         borderRadius: '1rem',
         // width: '50%',

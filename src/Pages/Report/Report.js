@@ -103,7 +103,7 @@ const Report = () => {
 
                                 <Authorized currentRole={user.role} authority={[3, 2]} noMatch={<></>}>
                                     <Button
-                                        sx={{ color: 'red.primary' }}
+                                        sx={{ color: 'red.main' }}
                                         startIcon={<Delete />}
                                         onClick={() => handleDeleteReport(row.row.original._id)}
                                     >
