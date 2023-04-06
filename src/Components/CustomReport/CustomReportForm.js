@@ -32,7 +32,7 @@ const FormSection = ({ list, mode }) => {
     const report = useSelector((state) => state.reportForm.report)
 
     const setupValue = (list) => {
-        if (report) return report.find((r) => r.name === list.name)
+        if (report) return report?.find((r) => r.name === list.name)
     }
 
     return (

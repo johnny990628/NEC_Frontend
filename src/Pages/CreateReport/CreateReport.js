@@ -58,6 +58,7 @@ const CreateReport = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const showAlert = useAlert()
+    const theme = useTheme()
 
     const initState = () => {
         setSelection(null)
@@ -95,6 +96,7 @@ const CreateReport = () => {
             const currentRecord = report.records.find((record) => record.id === version)
             dispatch(setupReport(currentRecord.report))
         }
+        console.log(version)
     }, [version])
 
     useEffect(() => {
@@ -224,12 +226,15 @@ const CreateReport = () => {
                                             onClick={() => handleSelectionClick(scheduleID)}
                                         >
                                             <ListItemAvatar>
-                                                <Badge variant="dot" color={badgeColor(status)}>
-                                                    <Avatar
-                                                        style={{ width: '3rem', height: '3rem' }}
-                                                        {...config}
-                                                    ></Avatar>
-                                                </Badge>
+                                                <Avatar
+                                                    style={{
+                                                        width: '3rem',
+                                                        height: '3rem',
+                                                        border: '5px solid ',
+                                                        borderColor: theme.palette[badgeColor(status)].main,
+                                                    }}
+                                                    {...config}
+                                                ></Avatar>
                                             </ListItemAvatar>
                                             <ListItemText
                                                 sx={{ ml: 1 }}

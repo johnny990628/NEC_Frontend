@@ -9,6 +9,7 @@ import EditDialog from './EditDialog'
 import GlobalFilter from '../../Components/GlobalFilter/GlobalFilter'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { useTheme } from '@mui/styles'
 import { deletePatient, createPatient, fetchPatients } from '../../Redux/Slices/Patient'
 import { openDialog } from '../../Redux/Slices/Dialog'
 import { addSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
@@ -20,6 +21,7 @@ const Patient = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const showAlert = useAlert()
+    const theme = useTheme()
 
     const { data, count, page, loading } = useSelector((state) => state.patients)
 
@@ -43,13 +45,20 @@ const Patient = () => {
                 Header: '',
                 Cell: (row) => {
                     const config = genConfig(row.row.original.id)
-                    const status = row.row.original.schedule.find(
+                    let status = row.row.original.schedule.find(
                         (s) => s.status === 'wait-examination' || s.status === 'wait-finish'
                     )
+                    status = status ? status.status : 'finish'
                     return (
-                        <Badge variant="dot" color={status ? badgeColor(status.status) : 'green'}>
-                            <Avatar style={{ width: '3rem', height: '3rem' }} {...config}></Avatar>
-                        </Badge>
+                        <Avatar
+                            style={{
+                                width: '3rem',
+                                height: '3rem',
+                                border: '5px solid ',
+                                borderColor: theme.palette[badgeColor(status)].main,
+                            }}
+                            {...config}
+                        ></Avatar>
                     )
                 },
             },
