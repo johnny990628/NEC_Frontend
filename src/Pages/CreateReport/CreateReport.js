@@ -4,6 +4,7 @@ import {
     Box,
     Button,
     Divider,
+    Fade,
     FormControl,
     Grid,
     InputLabel,
@@ -94,9 +95,8 @@ const CreateReport = () => {
     useEffect(() => {
         if (version) {
             const currentRecord = report.records.find((record) => record.id === version)
-            dispatch(setupReport(currentRecord.report))
+            if (currentRecord) dispatch(setupReport(currentRecord.report))
         }
-        console.log(version)
     }, [version])
 
     useEffect(() => {
@@ -256,7 +256,7 @@ const CreateReport = () => {
                                                         procedureCode === '19014C' && 'yet'
                                                     }`}
                                                 >
-                                                    {PROCEDURECODE[procedureCode]}
+                                                    {procedureCode}
                                                 </Box>
 
                                                 <ArrowForwardIosOutlined fontSize="1rem" sx={{ color: 'text.gray' }} />

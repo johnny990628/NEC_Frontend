@@ -148,6 +148,7 @@ const Patient = () => {
                             <Button
                                 className={`${classes.status} ${status.class} `}
                                 startIcon={status.icon}
+                                fullWidth
                                 onClick={() => {
                                     switch (status.status) {
                                         case 'wait-examination':

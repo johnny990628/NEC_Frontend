@@ -80,7 +80,7 @@ const Home = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <Box className={classes.box}>
-                            <LittleTable title={'目前報告'} rows={reports} cols={reportCol} route={'/report'} />
+                            <LittleTable title={'目前報告'} rows={reports} cols={reportCol} route={'/createReport'} />
                         </Box>
                     </Grid>
                 </Grid>

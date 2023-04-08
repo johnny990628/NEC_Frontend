@@ -25,6 +25,7 @@ import ReportList from './ReportList'
 import { Cast, History, Mic } from '@mui/icons-material'
 import useSpeech2Text from '../../Hooks/useSpeech2Text'
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
+import ChestMarker from './Component/ChestMarker'
 
 const FormSection = ({ list, mode }) => {
     const classes = useStyles()
@@ -250,7 +251,8 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
                 <Grid container sx={{ height: '100%' }}>
                     <Grid item xs={12}>
                         <CustomScrollbar>
-                            <Grid container spacing={2}>
+                            <ChestMarker />
+                            {/* <Grid container spacing={2}>
                                 <Grid item xs={12} xl={6}>
                                     {cols1?.map((col) => (
                                         <FormSection key={col.name} list={col} mode={mode} />
@@ -261,7 +263,7 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
                                         <FormSection key={col.name} list={col} mode={mode} />
                                     ))}
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                         </CustomScrollbar>
                     </Grid>
                     {/* {isComputer && patient.reports.length > 1 && (

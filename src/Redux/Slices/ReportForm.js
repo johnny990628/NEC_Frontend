@@ -13,7 +13,8 @@ export const fetchReportByReportID = createAsyncThunk('reportForm/fetchReportByR
     try {
         const response = await apiGetReportByReportID(reportID)
         const records = response.data.records
-        const record = records[records.length - 1].report
+        const record = records[records.length - 1].report || []
+
         return record
     } catch (e) {
         return e

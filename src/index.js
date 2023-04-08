@@ -44,14 +44,14 @@ const whiteTheme = createTheme({
             finish_dark: 'rgba(95, 91, 160)',
             yet: 'rgba(109, 173, 173,.1)',
             yet_dark: 'rgba(109, 173, 173)',
-            call: 'rgba(244, 209, 80,.1)',
-            call_dark: 'rgba(244, 209, 80)',
+            call: 'rgba(255, 204, 20,.1)',
+            call_dark: 'rgba(255, 204, 20)',
         },
         green: {
             main: '#95DBC3',
         },
         yellow: {
-            main: 'rgba(244, 209, 80)',
+            main: 'rgba(255, 204, 20)',
         },
         red: {
             main: 'rgb(224, 71, 84)',

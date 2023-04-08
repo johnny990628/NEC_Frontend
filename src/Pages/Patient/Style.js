@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '.5rem',
         // marginLeft: '.8rem',
         borderRadius: '1rem',
-        width: '80%',
+
         fontSize: '1rem',
         fontWeight: 'bold',
         '&.yet': {
