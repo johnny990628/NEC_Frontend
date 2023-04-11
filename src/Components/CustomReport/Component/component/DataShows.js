@@ -1,21 +1,30 @@
-import { Box, Grid, List, ListItem, Typography, ListSubheader, TextField } from '@mui/material'
-import { listText } from '../js/calculate'
+import { useEffect, useState } from 'react'
+import { Box, Button, IconButton } from '@mui/material'
+import DynamicForm from '../DynmicForm'
+import { addPoint } from '../../../../Redux/Slices/Breast'
+import { useDispatch, useSelector } from 'react-redux'
+import { v4 } from 'uuid'
+import { Add, ControlPoint } from '@mui/icons-material'
 
-const DataShows = ({ azimut, side }) => {
+const DataShows = ({ side }) => {
+    const dispatch = useDispatch()
+    const { report } = useSelector((state) => state.breast)
+
+    const handleAdd = () => {
+        dispatch(addPoint({ side, id: v4() }))
+    }
     return (
-        <Box style={{ textAlign: 'left' }}>
-            <h3>{side}</h3>
-            <ul dense={true}>
-                {azimut[side].length > 0
-                    ? azimut[side].map((item, index) => {
-                          return <li key={index}>{listText(item)}</li>
-                      })
-                    : null}
-            </ul>
-            <form>
-                <TextField label="方向" />
-                <TextField label="大小" />
-            </form>
+        <Box pr={8}>
+            <Box mb={4} sx={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                {side}
+            </Box>
+            {report[side].length > 0 &&
+                report[side].map(({ id }, index) => <DynamicForm key={id} side={side} id={id} no={index + 1} />)}
+            <Box mt={4}>
+                <Button variant="outlined" fullWidth startIcon={<Add />} onClick={handleAdd}>
+                    添加
+                </Button>
+            </Box>
         </Box>
     )
 }

@@ -45,10 +45,12 @@ const Main = ({ side, azimut, setAzimut, setOnEditMark }) => {
     const handClick = (event) => {
         const x = event.nativeEvent.pageX - ClockRef.current.getBoundingClientRect().x
         const y = event.nativeEvent.pageY - ClockRef.current.getBoundingClientRect().y
+
         var Azimut = {
             x: x / pxToMM,
             y: y / pxToMM,
         }
+        console.log(Azimut)
         const tempAzimut = azimut[side]
         tempAzimut.push({ Azimut, Size: 10 })
         setAzimut((azimut) => ({ ...azimut, [side]: [...tempAzimut] }))
