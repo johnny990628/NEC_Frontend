@@ -14,14 +14,12 @@ import {
     Popper,
 } from '@mui/material'
 import { useTheme } from '@mui/styles'
-import Avatar, { genConfig } from 'react-nice-avatar'
 import useStyles from './Style'
 
 import CustomReportInput from './CustomReportInput'
 import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
 import { useDispatch, useSelector } from 'react-redux'
 
-import ReportList from './ReportList'
 import { Cast, History, Mic } from '@mui/icons-material'
 import useSpeech2Text from '../../Hooks/useSpeech2Text'
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'

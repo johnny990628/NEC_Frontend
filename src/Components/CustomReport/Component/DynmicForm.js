@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { removePoint, updatePoint } from '../../../Redux/Slices/Breast'
 import { Clear, Remove } from '@mui/icons-material'
 
-const DynamicForm = ({ side, id, no }) => {
+const DynamicForm = ({ x, y, inputSize, side, id, no }) => {
     const dispatch = useDispatch()
     const { report, CHESTMAXSIZE, CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
     const [clock, setClock] = useState(12)
@@ -24,6 +24,10 @@ const DynamicForm = ({ side, id, no }) => {
 
         dispatch(updatePoint({ side, id, data: { id, x: y, y: x, size: size * 1 } }))
     }, [clock, size, distance])
+
+    useEffect(() => {
+        setSize(inputSize)
+    }, [x, y, inputSize])
 
     const handleDelete = () => {
         dispatch(removePoint({ side, id }))

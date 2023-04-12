@@ -35,9 +35,9 @@ import {
     setupSchedule,
     updateReport,
     fetchReportByReportID,
-    finishReport,
     setupReport,
-} from '../../Redux/Slices/ReportForm'
+    finishReport,
+} from '../../Redux/Slices/Breast'
 
 import { fetchSchedule, removeSchedule, removeScheduleByID } from '../../Redux/Slices/Schedule'
 

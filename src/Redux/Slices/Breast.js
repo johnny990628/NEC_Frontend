@@ -41,7 +41,7 @@ export const createReport = createAsyncThunk(
 export const updateReport = createAsyncThunk('breast/updateReport', async (_, { getState }) => {
     try {
         const {
-            reportForm: { schedule, report },
+            breast: { schedule, report },
             auth: {
                 user: { _id: userID },
             },
@@ -71,7 +71,7 @@ export const updateReport = createAsyncThunk('breast/updateReport', async (_, { 
 export const finishReport = createAsyncThunk('breast/finishReport', async (_, { getState }) => {
     try {
         const {
-            reportForm: { schedule, report },
+            breast: { schedule, report },
             auth: {
                 user: { _id: userID },
             },
@@ -122,6 +122,9 @@ const breastSlice = createSlice({
         resetReport: (state, action) => {
             return initialState
         },
+        setupSchedule: (state, action) => {
+            state['schedule'] = action.payload
+        },
 
         setupReport: (state, action) => {
             state['report'] = action.payload
@@ -143,6 +146,7 @@ const breastSlice = createSlice({
     },
 })
 
-export const { addPoint, updatePoint, removePoint, clearPoint, resetReport, setupReport } = breastSlice.actions
+export const { addPoint, updatePoint, removePoint, clearPoint, setupSchedule, resetReport, setupReport } =
+    breastSlice.actions
 
 export default breastSlice.reducer
