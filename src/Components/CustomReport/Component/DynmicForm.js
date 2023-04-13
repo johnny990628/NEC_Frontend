@@ -4,30 +4,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { removePoint, updatePoint } from '../../../Redux/Slices/Breast'
 import { Clear, Remove } from '@mui/icons-material'
 
-const DynamicForm = ({ x, y, inputSize, side, id, no }) => {
+const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no }) => {
     const dispatch = useDispatch()
-    const { report, CHESTMAXSIZE, CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
+    const { CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
     const [clock, setClock] = useState(12)
     const [size, setSize] = useState(1)
     const [distance, setDistance] = useState(0)
 
-    const firstUpdate = useRef(true)
     useEffect(() => {
-        if (firstUpdate.current) {
-            firstUpdate.current = false
-            return
-        }
-        const angle = (clock * 360) / 12 + 180
-        const radians = (angle * Math.PI) / 180
-        const x = CHESTMAXSIZE + Math.cos(radians) * distance * (CHESTMAXSIZE / CHESTMAXRADIUS)
-        const y = CHESTMAXSIZE - Math.sin(radians) * distance * (CHESTMAXSIZE / CHESTMAXRADIUS)
-
-        dispatch(updatePoint({ side, id, data: { id, x: y, y: x, size: size * 1 } }))
+        dispatch(updatePoint({ side, id, data: { id, clock, distance: distance * 1, size: size * 1 } }))
     }, [clock, size, distance])
 
     useEffect(() => {
-        setSize(inputSize)
-    }, [x, y, inputSize])
+        setSize((size) => (inputSize ? inputSize : size))
+        setClock((clock) => (inputClock ? inputClock : clock))
+        setDistance((diatance) => (inputDistance ? inputDistance : diatance))
+    }, [])
 
     const handleDelete = () => {
         dispatch(removePoint({ side, id }))
@@ -46,10 +38,10 @@ const DynamicForm = ({ x, y, inputSize, side, id, no }) => {
 
     return (
         <Stack fullWidth direction="row" spacing={2} mb={4} alignItems="end">
-            <Box mr={2} sx={{ fontSize: '1rem', fontWeight: 'bold' }}>{`${no}`}</Box>
+            <Box mr={1} sx={{ fontSize: '1rem', fontWeight: 'bold' }}>{`${no}`}</Box>
             <FormControl variant="standard">
                 <InputLabel id="select-angle">方向</InputLabel>
-                <Select labelId="select-angle" sx={{ minWidth: '4rem' }} value={clock} onChange={handleAngleChange}>
+                <Select labelId="select-angle" sx={{ minWidth: '3rem' }} value={clock} onChange={handleAngleChange}>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
                         <MenuItem key={item} value={item}>
                             {item}

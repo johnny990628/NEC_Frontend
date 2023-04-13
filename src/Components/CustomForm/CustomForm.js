@@ -18,7 +18,6 @@ const CustomForm = ({ title, row, mode, sendData }) => {
     const [id, setId] = useState('')
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
-    const [department, setDepartment] = useState('')
     const [birth, setBirth] = useState(new Date().toISOString())
     const [qrcode, setQrcode] = useState(null)
     const [errorField, setErrorField] = useState([])
@@ -37,7 +36,6 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             setId(row?.id)
             setName(row?.name)
             setPhone(row?.phone)
-            setDepartment(row?.department)
             setBirth(new Date(row.birth))
             setAutoProcessSwitch(false)
         }
@@ -49,7 +47,6 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             setId(id)
             setName(name)
             setPhone(phone)
-            setDepartment(department)
             setBirth(new Date(birth).toISOString())
             showAlert({ message: '掃描成功', icon: 'success' })
         }
@@ -61,7 +58,6 @@ const CustomForm = ({ title, row, mode, sendData }) => {
         setId('')
         setName('')
         setPhone('')
-        setDepartment('')
         setBirth(new Date().toISOString())
     }
 
@@ -149,7 +145,6 @@ const CustomForm = ({ title, row, mode, sendData }) => {
         { name: 'id', label: '身分證字號', value: id, setValue: setId, required: true },
         { name: 'name', label: '姓名', value: name, setValue: setName, required: true },
         { name: 'phone', label: '電話', value: phone, setValue: setPhone, required: true },
-        { name: 'department', label: '部門', value: department, setValue: setDepartment, required: false },
         { name: 'birth', label: '生日', value: birth, setValue: setBirth, required: true },
     ]
 
@@ -197,7 +192,6 @@ const CustomForm = ({ title, row, mode, sendData }) => {
                                     id,
                                     name,
                                     phone,
-                                    department,
                                     birth,
                                 })
                             }

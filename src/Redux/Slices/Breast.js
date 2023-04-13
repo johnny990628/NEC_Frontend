@@ -99,7 +99,7 @@ const breastSlice = createSlice({
             const { side, id } = action.payload
             state['report'] = {
                 ...state['report'],
-                [side]: [...state['report'][side], { id, x: state['CHESTMAXSIZE'], y: state['CHESTMAXSIZE'], size: 1 }],
+                [side]: [...state['report'][side], { id, clock: 12, distance: 0, size: 1 }],
             }
         },
         updatePoint: (state, action) => {

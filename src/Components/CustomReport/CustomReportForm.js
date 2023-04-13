@@ -171,30 +171,11 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
                 <Box
                     sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 1, height: '2%' }}
                 >
-                    {/* <Box className={classes.patientInfo}>
-                        <Avatar style={{ width: '4rem', height: '4rem', mr: 2 }} {...config}></Avatar>
-                        <Box sx={{ m: 2 }}>
-                            <Box sx={{ fontSize: '1.6rem' }}>{schedule.patient.name}</Box>
-                            <Box sx={{ fontSize: '1rem', color: 'text.gray', ml: '.2rem' }}>{schedule.patient.id}</Box>
-                        </Box>
-                    </Box> */}
                     <Stack
                         direction="row"
                         spacing={1}
                         sx={{ display: 'flex', alignItems: 'center', m: 1, height: '2%' }}
                     >
-                        {/* <Chip
-                            label={`${PROCEDURECODE[schedule.procedureCode]}`}
-                            className={classes.chip}
-                            variant="outlined"
-                            sx={{
-                                color:
-                                    schedule.procedureCode === '19014C' ? 'status.yet_dark' : 'status.processing_dark',
-                                backgroundColor:
-                                    schedule.procedureCode === '19014C' ? 'status.yet' : 'status.processing',
-                            }}
-                        /> */}
-
                         <Tooltip
                             onClose={() => setToolkitOpen(false)}
                             open={toolkitOpen}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Button, IconButton } from '@mui/material'
-import DynamicForm from '../DynmicForm'
-import { addPoint } from '../../../../Redux/Slices/Breast'
+import DynamicForm from './DynmicForm'
+import { addPoint } from '../../../Redux/Slices/Breast'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 } from 'uuid'
 import { Add, ControlPoint } from '@mui/icons-material'
@@ -20,8 +20,16 @@ const DataShows = ({ side }) => {
                 {side}
             </Box>
             {report[side].length > 0 &&
-                report[side].map(({ x, y, size, id }, index) => (
-                    <DynamicForm key={id} x={x} y={y} inputSize={size} side={side} id={id} no={index + 1} />
+                report[side].map(({ clock, distance, size, id }, index) => (
+                    <DynamicForm
+                        key={id}
+                        inputClock={clock}
+                        inputDistance={distance}
+                        inputSize={size}
+                        side={side}
+                        id={id}
+                        no={index + 1}
+                    />
                 ))}
             <Box mt={4}>
                 <Button variant="outlined" fullWidth startIcon={<Add />} onClick={handleAdd}>

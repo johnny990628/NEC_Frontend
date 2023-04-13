@@ -71,14 +71,14 @@ const routerList = [
         Component: Image,
         authority: [3, 1],
     },
-    {
-        display_name: '數據中心',
-        name: 'statistic',
-        icon: <InsertChartOutlined />,
-        path: '/statistic',
-        Component: Statistic,
-        authority: [4],
-    },
+    // {
+    //     display_name: '數據中心',
+    //     name: 'statistic',
+    //     icon: <InsertChartOutlined />,
+    //     path: '/statistic',
+    //     Component: Statistic,
+    //     authority: [4],
+    // },
 ]
 
 export default routerList

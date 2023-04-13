@@ -196,7 +196,7 @@ const CreateReport = () => {
     )
 
     return (
-        <Grid container spacing={2} sx={{ height: '100%' }}>
+        <Grid container spacing={2} sx={{ height: '100%', overflowY: 'hidden' }}>
             <Grid item xs={3}>
                 <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
                     {statusList.map(({ text, title }) => (

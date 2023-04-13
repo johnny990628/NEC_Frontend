@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { Announcement } from '@mui/icons-material'
 import Main from '../CustomReport/Component/component/Main'
 import Chest from './component/Chest'
-import DataShows from '../CustomReport/Component/component/DataShows'
+import DataShows from '../CustomReport/Component/DataShows'
 
 export const ReportFormForPDF = React.forwardRef((_, ref) => {
     return (
