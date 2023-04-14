@@ -182,22 +182,9 @@ const CustomForm = ({ title, row, mode, sendData }) => {
                         />
                     ))}
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', width: '70%', alignItems: 'center' }}>
                         {/* {mode === 'create' && <QRScanner onResult={(res) => setQrcode(JSON.parse(res))} />} */}
-                        <Button
-                            variant="contained"
-                            className={classes.button}
-                            onClick={() =>
-                                handleSubmit({
-                                    id,
-                                    name,
-                                    phone,
-                                    birth,
-                                })
-                            }
-                        >
-                            {mode === 'create' ? '新增' : '修改'}
-                        </Button>
+
                         <Button
                             variant="outlined"
                             className={classes.button}
@@ -214,6 +201,21 @@ const CustomForm = ({ title, row, mode, sendData }) => {
                             }}
                         >
                             {mode === 'create' ? '清除' : '取消'}
+                        </Button>
+
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            onClick={() =>
+                                handleSubmit({
+                                    id,
+                                    name,
+                                    phone,
+                                    birth,
+                                })
+                            }
+                        >
+                            {mode === 'create' ? '新增' : '修改'}
                         </Button>
                     </Box>
                 </Box>

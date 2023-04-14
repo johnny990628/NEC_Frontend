@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
     tableCell: {
         border: 0,
+        fontSize: '1.1rem',
     },
     tableRow: {
         // backgroundColor: theme.palette.secondary.main,

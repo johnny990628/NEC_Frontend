@@ -220,7 +220,13 @@ const CreateReport = () => {
                                 const { _id: scheduleID, procedureCode, updatedAt, status } = schedule
                                 const config = genConfig(patientID)
                                 return (
-                                    <Box key={scheduleID}>
+                                    <Box
+                                        key={scheduleID}
+                                        sx={{
+                                            borderLeft: '4px solid ',
+                                            borderColor: theme.palette[badgeColor(status)].main,
+                                        }}
+                                    >
                                         <ListItemButton
                                             selected={selection === scheduleID}
                                             onClick={() => handleSelectionClick(scheduleID)}
@@ -230,8 +236,6 @@ const CreateReport = () => {
                                                     style={{
                                                         width: '3rem',
                                                         height: '3rem',
-                                                        border: '5px solid ',
-                                                        borderColor: theme.palette[badgeColor(status)].main,
                                                     }}
                                                     {...config}
                                                 ></Avatar>

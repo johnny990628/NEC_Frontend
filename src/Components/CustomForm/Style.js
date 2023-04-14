@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     formWrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
     },
     formHeader: {
-        fontSize: '3rem',
+        fontSize: '2rem',
     },
     formContainer: {
         display: 'flex',
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     },
     textField: {
         margin: '1rem 2.8rem',
-        width: '28rem',
+        width: '24rem',
 
         [theme.breakpoints.down('md')]: {
             width: '15rem',

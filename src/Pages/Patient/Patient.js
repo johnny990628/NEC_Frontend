@@ -54,8 +54,6 @@ const Patient = () => {
                             style={{
                                 width: '3rem',
                                 height: '3rem',
-                                border: '5px solid ',
-                                borderColor: theme.palette[badgeColor(status)].main,
                             }}
                             {...config}
                         ></Avatar>
@@ -65,6 +63,7 @@ const Patient = () => {
             {
                 accessor: 'name',
                 Header: '姓名',
+                Cell: (row) => <Box sx={{ fontSize: '1.3rem' }}>{row.row.original.name}</Box>,
             },
             { accessor: 'id', Header: '身分證字號' },
 
@@ -84,6 +83,7 @@ const Patient = () => {
                         <Box>
                             <Button
                                 startIcon={<Edit color="primary" />}
+                                sx={{ fontSize: '1.1rem' }}
                                 onClick={() => {
                                     dispatch(openDialog({ row: row.row.original, type: 'patient' }))
                                 }}
@@ -91,8 +91,8 @@ const Patient = () => {
                                 編輯
                             </Button>
                             <Button
-                                sx={{ color: 'red.main' }}
                                 startIcon={<Delete />}
+                                sx={{ color: 'red.main', fontSize: '1.1rem' }}
                                 onClick={() => {
                                     showAlert({
                                         alertTitle: '確定刪除該病患?將會刪除所有相關資料',
