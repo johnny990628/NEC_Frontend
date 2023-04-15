@@ -1,23 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
-    Badge,
     Box,
     Button,
     Divider,
-    Fade,
     FormControl,
     Grid,
     InputLabel,
     List,
-    ListItem,
     ListItemAvatar,
     ListItemButton,
     ListItemText,
     MenuItem,
     Select,
     Stack,
-    ToggleButton,
-    ToggleButtonGroup,
 } from '@mui/material'
 import Avatar, { genConfig } from 'react-nice-avatar'
 import { Check, Close, ClearOutlined, ArrowForwardIosOutlined } from '@mui/icons-material'
@@ -37,6 +32,7 @@ import {
     fetchReportByReportID,
     setupReport,
     finishReport,
+    setupBirads,
 } from '../../Redux/Slices/Breast'
 
 import { fetchSchedule, removeSchedule, removeScheduleByID } from '../../Redux/Slices/Schedule'
@@ -54,7 +50,9 @@ const CreateReport = () => {
     const [version, setVersion] = useState('')
     const [report, setReport] = useState({})
     const [number, setNumber] = useState({})
+
     const { schedules } = useSelector((state) => state.schedule)
+    const { birads } = useSelector((state) => state.breast)
 
     const dispatch = useDispatch()
     const classes = useStyles()
@@ -167,6 +165,10 @@ const CreateReport = () => {
 
     const handleVersionOnChange = (e) => {
         setVersion(e.target.value)
+    }
+
+    const handleBiradsChange = (e) => {
+        dispatch(setupBirads(e.target.value))
     }
 
     const badgeColor = (status) => {
@@ -285,6 +287,14 @@ const CreateReport = () => {
                                 justifyContent: 'end',
                             }}
                         >
+                            <FormControl variant="standard" sx={{ width: '8rem', mr: 2 }}>
+                                <InputLabel id="select-birads">BI-RADS</InputLabel>
+                                <Select labelId="select-birads" value={birads} onChange={handleBiradsChange}>
+                                    {[1, 2, 3, 4, 5, 6].map((b) => (
+                                        <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                             {schedule?.status === 'wait-examination' ? (
                                 <Button
                                     variant="outlined"
@@ -296,8 +306,8 @@ const CreateReport = () => {
                                 </Button>
                             ) : (
                                 <FormControl variant="standard" sx={{ width: '5rem', mr: 2 }}>
-                                    <InputLabel id="select-label">版本</InputLabel>
-                                    <Select labelId="select-label" value={version} onChange={handleVersionOnChange}>
+                                    <InputLabel id="select-version">版本</InputLabel>
+                                    <Select labelId="select-version" value={version} onChange={handleVersionOnChange}>
                                         {report?.records &&
                                             report?.records.map((record, index) => (
                                                 <MenuItem key={record.id} value={record.id}>{`v${index + 1}`}</MenuItem>

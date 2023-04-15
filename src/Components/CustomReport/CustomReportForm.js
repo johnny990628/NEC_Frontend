@@ -176,7 +176,7 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
                         spacing={1}
                         sx={{ display: 'flex', alignItems: 'center', m: 1, height: '2%' }}
                     >
-                        <Tooltip
+                        {/* <Tooltip
                             onClose={() => setToolkitOpen(false)}
                             open={toolkitOpen}
                             disableFocusListener
@@ -192,7 +192,7 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
                             >
                                 {listening ? '辨識中' : '語音辨識'}
                             </Button>
-                        </Tooltip>
+                        </Tooltip> */}
 
                         <Button
                             variant={Boolean(dicomAnchorEl) ? 'outlined' : 'contained'}

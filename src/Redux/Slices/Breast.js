@@ -10,6 +10,7 @@ const initialState = {
     TUMORMAXSIZE: 3,
     schedule: {},
     report: { L: [], R: [] },
+    birads: 1,
 }
 
 export const fetchReportByReportID = createAsyncThunk('breast/fetchReportByReportID', async ({ reportID }) => {
@@ -17,8 +18,9 @@ export const fetchReportByReportID = createAsyncThunk('breast/fetchReportByRepor
         const response = await apiGetReportByReportID(reportID)
         const records = response.data.records
         const record = records[records.length - 1].report || []
+        const birads = records[records.length - 1].birads || 1
 
-        return record
+        return { record, birads }
     } catch (e) {
         return e
     }
@@ -41,7 +43,7 @@ export const createReport = createAsyncThunk(
 export const updateReport = createAsyncThunk('breast/updateReport', async (_, { getState }) => {
     try {
         const {
-            breast: { schedule, report },
+            breast: { schedule, report, birads },
             auth: {
                 user: { _id: userID },
             },
@@ -49,7 +51,7 @@ export const updateReport = createAsyncThunk('breast/updateReport', async (_, { 
 
         const response = await apiUpdateReport({
             reportID: schedule.reportID,
-            data: { report: { report, id: v4() }, userID },
+            data: { report: { report, id: v4(), birads }, userID },
         })
         schedule.status === 'finish'
             ? await apiUpdateScheduleStatus({
@@ -71,14 +73,14 @@ export const updateReport = createAsyncThunk('breast/updateReport', async (_, { 
 export const finishReport = createAsyncThunk('breast/finishReport', async (_, { getState }) => {
     try {
         const {
-            breast: { schedule, report },
+            breast: { schedule, report, birads },
             auth: {
                 user: { _id: userID },
             },
         } = getState()
         const response = await apiUpdateReport({
             reportID: schedule.reportID,
-            data: { report: { report, id: v4() }, userID },
+            data: { report: { report, id: v4(), birads }, userID },
         })
         await apiUpdateScheduleStatus({
             patientID: schedule.patientID,
@@ -125,14 +127,17 @@ const breastSlice = createSlice({
         setupSchedule: (state, action) => {
             state['schedule'] = action.payload
         },
-
         setupReport: (state, action) => {
             state['report'] = action.payload
+        },
+        setupBirads: (state, action) => {
+            state['birads'] = action.payload
         },
     },
     extraReducers: {
         [fetchReportByReportID.fulfilled]: (state, action) => {
-            return { ...state, report: action.payload }
+            const { record, birads } = action.payload
+            return { ...state, report: record, birads }
         },
         [createReport.fulfilled]: (state, action) => {
             return initialState
@@ -146,7 +151,7 @@ const breastSlice = createSlice({
     },
 })
 
-export const { addPoint, updatePoint, removePoint, clearPoint, setupSchedule, resetReport, setupReport } =
+export const { addPoint, updatePoint, removePoint, clearPoint, setupSchedule, resetReport, setupReport, setupBirads } =
     breastSlice.actions
 
 export default breastSlice.reducer
