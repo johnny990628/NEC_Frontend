@@ -10,11 +10,23 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         height: '100%',
     },
+    listContainer: {
+        backgroundColor: theme.palette.secondary.main,
+        padding: '1rem',
+
+        borderRadius: '1rem',
+    },
+    reportContainer: {
+        backgroundColor: theme.palette.secondary.main,
+        padding: '1rem',
+        marginLeft: '1rem',
+        borderRadius: '1rem',
+    },
     tableContainer: {
         padding: '2rem',
         width: '100%',
         height: '98%',
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.secondary.main,
         borderRadius: '1rem',
         // boxShadow: '6px 6px 10px rgba(0,0,0,0.2)',
         // border: `1px solid ${theme.palette.border.main}`,

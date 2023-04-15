@@ -41,39 +41,27 @@ const Patient = () => {
     const columns = useMemo(
         () => [
             {
-                accessor: 'avatar',
-                Header: '',
+                accessor: 'name',
+                Header: '姓名',
                 Cell: (row) => {
                     const config = genConfig(row.row.original.id)
-                    let status = row.row.original.schedule.find(
-                        (s) => s.status === 'wait-examination' || s.status === 'wait-finish'
-                    )
-                    status = status ? status.status : 'finish'
                     return (
-                        <Avatar
-                            style={{
-                                width: '3rem',
-                                height: '3rem',
-                            }}
-                            {...config}
-                        ></Avatar>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                            <Avatar
+                                style={{
+                                    width: '2.5rem',
+                                    height: '2.5rem',
+                                }}
+                                {...config}
+                            ></Avatar>
+                            <Box sx={{ fontSize: '1.3rem' }}>{row.row.original.name}</Box>
+                        </Stack>
                     )
                 },
             },
-            {
-                accessor: 'name',
-                Header: '姓名',
-                Cell: (row) => <Box sx={{ fontSize: '1.3rem' }}>{row.row.original.name}</Box>,
-            },
             { accessor: 'id', Header: '身分證字號' },
-
             { accessor: 'gender', Header: '性別', Cell: (row) => (row.row.original.gender === 'm' ? '男' : '女') },
 
-            {
-                accessor: 'createdAt',
-                Header: '建立日期',
-                Cell: (row) => new Date(row.row.original.createdAt).toLocaleString(),
-            },
             {
                 accessor: 'action',
                 Header: '操作',
@@ -109,6 +97,11 @@ const Patient = () => {
                         </Box>
                     )
                 },
+            },
+            {
+                accessor: 'createdAt',
+                Header: '建立日期',
+                Cell: (row) => new Date(row.row.original.createdAt).toLocaleString(),
             },
             {
                 accessor: 'schedule',

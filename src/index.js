@@ -19,11 +19,10 @@ const whiteTheme = createTheme({
         },
         secondary: {
             main: 'rgb(253, 253, 253)',
-            // main: 'rgba(240, 240, 240)',
         },
         background: {
-            // default: 'rgb(254, 254, 254)',
-            default: 'rgb(252, 252, 254)',
+            main: 'rgb(243, 243, 243)',
+            secondary: 'rgb(233,233,233)',
         },
         text: {
             primary: 'rgba(8, 40, 71)',

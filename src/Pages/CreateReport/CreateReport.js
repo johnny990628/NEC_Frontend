@@ -198,8 +198,8 @@ const CreateReport = () => {
     )
 
     return (
-        <Grid container spacing={2} sx={{ height: '100%', overflowY: 'hidden' }}>
-            <Grid item xs={3}>
+        <Grid container spacing={2} sx={{ height: '100%', overflowY: 'hidden', flexGrow: 1 }}>
+            <Grid item xs={3} className={classes.listContainer}>
                 <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
                     {statusList.map(({ text, title }) => (
                         <Button
@@ -276,7 +276,7 @@ const CreateReport = () => {
                     </CustomScrollbar>
                 </List>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={8.8} className={classes.reportContainer}>
                 {selection && (
                     <Box sx={{ height: '100%' }}>
                         <Box

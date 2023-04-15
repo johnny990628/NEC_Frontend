@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material'
 import { AssignmentTurnedIn, Delete, Edit } from '@mui/icons-material'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +10,7 @@ import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import { deleteUser, fetchUser, updateUser } from '../../Redux/Slices/User'
 import useAlert from '../../Hooks/useAlert'
+import Avatar, { genConfig } from 'react-nice-avatar'
 
 const Report = () => {
     const classes = useStyles()
@@ -33,7 +34,25 @@ const Report = () => {
 
     const columns = useMemo(
         () => [
-            { accessor: 'username', Header: '用戶名', Cell: (row) => row.row.original.username },
+            {
+                accessor: 'username',
+                Header: '用戶名',
+                Cell: (row) => {
+                    const config = genConfig(row.row.original.username)
+                    return (
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                            <Avatar
+                                style={{
+                                    width: '2.5rem',
+                                    height: '2.5rem',
+                                }}
+                                {...config}
+                            ></Avatar>
+                            <Box>{row.row.original.username}</Box>
+                        </Stack>
+                    )
+                },
+            },
             { accessor: 'name', Header: '姓名', Cell: (row) => row.row.original.name },
             {
                 accessor: 'createdAt',
