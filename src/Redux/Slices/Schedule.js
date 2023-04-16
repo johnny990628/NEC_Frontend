@@ -11,9 +11,9 @@ import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
 import { handleError } from './Error'
 
-export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async ({ status }, thunkAPI) => {
+export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (params, thunkAPI) => {
     try {
-        const response = await apiGetSchdules({ status })
+        const response = await apiGetSchdules(params)
         const { results, count } = response.data
 
         return {
@@ -21,7 +21,6 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async ({
             count,
         }
     } catch (e) {
-        console.log(e)
         thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
     }
@@ -73,19 +72,27 @@ export const removeScheduleByID = createAsyncThunk(
     }
 )
 
-const initialState = { schedules: [], count: 0 }
+const initialState = { schedules: [], count: 0, loading: false }
 const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,
     extraReducers: {
+        [fetchSchedule.pending]: (state, action) => {
+            return {
+                ...state,
+                loading: true,
+            }
+        },
         [fetchSchedule.fulfilled]: (state, action) => {
             return {
                 ...action.payload,
+                loading: false,
             }
         },
         [fetchSchedule.rejected]: (state, action) => {
             return {
                 ...state,
+                loading: false,
             }
         },
     },

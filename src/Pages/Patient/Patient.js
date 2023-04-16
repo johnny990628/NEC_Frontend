@@ -101,7 +101,14 @@ const Patient = () => {
             {
                 accessor: 'createdAt',
                 Header: '建立日期',
-                Cell: (row) => new Date(row.row.original.createdAt).toLocaleString(),
+                Cell: (row) => (
+                    <Box>
+                        <Box>{new Date(row.row.original.createdAt).toLocaleDateString()}</Box>
+                        <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                            {new Date(row.row.original.createdAt).toLocaleTimeString()}
+                        </Box>
+                    </Box>
+                ),
             },
             {
                 accessor: 'schedule',

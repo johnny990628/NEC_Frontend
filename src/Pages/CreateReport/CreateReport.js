@@ -2,9 +2,13 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
     Box,
     Button,
+    CircularProgress,
+    Dialog,
+    DialogContent,
     Divider,
     FormControl,
     Grid,
+    IconButton,
     InputLabel,
     List,
     ListItemAvatar,
@@ -13,10 +17,23 @@ import {
     MenuItem,
     Select,
     Stack,
+    TextField,
 } from '@mui/material'
 import Avatar, { genConfig } from 'react-nice-avatar'
-import { Check, Close, ClearOutlined, ArrowForwardIosOutlined } from '@mui/icons-material'
+import {
+    Check,
+    Close,
+    ClearOutlined,
+    ArrowForwardIosOutlined,
+    DateRange,
+    ArrowLeft,
+    ArrowRight,
+    Search,
+} from '@mui/icons-material'
 import { useTheme } from '@mui/styles'
+import { zhTW } from 'date-fns/locale'
+import { addDays, format, parseISO } from 'date-fns'
+
 import useStyles from './Style'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,6 +58,8 @@ import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 import { deleteReport } from '../../Redux/Slices/Report'
 import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
 import useAlert from '../../Hooks/useAlert'
+import { DayPicker } from 'react-day-picker'
+import { useDebouncedCallback } from 'use-debounce'
 
 const CreateReport = () => {
     const [selection, setSelection] = useState(null)
@@ -50,8 +69,12 @@ const CreateReport = () => {
     const [version, setVersion] = useState('')
     const [report, setReport] = useState({})
     const [number, setNumber] = useState({})
+    const [date, setDate] = useState(new Date())
+    const [searchText, setSearchText] = useState('')
+    const [search, setSearch] = useState('')
+    const [dateDialogOpen, setDateDialogOpen] = useState(false)
 
-    const { schedules } = useSelector((state) => state.schedule)
+    const { schedules, loading } = useSelector((state) => state.schedule)
     const { birads } = useSelector((state) => state.breast)
 
     const dispatch = useDispatch()
@@ -116,12 +139,15 @@ const CreateReport = () => {
     }, [status, schedules])
 
     useEffect(() => {
-        dispatch(fetchSchedule({ status: '' }))
+        const dateFrom = date.toLocaleDateString()
+        const dateTo = new Date(addDays(date, 1)).toLocaleDateString()
 
-        return () => {
-            // dispatch(updateReport())
-        }
-    }, [])
+        dispatch(fetchSchedule({ search, dateFrom, dateTo }))
+    }, [search, date])
+
+    const handleSearch = useDebouncedCallback((text) => {
+        setSearch(text)
+    }, 500)
 
     const handleReportSave = () => {
         dispatch(updateReport())
@@ -187,6 +213,14 @@ const CreateReport = () => {
     const handleStatusClick = (status) => {
         setStatus(status)
     }
+
+    const handleDateSelect = (range) => {
+        setDate(range)
+    }
+    const handleDialogClose = () => {
+        setDateDialogOpen(false)
+    }
+
     const statusList = useMemo(
         () => [
             { text: 'all', title: '所有報告' },
@@ -200,6 +234,21 @@ const CreateReport = () => {
     return (
         <Grid container spacing={2} sx={{ height: '100%', overflowY: 'hidden', flexGrow: 1 }}>
             <Grid item xs={3} className={classes.listContainer}>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Box sx={{ fontSize: '1.8rem', color: 'gray.main' }}>{new Date(date).toLocaleDateString()}</Box>
+                    <Box>
+                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, -1))}>
+                            <ArrowLeft />
+                        </IconButton>
+                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDateDialogOpen(true)}>
+                            <DateRange />
+                        </IconButton>
+                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, 1))}>
+                            <ArrowRight />
+                        </IconButton>
+                    </Box>
+                </Box>
+
                 <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
                     {statusList.map(({ text, title }) => (
                         <Button
@@ -214,6 +263,28 @@ const CreateReport = () => {
                         </Button>
                     ))}
                 </Stack>
+                <Box display="flex" sx={{ width: '100%' }} mb={2}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                        <Search sx={{ color: 'gray.main', mr: 1 }} />
+                        <TextField
+                            variant="standard"
+                            sx={{ width: 300 }}
+                            value={searchText}
+                            onChange={(e) => {
+                                setSearchText(e.target.value)
+                                handleSearch(e.target.value)
+                            }}
+                        />
+                    </Box>
+                    <Box style={{ marginLeft: '1rem' }}>
+                        {loading ? (
+                            <CircularProgress color="primary" size={20} />
+                        ) : (
+                            <Box style={{ width: '20px' }}></Box>
+                        )}
+                    </Box>
+                </Box>
+
                 <List sx={{ overflowY: 'auto', height: '90%' }}>
                     <CustomScrollbar>
                         {scheduleList &&
@@ -342,6 +413,33 @@ const CreateReport = () => {
                     </Box>
                 )}
             </Grid>
+
+            <Dialog open={dateDialogOpen} onClose={handleDialogClose}>
+                <DialogContent>
+                    <DayPicker
+                        mode="single"
+                        selected={date}
+                        onSelect={handleDateSelect}
+                        fromYear={1930}
+                        toYear={new Date().getFullYear()}
+                        captionLayout="dropdown"
+                        locale={zhTW}
+                        footer={
+                            <>
+                                <TextField
+                                    fullWidth
+                                    value={format(date, 'y-MM-dd')}
+                                    onChange={handleDateSelect}
+                                    sx={{ mt: 2 }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                />
+                            </>
+                        }
+                    />
+                </DialogContent>
+            </Dialog>
         </Grid>
     )
 }
