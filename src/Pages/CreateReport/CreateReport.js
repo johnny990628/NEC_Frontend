@@ -235,7 +235,7 @@ const CreateReport = () => {
         <Grid container spacing={2} sx={{ height: '100%', overflowY: 'hidden', flexGrow: 1 }}>
             <Grid item xs={3} className={classes.listContainer}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Box sx={{ fontSize: '1.8rem', color: 'gray.main' }}>{new Date(date).toLocaleDateString()}</Box>
+                    <Box sx={{ fontSize: '1.6rem', color: 'gray.main' }}>{new Date(date).toLocaleDateString()}</Box>
                     <Box>
                         <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, -1))}>
                             <ArrowLeft />
@@ -263,7 +263,7 @@ const CreateReport = () => {
                         </Button>
                     ))}
                 </Stack>
-                <Box display="flex" sx={{ width: '100%' }} mb={2}>
+                {/* <Box display="flex" sx={{ width: '100%' }} mb={2}>
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                         <Search sx={{ color: 'gray.main', mr: 1 }} />
                         <TextField
@@ -283,7 +283,7 @@ const CreateReport = () => {
                             <Box style={{ width: '20px' }}></Box>
                         )}
                     </Box>
-                </Box>
+                </Box> */}
 
                 <List sx={{ overflowY: 'auto', height: '90%' }}>
                     <CustomScrollbar>

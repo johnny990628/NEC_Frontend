@@ -55,7 +55,18 @@ const Image = () => {
             { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
             { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
             { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
-            { accessor: 'StudyDate', Header: '報告日期', Cell: (row) => row.row.original.StudyDate },
+            {
+                accessor: 'StudyDate',
+                Header: '報告日期',
+                Cell: (row) => (
+                    <Box>
+                        <Box>{new Date(row.row.original.StudyDate).toLocaleDateString()}</Box>
+                        <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                            {new Date(row.row.original.StudyDate).toLocaleTimeString()}
+                        </Box>
+                    </Box>
+                ),
+            },
         ],
         []
     )

@@ -55,11 +55,6 @@ const Report = () => {
             },
             { accessor: 'name', Header: '姓名', Cell: (row) => row.row.original.name },
             {
-                accessor: 'createdAt',
-                Header: '註冊時間',
-                Cell: (row) => new Date(row.row.original.createdAt).toLocaleString(),
-            },
-            {
                 accessor: 'status',
                 Header: '狀態',
                 Cell: (row) => {
@@ -77,6 +72,19 @@ const Report = () => {
                     )
                 },
             },
+            {
+                accessor: 'createdAt',
+                Header: '註冊時間',
+                Cell: (row) => (
+                    <Box>
+                        <Box>{new Date(row.row.original.createdAt).toLocaleDateString()}</Box>
+                        <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                            {new Date(row.row.original.createdAt).toLocaleTimeString()}
+                        </Box>
+                    </Box>
+                ),
+            },
+
             {
                 accessor: 'actions',
                 Header: '操作',

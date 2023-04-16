@@ -46,12 +46,12 @@ const Home = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={6} lg={4}>
                         <Box className={classes.box}>
-                            <LittleCard title={'等待檢查'} value={count.schedule} total={count.patient} />
+                            <LittleCard title={'等待檢查'} value={count.waitExamination} total={count.patient} />
                         </Box>
                     </Grid>
                     <Grid item xs={6} lg={4}>
                         <Box className={classes.box}>
-                            <LittleCard title={'已完成報告'} value={count.report} total={count.patient} />
+                            <LittleCard title={'代打報告'} value={count.waitFinish} total={count.patient} />
                         </Box>
                     </Grid>
                     <Grid item xs={6} lg={4}>
