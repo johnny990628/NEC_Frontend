@@ -55,6 +55,34 @@ const Report = () => {
             },
             { accessor: 'name', Header: '姓名', Cell: (row) => row.row.original.name },
             {
+                accessor: 'actions',
+                Header: '操作',
+                Cell: (row) => (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Button
+                            sx={{ color: 'red.main' }}
+                            startIcon={<Delete />}
+                            onClick={() => handleDeleteUser(row.row.original._id)}
+                        >
+                            刪除
+                        </Button>
+                    </Box>
+                ),
+            },
+            {
+                accessor: 'createdAt',
+                Header: '註冊時間',
+                Cell: (row) => (
+                    <Box>
+                        <Box>{new Date(row.row.original.createdAt).toLocaleDateString()}</Box>
+                        <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                            {new Date(row.row.original.createdAt).toLocaleTimeString()}
+                        </Box>
+                    </Box>
+                ),
+            },
+
+            {
                 accessor: 'status',
                 Header: '狀態',
                 Cell: (row) => {
@@ -71,34 +99,6 @@ const Report = () => {
                         </Select>
                     )
                 },
-            },
-            {
-                accessor: 'createdAt',
-                Header: '註冊時間',
-                Cell: (row) => (
-                    <Box>
-                        <Box>{new Date(row.row.original.createdAt).toLocaleDateString()}</Box>
-                        <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
-                            {new Date(row.row.original.createdAt).toLocaleTimeString()}
-                        </Box>
-                    </Box>
-                ),
-            },
-
-            {
-                accessor: 'actions',
-                Header: '操作',
-                Cell: (row) => (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Button
-                            sx={{ color: 'red.main' }}
-                            startIcon={<Delete />}
-                            onClick={() => handleDeleteUser(row.row.original._id)}
-                        >
-                            刪除
-                        </Button>
-                    </Box>
-                ),
             },
         ],
         []
