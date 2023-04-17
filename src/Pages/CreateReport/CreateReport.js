@@ -328,13 +328,15 @@ const CreateReport = () => {
                                                 }
                                             ></ListItemText>
                                             <Stack direction="row" alignItems="center" spacing={1}>
-                                                <Box
-                                                    className={`${classes.status} ${
-                                                        procedureCode === '19014C' && 'yet'
-                                                    }`}
-                                                >
-                                                    {procedureCode}
-                                                </Box>
+                                                {procedureCode && (
+                                                    <Box
+                                                        className={`${classes.status} ${
+                                                            procedureCode === '19014C' && 'yet'
+                                                        }`}
+                                                    >
+                                                        {procedureCode}
+                                                    </Box>
+                                                )}
 
                                                 <ArrowForwardIosOutlined fontSize="1rem" sx={{ color: 'text.gray' }} />
                                             </Stack>
