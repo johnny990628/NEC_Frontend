@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'left',
         padding: '2rem 6rem 2rem 2rem',
         backgroundColor: theme.palette.background.main,
-        // backgroundColor: theme.palette.background.default,
         transition: 'all .4s ease-in',
         '&.close': {
             width: 'calc(100% - var(--sidebar-close-width))',

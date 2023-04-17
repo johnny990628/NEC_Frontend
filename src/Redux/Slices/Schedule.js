@@ -76,6 +76,11 @@ const initialState = { schedules: [], count: 0, loading: false }
 const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,
+    reducers: {
+        scheduleTrigger: (state, action) => {
+            return { ...state, count: -1 }
+        },
+    },
     extraReducers: {
         [fetchSchedule.pending]: (state, action) => {
             return {
@@ -85,6 +90,7 @@ const scheduleSlice = createSlice({
         },
         [fetchSchedule.fulfilled]: (state, action) => {
             return {
+                ...state,
                 ...action.payload,
                 loading: false,
             }
@@ -98,4 +104,5 @@ const scheduleSlice = createSlice({
     },
 })
 
+export const { scheduleTrigger } = scheduleSlice.actions
 export default scheduleSlice.reducer

@@ -52,7 +52,7 @@ import {
     setupBirads,
 } from '../../Redux/Slices/Breast'
 
-import { fetchSchedule, removeSchedule, removeScheduleByID } from '../../Redux/Slices/Schedule'
+import { fetchSchedule, removeSchedule, removeScheduleByID, setupDate } from '../../Redux/Slices/Schedule'
 
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 import { deleteReport } from '../../Redux/Slices/Report'
@@ -74,7 +74,7 @@ const CreateReport = () => {
     const [search, setSearch] = useState('')
     const [dateDialogOpen, setDateDialogOpen] = useState(false)
 
-    const { schedules, loading } = useSelector((state) => state.schedule)
+    const { schedules, loading, count } = useSelector((state) => state.schedule)
     const { birads } = useSelector((state) => state.breast)
 
     const dispatch = useDispatch()
@@ -142,8 +142,8 @@ const CreateReport = () => {
         const dateFrom = date.toLocaleDateString()
         const dateTo = new Date(addDays(date, 1)).toLocaleDateString()
 
-        dispatch(fetchSchedule({ search, dateFrom, dateTo }))
-    }, [search, date])
+        dispatch(fetchSchedule({ dateFrom, dateTo }))
+    }, [date, count])
 
     const handleSearch = useDebouncedCallback((text) => {
         setSearch(text)

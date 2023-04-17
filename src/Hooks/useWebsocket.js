@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { departmentTrigger } from '../Redux/Slices/Department'
 import { fetchDepartments4List } from '../Redux/Slices/Department4List'
 import { patientTrigger } from '../Redux/Slices/Patient'
 import { reportTrigger } from '../Redux/Slices/Report'
 import { userTrigger } from '../Redux/Slices/User'
-import { fetchSchedule } from './../Redux/Slices/Schedule'
+import { fetchSchedule, scheduleTrigger } from './../Redux/Slices/Schedule'
 
 function WebSocketComponent() {
     const ws = useRef(null)
@@ -46,7 +46,7 @@ function WebSocketComponent() {
                 break
             case 'schedules':
                 dispatch(patientTrigger())
-                dispatch(fetchSchedule({ status: '' }))
+                dispatch(scheduleTrigger())
                 break
             case 'departments':
                 dispatch(departmentTrigger())
@@ -54,7 +54,7 @@ function WebSocketComponent() {
                 break
             case 'reports':
                 dispatch(reportTrigger())
-                dispatch(fetchSchedule({ status: '' }))
+                dispatch(scheduleTrigger())
                 break
             case 'users':
                 dispatch(userTrigger())

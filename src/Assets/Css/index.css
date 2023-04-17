@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
 :root {
-    --main-bg: #e4ece2;
+    --main-bg: #f3f3f3;
     --text-color: rgba(8, 40, 71);
     --sidebar-open-width: 15rem;
     --sidebar-close-width: 5rem;
@@ -12,4 +12,5 @@ body {
     position: relative;
     min-height: 100vh;
     width: 100%;
+    background-color: #f3f3f3;
 }
