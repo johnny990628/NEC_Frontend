@@ -34,6 +34,18 @@ const Image = () => {
     const columns = useMemo(
         () => [
             {
+                accessor: 'image',
+                Header: '超音波',
+                Cell: (row) => (
+                    <img
+                        src={row.row.original.imageURL}
+                        alt={row.row.original.StudyInstanceUID}
+                        width={80}
+                        height={100}
+                    />
+                ),
+            },
+            {
                 accessor: 'StudyInstanceUID',
                 Header: '報告ID',
                 Cell: (row) => {
@@ -52,11 +64,7 @@ const Image = () => {
                     )
                 },
             },
-            {
-                accessor: 'image',
-                Header: '超音波',
-                Cell: (row) => <img src={row.row.original.imageURL} alt={row.row.original.StudyInstanceUID} />,
-            },
+
             { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
             { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
             { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
