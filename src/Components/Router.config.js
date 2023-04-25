@@ -69,7 +69,7 @@ const routerList = [
         icon: <InsertPhotoOutlined />,
         path: '/image',
         Component: Image,
-        authority: [3, 1],
+        authority: [3, 2, 1],
     },
     // {
     //     display_name: '數據中心',
