@@ -232,36 +232,115 @@ const CreateReport = () => {
     )
 
     return (
-        <Grid container spacing={2} sx={{ height: '100%', overflowY: 'hidden', flexGrow: 1 }}>
-            <Grid item xs={3} className={classes.listContainer}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Box sx={{ fontSize: '1.6rem', color: 'gray.main' }}>{new Date(date).toLocaleDateString()}</Box>
-                    <Box>
-                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, -1))}>
-                            <ArrowLeft />
-                        </IconButton>
-                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDateDialogOpen(true)}>
-                            <DateRange />
-                        </IconButton>
-                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, 1))}>
-                            <ArrowRight />
-                        </IconButton>
+        <Grid container sx={{ overflowY: 'hidden', flexGrow: 1 }}>
+            <Grid item xs={3}>
+                <Stack>
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mb={2}
+                        className={classes.listContainer}
+                    >
+                        <Box sx={{ fontSize: '1.6rem', color: 'gray.main' }}>{new Date(date).toLocaleDateString()}</Box>
+                        <Box>
+                            <IconButton
+                                sx={{ color: 'gray.main' }}
+                                onClick={() => setDate((date) => addDays(date, -1))}
+                            >
+                                <ArrowLeft />
+                            </IconButton>
+                            <IconButton sx={{ color: 'gray.main' }} onClick={() => setDateDialogOpen(true)}>
+                                <DateRange />
+                            </IconButton>
+                            <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, 1))}>
+                                <ArrowRight />
+                            </IconButton>
+                        </Box>
                     </Box>
-                </Box>
 
-                <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
-                    {statusList.map(({ text, title }) => (
-                        <Button
-                            key={text}
-                            className={classes.statusButton}
-                            variant={status === text ? 'outlined' : ''}
-                            color={status === text ? 'primary' : 'gray'}
-                            onClick={() => handleStatusClick(text)}
-                        >
-                            <Box sx={{ color: 'text.gray' }}>{title}</Box>
-                            <Box className={classes.number}>{number[text]}</Box>
-                        </Button>
-                    ))}
+                    <Box className={classes.listContainer} sx={{ height: '84vh' }}>
+                        <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
+                            {statusList.map(({ text, title }) => (
+                                <Button
+                                    key={text}
+                                    className={classes.statusButton}
+                                    variant={status === text ? 'outlined' : ''}
+                                    color={status === text ? 'primary' : 'gray'}
+                                    onClick={() => handleStatusClick(text)}
+                                >
+                                    <Box sx={{ color: 'text.gray' }}>{title}</Box>
+                                    <Box className={classes.number}>{number[text]}</Box>
+                                </Button>
+                            ))}
+                        </Stack>
+                        <List sx={{ overflowY: 'auto', height: '74%' }}>
+                            <CustomScrollbar>
+                                {scheduleList &&
+                                    scheduleList.map((schedule) => {
+                                        const { id: patientID, name } = schedule.patient
+                                        const { _id: scheduleID, procedureCode, updatedAt, status } = schedule
+                                        const config = genConfig(patientID)
+                                        return (
+                                            <Box
+                                                key={scheduleID}
+                                                sx={{
+                                                    borderLeft: '4px solid ',
+                                                    borderColor: theme.palette[badgeColor(status)].main,
+                                                }}
+                                            >
+                                                <ListItemButton
+                                                    selected={selection === scheduleID}
+                                                    onClick={() => handleSelectionClick(scheduleID)}
+                                                >
+                                                    <ListItemAvatar>
+                                                        <Avatar
+                                                            style={{
+                                                                width: '3rem',
+                                                                height: '3rem',
+                                                            }}
+                                                            {...config}
+                                                        ></Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText
+                                                        sx={{ ml: 1 }}
+                                                        primary={
+                                                            <Box display="flex">
+                                                                <Box sx={{ fontSize: '1.6rem' }}>{name}</Box>
+                                                            </Box>
+                                                        }
+                                                        secondary={
+                                                            <Stack>
+                                                                <Box>{patientID}</Box>
+                                                                <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
+                                                            </Stack>
+                                                        }
+                                                    ></ListItemText>
+                                                    <Stack direction="row" alignItems="center" spacing={1}>
+                                                        {procedureCode && (
+                                                            <Box
+                                                                className={`${classes.status} ${
+                                                                    procedureCode === '19014C' && 'yet'
+                                                                }`}
+                                                            >
+                                                                {procedureCode}
+                                                            </Box>
+                                                        )}
+
+                                                        <ArrowForwardIosOutlined
+                                                            fontSize="1rem"
+                                                            sx={{ color: 'text.gray' }}
+                                                        />
+                                                    </Stack>
+                                                </ListItemButton>
+
+                                                <Divider />
+                                            </Box>
+                                        )
+                                    })}
+                            </CustomScrollbar>
+                        </List>
+                    </Box>
                 </Stack>
                 {/* <Box display="flex" sx={{ width: '100%' }} mb={2}>
                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -284,70 +363,6 @@ const CreateReport = () => {
                         )}
                     </Box>
                 </Box> */}
-
-                <List sx={{ overflowY: 'auto', height: '90%' }}>
-                    <CustomScrollbar>
-                        {scheduleList &&
-                            scheduleList.map((schedule) => {
-                                const { id: patientID, name } = schedule.patient
-                                const { _id: scheduleID, procedureCode, updatedAt, status } = schedule
-                                const config = genConfig(patientID)
-                                return (
-                                    <Box
-                                        key={scheduleID}
-                                        sx={{
-                                            borderLeft: '4px solid ',
-                                            borderColor: theme.palette[badgeColor(status)].main,
-                                        }}
-                                    >
-                                        <ListItemButton
-                                            selected={selection === scheduleID}
-                                            onClick={() => handleSelectionClick(scheduleID)}
-                                        >
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    style={{
-                                                        width: '3rem',
-                                                        height: '3rem',
-                                                    }}
-                                                    {...config}
-                                                ></Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                sx={{ ml: 1 }}
-                                                primary={
-                                                    <Box display="flex">
-                                                        <Box sx={{ fontSize: '1.6rem' }}>{name}</Box>
-                                                    </Box>
-                                                }
-                                                secondary={
-                                                    <Stack>
-                                                        <Box>{patientID}</Box>
-                                                        <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
-                                                    </Stack>
-                                                }
-                                            ></ListItemText>
-                                            <Stack direction="row" alignItems="center" spacing={1}>
-                                                {procedureCode && (
-                                                    <Box
-                                                        className={`${classes.status} ${
-                                                            procedureCode === '19014C' && 'yet'
-                                                        }`}
-                                                    >
-                                                        {procedureCode}
-                                                    </Box>
-                                                )}
-
-                                                <ArrowForwardIosOutlined fontSize="1rem" sx={{ color: 'text.gray' }} />
-                                            </Stack>
-                                        </ListItemButton>
-
-                                        <Divider />
-                                    </Box>
-                                )
-                            })}
-                    </CustomScrollbar>
-                </List>
             </Grid>
             <Grid item xs={8.8} className={classes.reportContainer}>
                 {selection && (
