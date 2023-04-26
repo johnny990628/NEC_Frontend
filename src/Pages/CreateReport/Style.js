@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.status.finish_dark,
         padding: '.3rem .5rem',
         borderRadius: '1rem',
+        fontSize: '.8rem',
         // width: '50%',
         '&.yet': {
             backgroundColor: theme.palette.status.yet,
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '1rem',
     },
     number: {
-        fontSize: '2rem',
+        fontSize: '1.6rem',
     },
     statusButton: {
         display: 'flex',

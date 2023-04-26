@@ -142,8 +142,8 @@ const CreateReport = () => {
         const dateFrom = date.toLocaleDateString()
         const dateTo = new Date(addDays(date, 1)).toLocaleDateString()
 
-        dispatch(fetchSchedule({ dateFrom, dateTo }))
-    }, [date, count])
+        dispatch(fetchSchedule({ dateFrom, dateTo, search }))
+    }, [date, count, search])
 
     const handleSearch = useDebouncedCallback((text) => {
         setSearch(text)
@@ -235,46 +235,46 @@ const CreateReport = () => {
         <Grid container sx={{ overflowY: 'hidden', flexGrow: 1 }}>
             <Grid item xs={3}>
                 <Stack>
-                    <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        mb={2}
-                        className={classes.listContainer}
-                    >
-                        <Box sx={{ fontSize: '1.6rem', color: 'gray.main' }}>{new Date(date).toLocaleDateString()}</Box>
-                        <Box>
-                            <IconButton
-                                sx={{ color: 'gray.main' }}
-                                onClick={() => setDate((date) => addDays(date, -1))}
-                            >
-                                <ArrowLeft />
-                            </IconButton>
-                            <IconButton sx={{ color: 'gray.main' }} onClick={() => setDateDialogOpen(true)}>
-                                <DateRange />
-                            </IconButton>
-                            <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, 1))}>
-                                <ArrowRight />
-                            </IconButton>
+                    <Box display="flex" justifyContent="space-between" className={classes.listContainer} mb={2}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Search sx={{ color: 'gray.main', mr: 0.5 }} />
+                            <TextField
+                                variant="standard"
+                                sx={{ width: '90%' }}
+                                value={searchText}
+                                onChange={(e) => {
+                                    setSearchText(e.target.value)
+                                    handleSearch(e.target.value)
+                                }}
+                            />
+                        </Box>
+                        <Box display="flex" flexDirection="column" alignItems="flex-end">
+                            <Box display="flex" alignItems="center">
+                                <IconButton
+                                    sx={{ color: 'gray.main' }}
+                                    onClick={() => setDate((date) => addDays(date, -1))}
+                                >
+                                    <ArrowLeft />
+                                </IconButton>
+                                <Box
+                                    sx={{ fontSize: '1.2rem', color: 'gray.main' }}
+                                    onClick={() => setDateDialogOpen(true)}
+                                >
+                                    {new Date(date).toLocaleDateString()}
+                                </Box>
+
+                                <IconButton
+                                    sx={{ color: 'gray.main' }}
+                                    onClick={() => setDate((date) => addDays(date, 1))}
+                                >
+                                    <ArrowRight />
+                                </IconButton>
+                            </Box>
                         </Box>
                     </Box>
 
-                    <Box className={classes.listContainer} sx={{ height: '84vh' }}>
-                        <Stack direction="row" justifyContent="center" spacing={1} mb={3}>
-                            {statusList.map(({ text, title }) => (
-                                <Button
-                                    key={text}
-                                    className={classes.statusButton}
-                                    variant={status === text ? 'outlined' : ''}
-                                    color={status === text ? 'primary' : 'gray'}
-                                    onClick={() => handleStatusClick(text)}
-                                >
-                                    <Box sx={{ color: 'text.gray' }}>{title}</Box>
-                                    <Box className={classes.number}>{number[text]}</Box>
-                                </Button>
-                            ))}
-                        </Stack>
-                        <List sx={{ overflowY: 'auto', height: '74%' }}>
+                    <Box className={classes.listContainer} sx={{ height: '86vh' }}>
+                        <List sx={{ overflowY: 'auto', height: '80%' }}>
                             <CustomScrollbar>
                                 {scheduleList &&
                                     scheduleList.map((schedule) => {
@@ -340,6 +340,21 @@ const CreateReport = () => {
                                     })}
                             </CustomScrollbar>
                         </List>
+
+                        <Stack direction="row" justifyContent="center" spacing={1} mt={3} sx={{ height: '14%' }}>
+                            {statusList.map(({ text, title }) => (
+                                <Button
+                                    key={text}
+                                    className={classes.statusButton}
+                                    variant={status === text ? 'outlined' : ''}
+                                    color={status === text ? 'primary' : 'gray'}
+                                    onClick={() => handleStatusClick(text)}
+                                >
+                                    <Box sx={{ color: 'text.gray' }}>{title}</Box>
+                                    <Box className={classes.number}>{number[text]}</Box>
+                                </Button>
+                            ))}
+                        </Stack>
                     </Box>
                 </Stack>
                 {/* <Box display="flex" sx={{ width: '100%' }} mb={2}>
