@@ -37,14 +37,14 @@ const whiteTheme = createTheme({
             dark: 'rgba(100, 151, 151)',
         },
         status: {
-            processing: 'rgba(224, 71, 84,.1)',
-            processing_dark: 'rgba(224, 71, 84)',
+            processing: 'rgba(226, 116, 111,.1)',
+            processing_dark: 'rgba(226, 116, 111)',
             finish: 'rgba(95, 91, 160,.1)',
             finish_dark: 'rgba(95, 91, 160)',
             yet: 'rgba(109, 173, 173,.1)',
             yet_dark: 'rgba(109, 173, 173)',
-            call: 'rgba(255, 204, 20,.1)',
-            call_dark: 'rgba(255, 204, 20)',
+            call: 'rgba(253, 198, 134,.1)',
+            call_dark: 'rgba(253, 198, 134)',
         },
         green: {
             main: '#95DBC3',
@@ -53,7 +53,7 @@ const whiteTheme = createTheme({
             main: 'rgba(255, 204, 20)',
         },
         red: {
-            main: 'rgb(224, 71, 84)',
+            main: 'rgba(226, 116, 111)',
         },
         gray: {
             main: '#9E9EA7',

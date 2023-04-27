@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
         fontSize: '1rem',
         fontWeight: 'bold',
+
         '&.yet': {
             backgroundColor: theme.palette.status.yet,
             border: `1px solid ${theme.palette.status.yet_dark}`,

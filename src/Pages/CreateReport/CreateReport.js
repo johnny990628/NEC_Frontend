@@ -341,7 +341,7 @@ const CreateReport = () => {
                             </CustomScrollbar>
                         </List>
 
-                        <Stack direction="row" justifyContent="center" spacing={1} mt={3} sx={{ height: '14%' }}>
+                        <Stack direction="row" justifyContent="center" spacing={0.5} mt={1} sx={{ height: '14%' }}>
                             {statusList.map(({ text, title }) => (
                                 <Button
                                     key={text}
@@ -381,7 +381,7 @@ const CreateReport = () => {
             </Grid>
             <Grid item xs={8.8} className={classes.reportContainer}>
                 {selection && (
-                    <Box sx={{ height: '100%' }}>
+                    <Box sx={{ height: '98%' }}>
                         <Box
                             sx={{
                                 width: '100%',
