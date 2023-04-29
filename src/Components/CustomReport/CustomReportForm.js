@@ -167,65 +167,6 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
 
     return (
         <>
-            {mode === 'create' && (
-                <Box
-                    sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: 1, height: '2%' }}
-                >
-                    <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{ display: 'flex', alignItems: 'center', m: 1, height: '2%' }}
-                    >
-                        {/* <Tooltip
-                            onClose={() => setToolkitOpen(false)}
-                            open={toolkitOpen}
-                            disableFocusListener
-                            disableHoverListener
-                            disableTouchListener
-                            title={transcript}
-                        >
-                            <Button
-                                variant={listening ? 'outlined' : 'contained'}
-                                onClick={handleRecordClick}
-                                startIcon={listening ? <CircularProgress size={20} /> : <Mic />}
-                                sx={{ borderRadius: '2rem', height: 'auto' }}
-                            >
-                                {listening ? '辨識中' : '語音辨識'}
-                            </Button>
-                        </Tooltip> */}
-
-                        <Button
-                            variant={Boolean(dicomAnchorEl) ? 'outlined' : 'contained'}
-                            onClick={handleDicomClick}
-                            startIcon={
-                                Boolean(dicomAnchorEl) ? <CircularProgress color="contrast" size={20} /> : <Cast />
-                            }
-                            color="contrast"
-                            sx={{
-                                borderRadius: '2rem',
-                                height: 'auto',
-                                color: Boolean(dicomAnchorEl) ? 'contrast.main' : 'white',
-                            }}
-                        >
-                            超音波影像
-                        </Button>
-
-                        {/* {
-                            <Badge
-                                badgeContent={schedule.reports.length - 1 > 0 ? schedule.reports.length - 1 : 0}
-                                color="primary"
-                            >
-                                <IconButton onClick={handleHistoryClick}>
-                                    <History />
-                                </IconButton>
-                            </Badge>
-                        } */}
-                        {/* <HistoryPopover /> */}
-                        {DicomPopperCom}
-                    </Stack>
-                </Box>
-            )}
-
             <Box className={classes.container}>
                 <Grid container sx={{ height: '100%' }}>
                     <Grid item xs={12}>

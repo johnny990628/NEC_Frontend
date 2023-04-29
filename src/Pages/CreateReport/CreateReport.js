@@ -18,6 +18,8 @@ import {
     Select,
     Stack,
     TextField,
+    ToggleButton,
+    ToggleButtonGroup,
 } from '@mui/material'
 import Avatar, { genConfig } from 'react-nice-avatar'
 import {
@@ -29,6 +31,12 @@ import {
     ArrowLeft,
     ArrowRight,
     Search,
+    Cast,
+    CastConnected,
+    Filter,
+    PostAdd,
+    Summarize,
+    SummarizeOutlined,
 } from '@mui/icons-material'
 import { useTheme } from '@mui/styles'
 import { zhTW } from 'date-fns/locale'
@@ -73,6 +81,7 @@ const CreateReport = () => {
     const [searchText, setSearchText] = useState('')
     const [search, setSearch] = useState('')
     const [dateDialogOpen, setDateDialogOpen] = useState(false)
+    const [toggleMode, setToggleMode] = useState('report')
 
     const { schedules, loading, count } = useSelector((state) => state.schedule)
     const { birads } = useSelector((state) => state.breast)
@@ -385,63 +394,117 @@ const CreateReport = () => {
                         <Box
                             sx={{
                                 width: '100%',
-                                height: '1%',
+                                height: '5%',
                                 display: 'flex',
-                                justifyContent: 'end',
+                                justifyContent: 'space-between',
                             }}
                         >
-                            <FormControl variant="standard" sx={{ width: '8rem', mr: 2 }}>
-                                <InputLabel id="select-birads">BI-RADS</InputLabel>
-                                <Select labelId="select-birads" value={birads} onChange={handleBiradsChange}>
-                                    {[1, 2, 3, 4, 5, 6].map((b) => (
-                                        <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            {schedule?.status === 'wait-examination' ? (
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<Check />}
-                                    sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
-                                    onClick={handleReportSave}
+                            <Box display="flex" alignItems="center">
+                                <ToggleButtonGroup
+                                    color="primary"
+                                    value={toggleMode}
+                                    exclusive
+                                    onChange={(e, mode) => mode && setToggleMode(mode)}
                                 >
-                                    暫存報告
-                                </Button>
-                            ) : (
-                                <FormControl variant="standard" sx={{ width: '5rem', mr: 2 }}>
-                                    <InputLabel id="select-version">版本</InputLabel>
-                                    <Select labelId="select-version" value={version} onChange={handleVersionOnChange}>
-                                        {report?.records &&
-                                            report?.records.map((record, index) => (
-                                                <MenuItem key={record.id} value={record.id}>{`v${index + 1}`}</MenuItem>
-                                            ))}
+                                    <ToggleButton value="report">
+                                        <SummarizeOutlined />
+                                    </ToggleButton>
+                                    <ToggleButton value="viewer">
+                                        <Filter />
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+                                {toggleMode === 'viewer' && (
+                                    <Button
+                                        variant="outlined"
+                                        sx={{ ml: 2 }}
+                                        onClick={() =>
+                                            window.open(
+                                                `${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${schedule?.patient?.id}`,
+                                                '_blank'
+                                            )
+                                        }
+                                    >
+                                        在新分頁開啟
+                                    </Button>
+                                )}
+                            </Box>
+                            <Box>
+                                <FormControl variant="standard" sx={{ width: '8rem', mr: 2 }}>
+                                    <InputLabel id="select-birads">BI-RADS</InputLabel>
+                                    <Select labelId="select-birads" value={birads} onChange={handleBiradsChange}>
+                                        {[1, 2, 3, 4, 5, 6].map((b) => (
+                                            <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
+                                        ))}
                                     </Select>
                                 </FormControl>
-                            )}
+                                {schedule?.status === 'wait-examination' ? (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<Check />}
+                                        sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
+                                        onClick={handleReportSave}
+                                    >
+                                        暫存報告
+                                    </Button>
+                                ) : (
+                                    <FormControl variant="standard" sx={{ width: '5rem', mr: 2 }}>
+                                        <InputLabel id="select-version">版本</InputLabel>
+                                        <Select
+                                            labelId="select-version"
+                                            value={version}
+                                            onChange={handleVersionOnChange}
+                                        >
+                                            {report?.records &&
+                                                report?.records.map((record, index) => (
+                                                    <MenuItem key={record.id} value={record.id}>{`v${
+                                                        index + 1
+                                                    }`}</MenuItem>
+                                                ))}
+                                        </Select>
+                                    </FormControl>
+                                )}
 
-                            <Button
-                                variant="contained"
-                                startIcon={<Check />}
-                                sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
-                                onClick={handleReportSubmit}
-                            >
-                                完成報告
-                            </Button>
+                                <Button
+                                    variant="contained"
+                                    startIcon={<Check />}
+                                    sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
+                                    onClick={handleReportSubmit}
+                                >
+                                    完成報告
+                                </Button>
 
-                            <Button
-                                variant="outlined"
-                                color="red"
-                                startIcon={<Close />}
-                                sx={{
-                                    borderRadius: '2rem',
-                                    height: '2.5rem',
-                                }}
-                                onClick={deleteReportAndSchedule}
-                            >
-                                刪除報告
-                            </Button>
+                                <Button
+                                    variant="outlined"
+                                    color="red"
+                                    startIcon={<Close />}
+                                    sx={{
+                                        borderRadius: '2rem',
+                                        height: '2.5rem',
+                                    }}
+                                    onClick={deleteReportAndSchedule}
+                                >
+                                    刪除報告
+                                </Button>
+                            </Box>
                         </Box>
-                        <CustomReportForm cols1={REPORTCOLS} cols2={REPORTCOLS2} schedule={schedule} mode="create" />
+                        {toggleMode === 'report' && (
+                            <Box sx={{ height: '90%' }}>
+                                <CustomReportForm
+                                    cols1={REPORTCOLS}
+                                    cols2={REPORTCOLS2}
+                                    schedule={schedule}
+                                    mode="create"
+                                />
+                            </Box>
+                        )}
+                        {toggleMode === 'viewer' && (
+                            <Box sx={{ height: '90%', width: '100%', mt: 3 }}>
+                                <iframe
+                                    src={`${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${schedule?.patient?.id}`}
+                                    style={{ height: '100%', width: '100%' }}
+                                />
+                            </Box>
+                        )}
                     </Box>
                 )}
             </Grid>
