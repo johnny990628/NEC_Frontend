@@ -15,12 +15,12 @@ function ChestMarker({}) {
 
     const Circle = ({ pos, side }) => {
         return (
-            <svg width="400" height="400" stroke="black">
+            <svg width="400" height="400">
                 <circle cx="200" cy="200" r="200" fill="#efefef" />
                 <circle cx="200" cy="200" r="200" fill="#efefef" />
 
                 {lines.map(({ x, y }, i) => (
-                    <line key={i} x1="200" y1="200" x2={x} y2={y} stroke="black" strokeWidth="1" />
+                    <line key={i} x1="200" y1="200" x2={x} y2={y} stroke="black" strokeWidth="0.5" />
                 ))}
 
                 {pos.map(({ id, clock, distance, size }, index) => {
