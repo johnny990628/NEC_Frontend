@@ -7,6 +7,7 @@ import {
     apiGetSchdules,
     apiRemoveSchedule,
 } from '../../Axios/Schedule'
+import { apiAddWorklist } from './../../Axios/WorkList'
 import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
 import { handleError } from './Error'
@@ -28,9 +29,10 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (p
 
 export const addSchedule = createAsyncThunk('schedule/addSchedule', async ({ patientID, procedureCode }, thunkAPI) => {
     try {
-        const reportResponse = await apiCreateReport({ patientID })
+        const StudyInstanceUID = await apiAddWorklist(patientID).then((res) => res.data[0])
+        const reportResponse = await apiCreateReport({ patientID, StudyInstanceUID })
         const reportID = reportResponse.data._id
-        await apiAddSchedule({ patientID, reportID, procedureCode, status: 'wait-examination' })
+        await apiAddSchedule({ patientID, reportID, procedureCode, StudyInstanceUID, status: 'wait-examination' })
     } catch (e) {
         thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
