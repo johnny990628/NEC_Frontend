@@ -17,7 +17,6 @@ function ChestMarker({}) {
         return (
             <svg width="400" height="400">
                 <circle cx="200" cy="200" r="200" fill="#efefef" />
-                <circle cx="200" cy="200" r="200" fill="#efefef" />
 
                 {lines.map(({ x, y }, i) => (
                     <line key={i} x1="200" y1="200" x2={x} y2={y} stroke="black" strokeWidth="0.5" />
@@ -28,10 +27,14 @@ function ChestMarker({}) {
                     const radians = (angle * Math.PI) / 180
                     const x = CHESTMAXSIZE - Math.sin(radians) * distance * (CHESTMAXSIZE / CHESTMAXRADIUS)
                     const y = CHESTMAXSIZE + Math.cos(radians) * distance * (CHESTMAXSIZE / CHESTMAXRADIUS)
-
                     return (
                         <Tooltip key={id} title={`${side}${index + 1}`}>
-                            <circle cx={x} cy={y} r={size * 10} fill="red" />
+                            <>
+                                <circle cx={x} cy={y} r={size * 10} fill="red" />
+                                <text font-size="12" x={x} y={y} text-anchor="middle" dominant-baseline="middle" fill="black">
+                                    {side + (index + 1).toString()}
+                                </text>
+                            </>
                         </Tooltip>
                     )
                 })}
