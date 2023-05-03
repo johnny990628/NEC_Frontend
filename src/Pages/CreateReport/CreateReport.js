@@ -251,7 +251,7 @@ const CreateReport = () => {
                             <Search sx={{ color: 'gray.main', mr: 0.5 }} />
                             <TextField
                                 variant="standard"
-                                sx={{ width: '90%' }}
+                                sx={{ width: '100%' }}
                                 value={searchText}
                                 onChange={(e) => {
                                     setSearchText(e.target.value)
@@ -268,10 +268,16 @@ const CreateReport = () => {
                                     <ArrowLeft />
                                 </IconButton>
                                 <Box
-                                    sx={{ fontSize: '1.2rem', color: 'gray.main' }}
+                                    sx={{ color: 'gray.main', cursor: 'pointer' }}
                                     onClick={() => setDateDialogOpen(true)}
                                 >
-                                    {new Date(date).toLocaleDateString()}
+                                    <Box sx={{ fontSize: '1.3rem' }}>{`${
+                                        new Date(date).toLocaleDateString().split('/')[1]
+                                    }/${new Date(date).toLocaleDateString().split('/')[2]}`}</Box>
+
+                                    {/* <Box sx={{ fontSize: '0.9rem' }}>
+                                    {new Date(date).toLocaleDateString().split('/')[0]}
+                                </Box> */}
                                 </Box>
 
                                 <IconButton
@@ -284,7 +290,7 @@ const CreateReport = () => {
                         </Box>
                     </Box>
 
-                    <Box className={classes.listContainer} sx={{ height: '86vh' }}>
+                    <Box className={classes.listContainer} sx={{ height: '84vh' }}>
                         <List sx={{ overflowY: 'auto', height: '80%' }}>
                             <CustomScrollbar>
                                 {scheduleList &&
