@@ -26,14 +26,14 @@ const routerList = [
         Component: Home,
     },
     {
-        display_name: '病人管理',
+        display_name: '病人',
         name: 'patient',
         icon: <AccessibleForwardOutlined />,
         path: '/patient',
         Component: Patient,
     },
     {
-        display_name: '新增報告',
+        display_name: '報告',
         name: 'createReport',
         icon: <EventAvailableOutlined />,
         path: '/createReport',
@@ -48,7 +48,7 @@ const routerList = [
     //     Component: Report,
     // },
     {
-        display_name: '使用者管理',
+        display_name: '用戶',
         name: 'user',
         icon: <PersonOutlined />,
         path: '/user',
@@ -64,7 +64,7 @@ const routerList = [
     //     authority: [3, 1],
     // },
     {
-        display_name: '影像管理',
+        display_name: '影像',
         name: 'image',
         icon: <InsertPhotoOutlined />,
         path: '/image',

@@ -15,33 +15,38 @@ const Sidebar = () => {
     const classes = useStyles()
     const location = useLocation()
     const dispatch = useDispatch()
-    const { isOpen } = useSelector(state => state.sidebar)
-    const { user } = useSelector(state => state.auth)
+    const { isOpen } = useSelector((state) => state.sidebar)
+    const { user } = useSelector((state) => state.auth)
     const theme = useTheme()
     const tab = useMediaQuery(theme.breakpoints.down('lg'))
     const firstRender = useRef(true)
-    const activeItem = SidebarItem.findIndex(item => item.path === location.pathname)
+    const activeItem = SidebarItem.findIndex((item) => item.path === location.pathname)
 
-    useEffect(() => {
-        if (firstRender.current) {
-            firstRender.current = false
-            return
-        }
-        tab ? dispatch(closeSidebar()) : dispatch(openSidebar())
-    }, [tab])
+    // useEffect(() => {
+    //     if (firstRender.current) {
+    //         firstRender.current = false
+    //         return
+    //     }
+    //     tab ? dispatch(closeSidebar()) : dispatch(openSidebar())
+    // }, [tab])
 
     return (
         <Drawer variant={'permanent'} classes={{ paper: `${classes.container} ${isOpen || 'close'}` }}>
-            {isOpen ? (
+            {/* {isOpen ? (
                 <img src="./GHL.png" className={classes.logo} alt="logo" />
             ) : (
                 <Box className={classes.openIcon} onClick={() => dispatch(openSidebar())}>
                     <Dehaze />
                 </Box>
-            )}
+            )} */}
             <List className={classes.list}>
                 {SidebarItem.map((item, index) => (
-                    <Authorized key={item.display_name} currentRole={user.role} authority={item.authority} noMatch={<></>}>
+                    <Authorized
+                        key={item.display_name}
+                        currentRole={user.role}
+                        authority={item.authority}
+                        noMatch={<></>}
+                    >
                         <Link to={item.path} className={`${classes.link} ${index === activeItem && 'active'}`}>
                             <ListItem
                                 button
@@ -50,17 +55,22 @@ const Sidebar = () => {
                                     '&:hover': {
                                         backgroundColor: 'transparent',
                                     },
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                 }}
                             >
-                                {isOpen ? (
-                                    <Box className={classes.icon}>{item.icon}</Box>
-                                ) : (
-                                    <Tooltip title={item.display_name} placement="right-start" arrow>
-                                        <Box className={classes.icon}>{item.icon}</Box>
-                                    </Tooltip>
-                                )}
+                                <Box className={classes.icon}>{item.icon}</Box>
+                                <Box className={`${classes.text} ${index === activeItem && 'active'}`}>
+                                    {item.display_name}
+                                </Box>
 
-                                {isOpen && <Box className={`${classes.text} ${index === activeItem && 'active'}`}>{item.display_name}</Box>}
+                                {/* {isOpen && (
+                                    <Box className={`${classes.text} ${index === activeItem && 'active'}`}>
+                                        {item.display_name}
+                                    </Box>
+                                )} */}
                             </ListItem>
                         </Link>
                     </Authorized>

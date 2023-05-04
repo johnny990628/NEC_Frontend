@@ -32,12 +32,11 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     text: {
-        color: '#000000',
-        fontSize: '1.3rem',
-        marginLeft: '1rem',
+        color: theme.palette.text.gray,
+        fontSize: '1rem',
         whiteSpace: 'nowrap',
         '&.active': {
-            color: theme.palette.primary.main,
+            color: theme.palette.text.primary,
         },
     },
     logo: {
