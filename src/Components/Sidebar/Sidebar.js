@@ -32,6 +32,7 @@ const Sidebar = () => {
 
     return (
         <Drawer variant={'permanent'} classes={{ paper: `${classes.container} ${isOpen || 'close'}` }}>
+            <img src="./logo_temp.png" className={classes.logo} alt="logo" />
             {/* {isOpen ? (
                 <img src="./GHL.png" className={classes.logo} alt="logo" />
             ) : (
