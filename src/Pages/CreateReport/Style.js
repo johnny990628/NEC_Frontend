@@ -12,8 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
     listContainer: {
         backgroundColor: theme.palette.secondary.main,
-        padding: '1rem',
-
+        padding: '1rem ',
         borderRadius: '1rem',
     },
     reportContainer: {
@@ -21,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
         padding: '1rem',
         marginLeft: '1rem',
         borderRadius: '1rem',
+        height: '100vh',
+        width: '100%',
     },
     tableContainer: {
         padding: '2rem',
