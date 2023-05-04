@@ -29,10 +29,10 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (p
 
 export const addSchedule = createAsyncThunk('schedule/addSchedule', async ({ patientID, procedureCode }, thunkAPI) => {
     try {
-        const StudyInstanceUID = await apiAddWorklist(patientID).then((res) => res.data[0])
-        const reportResponse = await apiCreateReport({ patientID, StudyInstanceUID })
+        const accessionNumber = await apiAddWorklist(patientID).then((res) => res.data[0])
+        const reportResponse = await apiCreateReport({ patientID, accessionNumber })
         const reportID = reportResponse.data._id
-        await apiAddSchedule({ patientID, reportID, procedureCode, StudyInstanceUID, status: 'wait-examination' })
+        await apiAddSchedule({ patientID, reportID, procedureCode, accessionNumber, status: 'wait-examination' })
     } catch (e) {
         thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
