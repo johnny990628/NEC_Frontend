@@ -308,7 +308,10 @@ const CreateReport = () => {
                 </Grid>
             </Grid>
             <Grid item xs={9}>
-                <List className={classes.listContainer} sx={{ height: '60%', display: 'flex', flexDirection: 'row' }}>
+                <List
+                    className={classes.listContainer}
+                    sx={{ height: '60%', display: 'flex', flexDirection: 'row', overflowX: 'auto' }}
+                >
                     {scheduleList &&
                         scheduleList.map((schedule) => {
                             const { id: patientID, name } = schedule.patient
@@ -326,13 +329,11 @@ const CreateReport = () => {
                                         selected={selection === scheduleID}
                                         onClick={() => handleSelectionClick(scheduleID)}
                                         sx={{
+                                            width: '100%',
                                             height: '100%',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'space-between',
                                         }}
                                     >
-                                        <Box display="flex" alignItems="center">
+                                        <Box display="flex" justifyContent="flex-start" alignItems="center">
                                             <ListItemAvatar>
                                                 <Avatar
                                                     style={{
@@ -341,14 +342,6 @@ const CreateReport = () => {
                                                     }}
                                                     {...config}
                                                 ></Avatar>
-                                                <Box
-                                                    className={`${classes.status} ${
-                                                        procedureCode === '19014C' && 'yet'
-                                                    }`}
-                                                    sx={{ mt: 1 }}
-                                                >
-                                                    {procedureCode}
-                                                </Box>
                                             </ListItemAvatar>
                                             <ListItemText
                                                 sx={{ ml: 1 }}
@@ -360,7 +353,17 @@ const CreateReport = () => {
                                                 secondary={
                                                     <Stack>
                                                         <Box>{patientID}</Box>
-                                                        <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
+                                                        <Box display="flex">
+                                                            <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
+                                                            {/* <Box
+                                                                className={`${classes.status} ${
+                                                                    procedureCode === '19014C' && 'yet'
+                                                                }`}
+                                                                sx={{ mt: 1 }}
+                                                            >
+                                                                {procedureCode}
+                                                            </Box> */}
+                                                        </Box>
                                                     </Stack>
                                                 }
                                             ></ListItemText>
@@ -375,7 +378,7 @@ const CreateReport = () => {
             </Grid>
             <Grid item xs={12} className={classes.reportContainer} mt={2}>
                 {selection && (
-                    <Box sx={{ height: '98%' }}>
+                    <Box sx={{ height: '100%' }}>
                         <Box
                             sx={{
                                 width: '100%',
@@ -475,7 +478,7 @@ const CreateReport = () => {
                             </Box>
                         </Box>
                         {toggleMode === 'report' && (
-                            <Box sx={{ height: '90%' }}>
+                            <Box sx={{ height: '100%' }}>
                                 <CustomReportForm
                                     cols1={REPORTCOLS}
                                     cols2={REPORTCOLS2}

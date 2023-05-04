@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { List, ListItem, Box, Drawer, Tooltip, useMediaQuery } from '@mui/material'
@@ -15,6 +15,7 @@ const Sidebar = () => {
     const classes = useStyles()
     const location = useLocation()
     const dispatch = useDispatch()
+    const [animation, setAnimation] = useState(false)
     const { isOpen } = useSelector((state) => state.sidebar)
     const { user } = useSelector((state) => state.auth)
     const theme = useTheme()
@@ -32,7 +33,17 @@ const Sidebar = () => {
 
     return (
         <Drawer variant={'permanent'} classes={{ paper: `${classes.container} ${isOpen || 'close'}` }}>
-            <img src="./logo_temp.png" className={classes.logo} alt="logo" />
+            {animation ? (
+                <img
+                    src="./logo_temp.png"
+                    className={classes.logo}
+                    alt="logo"
+                    onMouseLeave={() => setAnimation(false)}
+                />
+            ) : (
+                <img src="./logo.gif" className={classes.logo} alt="logo" onMouseEnter={() => setAnimation(true)} />
+            )}
+
             {/* {isOpen ? (
                 <img src="./GHL.png" className={classes.logo} alt="logo" />
             ) : (

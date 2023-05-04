@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '1rem',
         marginLeft: '1rem',
         borderRadius: '1rem',
-        height: '100vh',
+        height: '90vh',
         width: '100%',
     },
     tableContainer: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.status.finish_dark,
         padding: '.3rem .5rem',
         borderRadius: '1rem',
-        fontSize: '.8rem',
+        fontSize: '.5rem',
         // width: '50%',
         '&.yet': {
             backgroundColor: theme.palette.status.yet,
