@@ -82,6 +82,7 @@ const CreateReport = () => {
     const [search, setSearch] = useState('')
     const [dateDialogOpen, setDateDialogOpen] = useState(false)
     const [toggleMode, setToggleMode] = useState('report')
+    const [iframeURL, setIframeURL] = useState('')
 
     const { schedules, loading, count } = useSelector((state) => state.schedule)
     const { birads } = useSelector((state) => state.breast)
@@ -109,6 +110,7 @@ const CreateReport = () => {
         const currentReport = currentSchedule?.report
         setReport(currentReport)
         dispatch(setupSchedule(currentSchedule))
+        setIframeURL(`${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${currentSchedule?.StudyInstanceUID}`)
 
         if (currentSchedule.status === 'wait-finish' || currentSchedule.status === 'finish') {
             if (currentReport) {
@@ -249,7 +251,7 @@ const CreateReport = () => {
                             <Search sx={{ color: 'gray.main', mr: 0.5 }} />
                             <TextField
                                 variant="standard"
-                                sx={{ width: '90%' }}
+                                sx={{ width: '100%' }}
                                 value={searchText}
                                 onChange={(e) => {
                                     setSearchText(e.target.value)
@@ -266,10 +268,16 @@ const CreateReport = () => {
                                     <ArrowLeft />
                                 </IconButton>
                                 <Box
-                                    sx={{ fontSize: '1.2rem', color: 'gray.main' }}
+                                    sx={{ color: 'gray.main', cursor: 'pointer' }}
                                     onClick={() => setDateDialogOpen(true)}
                                 >
-                                    {new Date(date).toLocaleDateString()}
+                                    <Box sx={{ fontSize: '1.3rem' }}>{`${
+                                        new Date(date).toLocaleDateString().split('/')[1]
+                                    }/${new Date(date).toLocaleDateString().split('/')[2]}`}</Box>
+
+                                    {/* <Box sx={{ fontSize: '0.9rem' }}>
+                                    {new Date(date).toLocaleDateString().split('/')[0]}
+                                </Box> */}
                                 </Box>
 
                                 <IconButton
@@ -282,7 +290,7 @@ const CreateReport = () => {
                         </Box>
                     </Box>
 
-                    <Box className={classes.listContainer} sx={{ height: '86vh' }}>
+                    <Box className={classes.listContainer} sx={{ height: '84vh' }}>
                         <List sx={{ overflowY: 'auto', height: '80%' }}>
                             <CustomScrollbar>
                                 {scheduleList &&
@@ -404,7 +412,14 @@ const CreateReport = () => {
                                     color="primary"
                                     value={toggleMode}
                                     exclusive
-                                    onChange={(e, mode) => mode && setToggleMode(mode)}
+                                    onChange={(e, mode) => {
+                                        if (mode) {
+                                            setToggleMode(mode)
+                                            setIframeURL(
+                                                `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${schedule?.StudyInstanceUID}`
+                                            )
+                                        }
+                                    }}
                                 >
                                     <ToggleButton value="report">
                                         <SummarizeOutlined />
@@ -417,12 +432,7 @@ const CreateReport = () => {
                                     <Button
                                         variant="outlined"
                                         sx={{ ml: 2 }}
-                                        onClick={() =>
-                                            window.open(
-                                                `${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${schedule?.patient?.id}`,
-                                                '_blank'
-                                            )
-                                        }
+                                        onClick={() => window.open(iframeURL, '_blank')}
                                     >
                                         在新分頁開啟
                                     </Button>
@@ -497,14 +507,17 @@ const CreateReport = () => {
                                 />
                             </Box>
                         )}
-                        {toggleMode === 'viewer' && (
-                            <Box sx={{ height: '90%', width: '100%', mt: 3 }}>
-                                <iframe
-                                    src={`${process.env.REACT_APP_BLUELIGHT_URL}?PatientID=${schedule?.patient?.id}`}
-                                    style={{ height: '100%', width: '100%' }}
-                                />
-                            </Box>
-                        )}
+
+                        <Box
+                            sx={{
+                                height: '90%',
+                                width: '100%',
+                                mt: 3,
+                                display: toggleMode === 'viewer' ? 'block' : 'none',
+                            }}
+                        >
+                            <iframe src={iframeURL} style={{ height: '100%', width: '100%' }} />
+                        </Box>
                     </Box>
                 )}
             </Grid>
