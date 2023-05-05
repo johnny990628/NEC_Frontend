@@ -13,20 +13,23 @@ import {
 } from '@mui/material'
 import { useDebouncedCallback } from 'use-debounce'
 import moment from 'moment'
-
+import FileDownload from 'js-file-download'
 import useStyles from './Style'
 
 import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
-import { ArrowDropDown, ContentCopy } from '@mui/icons-material'
+import { ArrowDropDown, ContentCopy, CloudDownload } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
+import axios from 'axios'
+import { apiDownloadDCM } from '../../Axios/Dicom'
 
 const Image = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { results, count, page, loading } = useSelector((state) => state.dicom)
+    const [file, setFile] = useState(null)
 
     const fetchData = async (params) => {
         dispatch(fetchDicom(params))
@@ -52,6 +55,34 @@ const Image = () => {
                         />
                     </Button>
                 ),
+            },
+            { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
+            { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
+            { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
+            {
+                accessor: 'StudyDate',
+                Header: '報告日期',
+                Cell: (row) => {
+                    if (moment(row.row.original.StudyDate, 'YYYYMMDD', true).isValid()) {
+                        return (
+                            <Box>
+                                <Box>{moment(row.row.original.StudyDate, 'YYYYMMDD').format('YYYY/MM/DD')}</Box>
+                                <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                                    {moment(row.row.original.StudyDate, 'YYYYMMDD').format('HH:mm:ss')}
+                                </Box>
+                            </Box>
+                        )
+                    } else {
+                        return (
+                            <Box>
+                                <Box>{new Date(row.row.original.StudyDate).toLocaleDateString()}</Box>
+                                <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                                    {new Date(row.row.original.StudyDate).toLocaleTimeString()}
+                                </Box>
+                            </Box>
+                        )
+                    }
+                },
             },
             {
                 accessor: 'StudyInstanceUID',
@@ -82,34 +113,21 @@ const Image = () => {
                     </>
                 ),
             },
-
-            { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
-            { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
-            { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
             {
-                accessor: 'StudyDate',
-                Header: '報告日期',
-                Cell: (row) => {
-                    if (moment(row.row.original.StudyDate, 'YYYYMMDD', true).isValid()) {
-                        return (
-                            <Box>
-                                <Box>{moment(row.row.original.StudyDate, 'YYYYMMDD').format('YYYY/MM/DD')}</Box>
-                                <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
-                                    {moment(row.row.original.StudyDate, 'YYYYMMDD').format('HH:mm:ss')}
-                                </Box>
-                            </Box>
-                        )
-                    } else {
-                        return (
-                            <Box>
-                                <Box>{new Date(row.row.original.StudyDate).toLocaleDateString()}</Box>
-                                <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
-                                    {new Date(row.row.original.StudyDate).toLocaleTimeString()}
-                                </Box>
-                            </Box>
-                        )
-                    }
-                },
+                accessor: 'DownloadDCM',
+                Header: '下載DCM',
+                Cell: (row) => (
+                    <IconButton
+                        onClick={async () => {
+                            FileDownload(
+                                await apiDownloadDCM(row.row.original.StudyInstanceUID),
+                                row.row.original.StudyInstanceUID + '.rar'
+                            )
+                        }}
+                    >
+                        <CloudDownload />
+                    </IconButton>
+                ),
             },
         ],
         []
