@@ -12,6 +12,7 @@ import {
     Tooltip,
 } from '@mui/material'
 import { useDebouncedCallback } from 'use-debounce'
+import moment from 'moment'
 
 import useStyles from './Style'
 
@@ -71,14 +72,27 @@ const Image = () => {
             {
                 accessor: 'StudyDate',
                 Header: '報告日期',
-                Cell: (row) => (
-                    <Box>
-                        <Box>{new Date(row.row.original.StudyDate).toLocaleDateString()}</Box>
-                        <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
-                            {new Date(row.row.original.StudyDate).toLocaleTimeString()}
-                        </Box>
-                    </Box>
-                ),
+                Cell: (row) => {
+                    if (moment(row.row.original.StudyDate, 'YYYYMMDD', true).isValid()) {
+                        return (
+                            <Box>
+                                <Box>{moment(row.row.original.StudyDate, 'YYYYMMDD').format('YYYY/MM/DD')}</Box>
+                                <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                                    {moment(row.row.original.StudyDate, 'YYYYMMDD').format('HH:mm:ss')}
+                                </Box>
+                            </Box>
+                        )
+                    } else {
+                        return (
+                            <Box>
+                                <Box>{new Date(row.row.original.StudyDate).toLocaleDateString()}</Box>
+                                <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
+                                    {new Date(row.row.original.StudyDate).toLocaleTimeString()}
+                                </Box>
+                            </Box>
+                        )
+                    }
+                },
             },
         ],
         []
