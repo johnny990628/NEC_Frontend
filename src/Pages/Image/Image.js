@@ -119,10 +119,15 @@ const Image = () => {
                 Cell: (row) => (
                     <IconButton
                         onClick={async () => {
-                            FileDownload(
-                                await apiDownloadDCM(row.row.original.StudyInstanceUID),
-                                row.row.original.StudyInstanceUID + '.rar'
-                            )
+                            const studyUID = row.row.original.StudyInstanceUID
+                            const responseDCM = await apiDownloadDCM(studyUID)
+                            const blob = new Blob([responseDCM.data], { type: 'application/octet-stream' })
+                            const url = window.URL.createObjectURL(blob)
+                            const link = document.createElement('a')
+                            link.href = url
+                            link.setAttribute('download', `${studyUID}.rar`)
+                            document.body.appendChild(link)
+                            link.click()
                         }}
                     >
                         <CloudDownload />
