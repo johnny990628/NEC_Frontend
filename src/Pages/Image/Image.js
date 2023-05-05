@@ -38,19 +38,26 @@ const Image = () => {
                 accessor: 'image',
                 Header: '超音波',
                 Cell: (row) => (
-                    <img
-                        src={row.row.original.imageURL}
-                        alt={row.row.original.StudyInstanceUID}
-                        width={80}
-                        height={100}
-                    />
+                    <Button
+                        onClick={() => {
+                            const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
+                            window.open(iframeURL, '_blank')
+                        }}
+                    >
+                        <img
+                            src={row.row.original.imageURL}
+                            alt={row.row.original.StudyInstanceUID}
+                            width={80}
+                            height={100}
+                        />
+                    </Button>
                 ),
             },
             {
                 accessor: 'StudyInstanceUID',
                 Header: '報告ID',
-                Cell: (row) => {
-                    return (
+                Cell: (row) => (
+                    <>
                         <Tooltip
                             title={row.row.original.StudyInstanceUID}
                             placement="top"
@@ -62,8 +69,18 @@ const Image = () => {
                                 <ContentCopy />
                             </IconButton>
                         </Tooltip>
-                    )
-                },
+                        <Button
+                            variant="outlined"
+                            sx={{ ml: 2 }}
+                            onClick={() => {
+                                const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
+                                window.open(iframeURL, '_blank')
+                            }}
+                        >
+                            在新分頁開啟
+                        </Button>
+                    </>
+                ),
             },
 
             { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
