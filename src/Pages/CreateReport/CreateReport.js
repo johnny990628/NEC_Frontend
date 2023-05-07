@@ -40,7 +40,17 @@ import {
 } from '@mui/icons-material'
 import { useTheme } from '@mui/styles'
 import { zhTW } from 'date-fns/locale'
-import { addDays, format, parseISO } from 'date-fns'
+import {
+    addDays,
+    eachDayOfInterval,
+    endOfWeek,
+    format,
+    getDate,
+    getISOWeek,
+    isSameDay,
+    parseISO,
+    startOfWeek,
+} from 'date-fns'
 
 import useStyles from './Style'
 
@@ -78,6 +88,7 @@ const CreateReport = () => {
     const [report, setReport] = useState({})
     const [number, setNumber] = useState({})
     const [date, setDate] = useState(new Date())
+    const [week, setWeek] = useState([])
     const [searchText, setSearchText] = useState('')
     const [search, setSearch] = useState('')
     const [dateDialogOpen, setDateDialogOpen] = useState(false)
@@ -152,6 +163,14 @@ const CreateReport = () => {
     useEffect(() => {
         const dateFrom = date.toLocaleDateString()
         const dateTo = new Date(addDays(date, 1)).toLocaleDateString()
+
+        const startOfWeekDate = startOfWeek(date)
+        const endOfWeekDate = endOfWeek(date)
+        const weekArray = eachDayOfInterval({
+            start: startOfWeekDate,
+            end: endOfWeekDate,
+        })
+        setWeek(weekArray)
 
         dispatch(fetchSchedule({ dateFrom, dateTo, search }))
     }, [date, count, search])
@@ -241,12 +260,13 @@ const CreateReport = () => {
         ],
         []
     )
+    const weekList = useMemo(() => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], [])
 
     return (
         <Grid container spacing={2}>
-            <Grid container item xs={3}>
-                <Grid item xs={12}>
-                    <Box display="flex" justifyContent="space-between" className={classes.listContainer} mb={2}>
+            <Grid container item xs={3} sx={{ pt: 0 }}>
+                <Grid item xs={12} mb={2}>
+                    <Box display="flex" justifyContent="space-between" className={classes.listContainer}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Search sx={{ color: 'gray.main', mr: 0.5 }} />
                             <TextField
@@ -259,6 +279,7 @@ const CreateReport = () => {
                                 }}
                             />
                         </Box>
+
                         <Box display="flex" flexDirection="column" alignItems="flex-end">
                             <Box display="flex" alignItems="center">
                                 <IconButton
@@ -291,7 +312,7 @@ const CreateReport = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} className={classes.listContainer}>
-                    <Stack direction="row" justifyContent="center" spacing={0.5} mt={1}>
+                    <Stack direction="row" justifyContent="center" spacing={0.5}>
                         {statusList.map(({ text, title }) => (
                             <Button
                                 key={text}
@@ -307,55 +328,97 @@ const CreateReport = () => {
                     </Stack>
                 </Grid>
             </Grid>
-            <Grid item xs={9}>
-                <List
-                    className={classes.listContainer}
-                    sx={{ height: '60%', display: 'flex', flexDirection: 'row', overflowX: 'auto' }}
-                >
-                    {scheduleList &&
-                        scheduleList.map((schedule) => {
-                            const { id: patientID, name } = schedule.patient
-                            const { _id: scheduleID, procedureCode, updatedAt, status } = schedule
-                            const config = genConfig(patientID)
+            <Grid container item xs={9}>
+                <Grid item xs={12} mb={2}>
+                    <Box className={classes.listContainer} sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, -7))}>
+                            <ArrowLeft />
+                        </IconButton>
+                        {week.map((w, index) => {
+                            const theDate = new Date(w)
+                            const day = getDate(theDate)
+                            const isSame = isSameDay(theDate, date)
+
                             return (
                                 <Box
-                                    key={scheduleID}
+                                    key={day}
                                     sx={{
-                                        borderLeft: `4px solid ${theme.palette[badgeColor(status)].main}`,
-                                        width: '22%',
+                                        mr: 2,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        width: '1.8rem',
+                                        borderBottom: isSame && `2px solid ${theme.palette.primary.main}`,
+                                        cursor: 'pointer',
                                     }}
+                                    onClick={() => setDate(theDate)}
                                 >
-                                    <ListItemButton
-                                        selected={selection === scheduleID}
-                                        onClick={() => handleSelectionClick(scheduleID)}
+                                    <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}> {weekList[index]}</Box>
+                                    <Box
                                         sx={{
-                                            width: '100%',
-                                            height: '100%',
+                                            fontSize: '1.2rem',
+                                            color: isSame && theme.palette.primary.main,
                                         }}
                                     >
-                                        <Box display="flex" justifyContent="flex-start" alignItems="center">
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    style={{
-                                                        width: '3rem',
-                                                        height: '3rem',
-                                                    }}
-                                                    {...config}
-                                                ></Avatar>
-                                            </ListItemAvatar>
-                                            <ListItemText
-                                                sx={{ ml: 1 }}
-                                                primary={
-                                                    <Box display="flex">
-                                                        <Box sx={{ fontSize: '1.6rem' }}>{name}</Box>
-                                                    </Box>
-                                                }
-                                                secondary={
-                                                    <Stack>
-                                                        <Box>{patientID}</Box>
+                                        {day}
+                                    </Box>
+                                </Box>
+                            )
+                        })}
+                        <IconButton sx={{ color: 'gray.main' }} onClick={() => setDate((date) => addDays(date, 7))}>
+                            <ArrowRight />
+                        </IconButton>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sx={{ height: '60%' }}>
+                    <List
+                        className={classes.listContainer}
+                        sx={{ height: '100%', display: 'flex', flexDirection: 'row', overflowX: 'auto' }}
+                    >
+                        {scheduleList &&
+                            scheduleList.map((schedule) => {
+                                const { id: patientID, name } = schedule.patient
+                                const { _id: scheduleID, procedureCode, updatedAt, status } = schedule
+                                const config = genConfig(patientID)
+                                return (
+                                    <Box
+                                        key={scheduleID}
+                                        sx={{
+                                            borderLeft: `4px solid ${theme.palette[badgeColor(status)].main}`,
+                                            width: '22%',
+                                        }}
+                                    >
+                                        <ListItemButton
+                                            selected={selection === scheduleID}
+                                            onClick={() => handleSelectionClick(scheduleID)}
+                                            sx={{
+                                                width: '100%',
+                                                height: '100%',
+                                            }}
+                                        >
+                                            <Box display="flex" justifyContent="flex-start" alignItems="center">
+                                                <ListItemAvatar>
+                                                    <Avatar
+                                                        style={{
+                                                            width: '3rem',
+                                                            height: '3rem',
+                                                        }}
+                                                        {...config}
+                                                    ></Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    sx={{ ml: 1 }}
+                                                    primary={
                                                         <Box display="flex">
-                                                            <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
-                                                            {/* <Box
+                                                            <Box sx={{ fontSize: '1.6rem' }}>{name}</Box>
+                                                        </Box>
+                                                    }
+                                                    secondary={
+                                                        <Stack>
+                                                            <Box>{patientID}</Box>
+                                                            <Box display="flex">
+                                                                <Box>{new Date(updatedAt).toLocaleTimeString()}</Box>
+                                                                {/* <Box
                                                                 className={`${classes.status} ${
                                                                     procedureCode === '19014C' && 'yet'
                                                                 }`}
@@ -363,18 +426,19 @@ const CreateReport = () => {
                                                             >
                                                                 {procedureCode}
                                                             </Box> */}
-                                                        </Box>
-                                                    </Stack>
-                                                }
-                                            ></ListItemText>
-                                        </Box>
-                                    </ListItemButton>
+                                                            </Box>
+                                                        </Stack>
+                                                    }
+                                                ></ListItemText>
+                                            </Box>
+                                        </ListItemButton>
 
-                                    {/* <Divider /> */}
-                                </Box>
-                            )
-                        })}
-                </List>
+                                        {/* <Divider /> */}
+                                    </Box>
+                                )
+                            })}
+                    </List>
+                </Grid>
             </Grid>
             <Grid item xs={12} className={classes.reportContainer} mt={2}>
                 {selection && (
