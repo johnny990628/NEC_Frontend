@@ -31,7 +31,14 @@ function ChestMarker({}) {
                         <Tooltip key={id} title={`${side}${index + 1}`}>
                             <>
                                 <circle cx={x} cy={y} r={size * 10} fill="red" />
-                                <text font-size="12" x={x} y={y} text-anchor="middle" dominant-baseline="middle" fill="black">
+                                <text
+                                    font-size="12"
+                                    x={x}
+                                    y={y}
+                                    text-anchor="middle"
+                                    dominant-baseline="middle"
+                                    fill="black"
+                                >
                                     {side + (index + 1).toString()}
                                 </text>
                             </>
@@ -45,13 +52,13 @@ function ChestMarker({}) {
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={5}>
                 <Grid item xs={6} display="flex" justifyContent="center" alignItems="center" mt={2}>
-                    <Circle pos={report['L']} side={'L'} />
-                </Grid>
-                <Grid item xs={6} display="flex" justifyContent="center" alignItems="center" mt={2}>
                     <Circle pos={report['R']} side={'R'} />
                 </Grid>
+                <Grid item xs={6} display="flex" justifyContent="center" alignItems="center" mt={2}>
+                    <Circle pos={report['L']} side={'L'} />
+                </Grid>
                 <Grid container item xs={12}>
-                    {['L', 'R'].map((side) => {
+                    {['R', 'L'].map((side) => {
                         return (
                             <Grid key={side} item xs={6} sx={{ pl: 3 }}>
                                 <DataShows side={side} />
