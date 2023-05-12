@@ -98,6 +98,7 @@ const CreateReport = () => {
     const { schedules, loading, count } = useSelector((state) => state.schedule)
     const { user } = useSelector((state) => state.auth)
     const { birads } = useSelector((state) => state.breast)
+    const { user } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch()
     const classes = useStyles()
