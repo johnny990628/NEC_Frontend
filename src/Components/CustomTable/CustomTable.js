@@ -88,7 +88,7 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                 item
                 xs={1}
                 sx={{
-                    padding: 2,
+                    padding: '0 2',
                     mb: 2,
                 }}
             >

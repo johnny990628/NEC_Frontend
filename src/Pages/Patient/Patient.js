@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { Badge, Box, Button, Stack, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import { Badge, Box, Button, Stack, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
 import {
     CalendarToday,
     Delete,
@@ -9,9 +9,9 @@ import {
     Check,
     ClearOutlined,
     ArrowDropDown,
+    PersonAddAlt1,
 } from '@mui/icons-material'
 import Avatar, { genConfig } from 'react-nice-avatar'
-
 import CustomForm from '../../Components/CustomForm/CustomForm'
 import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
@@ -230,7 +230,14 @@ const Patient = () => {
     return (
         <Box className={classes.container}>
             <Accordion elevation={0} className={classes.accordion}>
-                <AccordionSummary expandIcon={<ArrowDropDown />} sx={{ flexDirection: 'column-reverse' }} />
+                {/* expandIcon={ <ArrowDropDown />}  */}
+                <AccordionSummary style={{ width: '10%' }}>
+                    <Typography sx={{ flexShrink: 0 }}>
+                        <Button startIcon={<PersonAddAlt1 color="primary" />} sx={{ fontSize: '1rem' }}>
+                            新增病患
+                        </Button>
+                    </Typography>
+                </AccordionSummary>
                 <AccordionDetails>
                     <CustomForm title="新增病人" sendData={sendData} mode="create" />
                 </AccordionDetails>
