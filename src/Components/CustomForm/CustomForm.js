@@ -13,6 +13,7 @@ import { verifyID, verifyPhone } from '../../Utils/Verify'
 import { apiCheckExists } from '../../Axios/Exists'
 import { addSchedule } from '../../Redux/Slices/Schedule'
 import useAlert from '../../Hooks/useAlert'
+import PROCEDURECODE from './../../Assets/Json/ProcedureCode.json'
 
 const CustomForm = ({ title, row, mode, sendData }) => {
     const [id, setId] = useState('')
@@ -101,27 +102,26 @@ const CustomForm = ({ title, row, mode, sendData }) => {
             //身份證字號判斷性別
             const gender = data.id.substring(1, 2) === '1' ? 'm' : 'f'
             const mr = gender === 'm' ? '先生' : '小姐'
+            const { id, name } = data
             await sendData({ ...data, gender })
 
             if (autoProcessSwitch) {
-                showAlert({
-                    alertTitle: `請輸入${data.name}的抽血編號`,
-                    toastTitle: '加入排程',
-                    text: `${name} ${mr}`,
-                    type: 'input',
-                    event: (text) => dispatch(addSchedule({ patientID: id, procedureCode: '19009C', blood: text })),
-                    preConfirm: async (text) => {
-                        const { data: blood } = await apiCheckExists({ type: 'blood', value: text })
-                        const { data: schedule } = await apiCheckExists({ type: 'schedule', value: id })
-                        const regex = new RegExp('^[A-Za-z0-9]*$')
-                        const isIllegal = !regex.test(text)
-                        let warning = ''
-                        if (blood) warning += '此編號已被使用 '
-                        if (schedule) warning += '此病人已在排程中'
-                        if (isIllegal) warning += ' 含有非法字元'
-                        return { exists: blood || schedule || isIllegal, warning }
-                    },
-                })
+                dispatch(
+                    showAlert({
+                        alertTitle: `請輸入${name}的醫令`,
+                        toastTitle: '加入排程',
+                        text: `${name} ${mr}`,
+                        type: 'select',
+                        options: PROCEDURECODE,
+                        event: (text) =>
+                            dispatch(
+                                addSchedule({
+                                    patientID: id,
+                                    procedureCode: text,
+                                })
+                            ),
+                    })
+                )
             }
 
             if (mode === 'create') {

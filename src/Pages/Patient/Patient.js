@@ -1,8 +1,18 @@
 import React, { useCallback, useMemo } from 'react'
-import { Badge, Box, Button, Stack } from '@mui/material'
-import { CalendarToday, Delete, Edit, Cancel, AccessTime, Check, ClearOutlined } from '@mui/icons-material'
+import { Badge, Box, Button, Stack, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import {
+    CalendarToday,
+    Delete,
+    Edit,
+    Cancel,
+    AccessTime,
+    Check,
+    ClearOutlined,
+    ArrowDropDown,
+} from '@mui/icons-material'
 import Avatar, { genConfig } from 'react-nice-avatar'
 
+import CustomForm from '../../Components/CustomForm/CustomForm'
 import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
 import EditDialog from './EditDialog'
@@ -168,15 +178,15 @@ const Patient = () => {
                                                 text: `${name} ${mr}`,
                                                 type: 'select',
                                                 options: PROCEDURECODE,
-                                                event: (text) =>
+                                                event: (text) => {
                                                     dispatch(
                                                         addSchedule({
                                                             patientID: id,
                                                             procedureCode: text,
                                                         })
-                                                    ),
+                                                    )
+                                                },
                                             })
-
                                             break
                                         case 'on-call':
                                             showAlert({
@@ -219,12 +229,12 @@ const Patient = () => {
 
     return (
         <Box className={classes.container}>
-            {/* <Accordion elevation={0} className={classes.accordion}>
+            <Accordion elevation={0} className={classes.accordion}>
                 <AccordionSummary expandIcon={<ArrowDropDown />} sx={{ flexDirection: 'column-reverse' }} />
                 <AccordionDetails>
                     <CustomForm title="新增病人" sendData={sendData} mode="create" />
                 </AccordionDetails>
-            </Accordion> */}
+            </Accordion>
 
             <CustomTable
                 columns={columns}
