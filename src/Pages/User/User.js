@@ -96,6 +96,7 @@ const Report = () => {
                             <MenuItem value={1}>行政及護理師</MenuItem>
                             <MenuItem value={2}>醫師</MenuItem>
                             <MenuItem value={3}>管理員</MenuItem>
+                            <MenuItem value={4}>放射師</MenuItem>
                         </Select>
                     )
                 },
