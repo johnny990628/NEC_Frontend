@@ -96,6 +96,7 @@ const CreateReport = () => {
     const [iframeURL, setIframeURL] = useState('')
 
     const { schedules, loading, count } = useSelector((state) => state.schedule)
+    const { user } = useSelector((state) => state.auth)
     const { birads } = useSelector((state) => state.breast)
 
     const dispatch = useDispatch()
@@ -523,6 +524,7 @@ const CreateReport = () => {
                                     startIcon={<Check />}
                                     sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
                                     onClick={handleReportSubmit}
+                                    disabled={user.role === 4}
                                 >
                                     完成報告
                                 </Button>
