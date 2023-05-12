@@ -486,7 +486,12 @@ const CreateReport = () => {
                             <Box>
                                 <FormControl variant="standard" sx={{ width: '8rem', mr: 2 }}>
                                     <InputLabel id="select-birads">BI-RADS</InputLabel>
-                                    <Select labelId="select-birads" value={birads} onChange={handleBiradsChange}>
+                                    <Select
+                                        labelId="select-birads"
+                                        value={birads}
+                                        disabled={user.role === 4}
+                                        onChange={handleBiradsChange}
+                                    >
                                         {[1, 2, 3, 4, 5, 6].map((b) => (
                                             <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
                                         ))}
