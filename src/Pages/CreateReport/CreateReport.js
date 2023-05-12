@@ -484,7 +484,7 @@ const CreateReport = () => {
                                 )}
                             </Box>
                             <Box>
-                                <FormControl variant="standard" sx={{ width: '8rem', mr: 2 }}>
+                                {/* <FormControl variant="standard" sx={{ width: '8rem', mr: 2 }}>
                                     <InputLabel id="select-birads">BI-RADS</InputLabel>
                                     <Select
                                         labelId="select-birads"
@@ -496,7 +496,7 @@ const CreateReport = () => {
                                             <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
                                         ))}
                                     </Select>
-                                </FormControl>
+                                </FormControl> */}
                                 {schedule?.status === 'wait-examination' ? (
                                     <Button
                                         variant="outlined"

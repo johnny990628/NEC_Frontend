@@ -1,11 +1,14 @@
 import React from 'react'
 
-import { Box, Grid, Tooltip } from '@mui/material'
+import { Box, Grid, Tooltip, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import DataShows from './DataShows'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setupBirads } from '../../../Redux/Slices/Breast'
 
 function ChestMarker({}) {
-    const { report, CHESTMAXSIZE, CHESTMAXRADIUS } = useSelector((state) => state.breast)
+    const { report, CHESTMAXSIZE, CHESTMAXRADIUS, birads } = useSelector((state) => state.breast)
+    const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     const lines = Array.from({ length: 12 }).map((_, i) => {
         const angle = i * 30
         const x = 200 + Math.sin((angle * Math.PI) / 180) * 200
@@ -31,7 +34,14 @@ function ChestMarker({}) {
                         <Tooltip key={id} title={`${side}${index + 1}`}>
                             <>
                                 <circle cx={x} cy={y} r={size * 10} fill="red" />
-                                <text font-size="12" x={x} y={y} text-anchor="middle" dominant-baseline="middle" fill="black">
+                                <text
+                                    font-size="12"
+                                    x={x}
+                                    y={y}
+                                    text-anchor="middle"
+                                    dominant-baseline="middle"
+                                    fill="black"
+                                >
                                     {side + (index + 1).toString()}
                                 </text>
                             </>
@@ -44,14 +54,32 @@ function ChestMarker({}) {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={5}>
-                <Grid item xs={6} display="flex" justifyContent="center" alignItems="center" mt={2}>
-                    <Circle pos={report['L']} side={'L'} />
-                </Grid>
-                <Grid item xs={6} display="flex" justifyContent="center" alignItems="center" mt={2}>
-                    <Circle pos={report['R']} side={'R'} />
-                </Grid>
+                {['R', 'L'].map((side) => {
+                    return (
+                        <Grid item xs={6} mt={2} display="flex" justifyContent="center" alignItems="center">
+                            <Box>
+                                <Circle pos={report[side]} side={side} />
+                                <FormControl variant="standard" sx={{ width: '6rem', mr: 2, marginBottom: '1em' }}>
+                                    <InputLabel id="select-birads">BI-RADS</InputLabel>
+                                    <Select
+                                        labelId="select-birads"
+                                        value={birads[side]}
+                                        disabled={user.role === 4}
+                                        onChange={(e) => {
+                                            dispatch(setupBirads({ side, value: e.target.value }))
+                                        }}
+                                    >
+                                        {[1, 2, 3, 4, 5, 6].map((b) => (
+                                            <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </Grid>
+                    )
+                })}
                 <Grid container item xs={12}>
-                    {['L', 'R'].map((side) => {
+                    {['R', 'L'].map((side) => {
                         return (
                             <Grid key={side} item xs={6} sx={{ pl: 3 }}>
                                 <DataShows side={side} />
