@@ -38,7 +38,7 @@ const routerList = [
         icon: <EventAvailableOutlined />,
         path: '/createReport',
         Component: CreateReport,
-        authority: [3, 2],
+        authority: [4, 3, 2],
     },
     // {
     //     display_name: '報告管理',
