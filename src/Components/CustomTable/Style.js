@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         height: '86vh',
         padding: '1rem',
+        paddingTop: '0px',
     },
     headerFont: {
         color: theme.palette.text.gray,

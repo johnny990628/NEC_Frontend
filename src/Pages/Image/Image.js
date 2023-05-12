@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
 import axios from 'axios'
 import { apiDownloadDCM } from '../../Axios/Dicom'
+import CustomTableForm from '../../Components/CustomTableForm/CustomTableDrawer'
 
 const Image = () => {
     const dispatch = useDispatch()
@@ -149,6 +150,7 @@ const Image = () => {
                 totalCount={count}
                 GlobalFilter={GlobalFilter}
             />
+            <CustomTableForm />
             <ReportDialog mode="edit" />
         </Box>
     )

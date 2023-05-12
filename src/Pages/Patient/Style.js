@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
     },
     accordion: {
         backgroundColor: theme.palette.background.default,
-        width: '90%',
+        width: '90%', // 設定寬度為auto
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     status: {
         // backgroundColor: theme.palette.status.yet,

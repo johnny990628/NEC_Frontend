@@ -10,7 +10,7 @@ const initialState = {
     TUMORMAXSIZE: 3,
     schedule: {},
     report: { L: [], R: [] },
-    birads: 1,
+    birads: { L: 1, R: 1 },
 }
 
 export const fetchReportByReportID = createAsyncThunk('breast/fetchReportByReportID', async ({ reportID }) => {
@@ -18,8 +18,7 @@ export const fetchReportByReportID = createAsyncThunk('breast/fetchReportByRepor
         const response = await apiGetReportByReportID(reportID)
         const records = response.data.records
         const record = records[records.length - 1].report || []
-        const birads = records[records.length - 1].birads || 1
-
+        const birads = records[records.length - 1].birads || { L: 1, R: 1 }
         return { record, birads }
     } catch (e) {
         return e
@@ -131,7 +130,8 @@ const breastSlice = createSlice({
             state['report'] = action.payload
         },
         setupBirads: (state, action) => {
-            state['birads'] = action.payload
+            const { side, value } = action.payload
+            state['birads'] = { ...state['birads'], [side]: value }
         },
     },
     extraReducers: {
