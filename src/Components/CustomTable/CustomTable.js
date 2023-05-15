@@ -25,8 +25,19 @@ import useStyles from './Style'
 
 import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
 
-const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPage, totalCount, GlobalFilter }) => {
-    const [search, setSearch] = useState('')
+const CustomTable = ({
+    columns,
+    renderSubRow,
+    fetchData,
+    data,
+    loading,
+    totalPage,
+    totalCount,
+    GlobalFilter,
+    GlobalFilterParams,
+    filterParams,
+}) => {
+    const [search, setSearch] = useState({})
     const [status, setStatus] = useState('all')
 
     const classes = useStyles()
@@ -74,7 +85,7 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
         fetchData({
             limit: pageSize,
             offset: pageIndex,
-            search,
+            ...search,
             status,
             sort: sortBy[0]?.id,
             desc: sortBy[0]?.desc ? -1 : 1,
@@ -95,6 +106,15 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                 <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'left' }}>
                     {GlobalFilter && (
                         <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} loading={loading} />
+                    )}
+                    {GlobalFilterParams && (
+                        <GlobalFilterParams
+                            setSearch={setSearch}
+                            search={search}
+                            totalCount={totalCount}
+                            loading={loading}
+                            filterParams={filterParams}
+                        />
                     )}
                 </Grid>
                 <Grid

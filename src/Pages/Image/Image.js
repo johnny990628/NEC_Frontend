@@ -19,12 +19,14 @@ import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
+import GlobalFilterParams from './../../Components/GlobalFilterParams/GlobalFilterParams'
 import { ArrowDropDown, ContentCopy, CloudDownload } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
 import axios from 'axios'
 import { apiDownloadDCM } from '../../Axios/Dicom'
 import CustomTableForm from '../../Components/CustomTableForm/CustomTableDrawer'
+import filterParams from './filterParams.json'
 
 const Image = () => {
     const dispatch = useDispatch()
@@ -148,7 +150,8 @@ const Image = () => {
                 loading={loading}
                 totalPage={page}
                 totalCount={count}
-                GlobalFilter={GlobalFilter}
+                GlobalFilterParams={GlobalFilterParams}
+                filterParams={filterParams}
             />
             <CustomTableForm />
             <ReportDialog mode="edit" />

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "PatientName",
+        "label": "姓名",
+        "type": "text"
+    },
+    {
+        "name": "PatientID",
+        "label": "身分證字號",
+        "type": "text"
+    },
+    {
+        "name": "ModalitiesInStudy",
+        "label": "Modality",
+        "type": "text"
+    },
+    {
+        "name": "StudyDate",
+        "label": "Date",
+        "type": "date"
+    }
+]
