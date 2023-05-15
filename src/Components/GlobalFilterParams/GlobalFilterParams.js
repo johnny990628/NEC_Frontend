@@ -44,6 +44,13 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
         return `${year}${month}${day}`
     }
 
+    function formatDate2(inputDate) {
+        var year = inputDate.substring(0, 4)
+        var month = inputDate.substring(4, 6)
+        var day = inputDate.substring(6, 8)
+        return year + '-' + month + '-' + day
+    }
+
     console.log(value)
 
     return (
@@ -80,8 +87,14 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                                         horizontal: 'left',
                                                     }}
                                                 >
+                                                    {console.log(originalDate[index])}
+
                                                     <DayPicker
                                                         mode="single"
+                                                        // TODO: selected date
+                                                        // selected={
+                                                        //     new Date(formatDate2(originalDate[index] || '20230514'))
+                                                        // }
                                                         onDayClick={(date) => {
                                                             const newDate = originalDate
                                                             newDate[index] = formatDate(date)
