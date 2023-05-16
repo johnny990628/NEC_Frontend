@@ -15,6 +15,11 @@
         "type": "text"
     },
     {
+        "name": "AccessionNumber",
+        "label": "Accession Number",
+        "type": "text"
+    },
+    {
         "name": "StudyDate",
         "label": "Date",
         "type": "rangeDate"
