@@ -149,7 +149,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                         startIcon={<SearchIcon />}
                         onClick={() => handleSearch(value)}
                     >
-                        搜尋
+                        {loading ? <CircularProgress color="primary" size={20} /> : '搜尋'}
                     </Button>
                 </Grid>
                 <Grid item xs={6} md={6} lg={2}>
@@ -161,9 +161,6 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                     >
                         清除
                     </Button>
-                </Grid>
-                <Grid item xs={1} md={1} lg={1}>
-                    {loading ? <CircularProgress color="primary" size={20} /> : <Box style={{ width: '20px' }}></Box>}
                 </Grid>
             </Grid>
         </Box>
