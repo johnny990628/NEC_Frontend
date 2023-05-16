@@ -17,6 +17,6 @@
     {
         "name": "StudyDate",
         "label": "Date",
-        "type": "date"
+        "type": "rangeDate"
     }
 ]

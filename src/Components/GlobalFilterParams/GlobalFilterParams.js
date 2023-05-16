@@ -5,20 +5,26 @@ import { zhTW } from 'date-fns/locale'
 import { useState, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import useStyles from './Style'
+import SearchIcon from '@mui/icons-material/Search'
+import CleaningServicesIcon from '@mui/icons-material/CleaningServices'
 
 const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterParams }) => {
     const classes = useStyles()
     const [anchorE, setAnchorE] = useState({ Start: null, End: null })
-    //filterParams to be array of objects
-    const [value, setValue] = useState(
-        filterParams.reduce((obj, item) => {
+
+    const originalData = {
+        ...filterParams.reduce((obj, item) => {
             obj[item.name] = ''
             return obj
-        }, {})
-    )
+        }, {}),
+        StudyDate: formatDate(new Date('2001-01-01')) + '-' + formatDate(new Date()),
+    }
+
+    //filterParams to be array of objects
+    const [value, setValue] = useState(originalData)
 
     useEffect(() => {
-        setValue({ ...value, StudyDate: formatDate(new Date(0)) + '-' + formatDate(new Date()) })
+        setSearch(value)
     }, [])
 
     function removeEmpty(obj) {
@@ -33,7 +39,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
     }
 
     const handleSearch = useDebouncedCallback((text) => {
-        // const result = removeEmpty(text)
+        //const result = removeEmpty(text)
         setSearch(text)
     }, 500)
 
@@ -51,20 +57,24 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
         return year + '-' + month + '-' + day
     }
 
-    console.log(value)
+    const handleClear = () => {
+        setValue(originalData)
+        console.log(value)
+        setSearch(originalData)
+    }
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '1rem' }}>
-            <Box>
+        <Box sx={{ margin: '1rem' }}>
+            <Grid container spacing={2}>
                 {filterParams.map((filterParam) => {
                     switch (filterParam.type) {
-                        case 'date':
+                        case 'rangeDate':
                             const originalDate = value[filterParam.name].split('-')
                             return (
-                                <Box className={classes.DateBox} sx={{ display: 'flex' }}>
+                                <>
                                     {['Start', 'End'].map((item, index) => {
                                         return (
-                                            <>
+                                            <Grid item xs={12} md={6} lg={2}>
                                                 <TextField
                                                     variant="standard"
                                                     label={item + ' ' + filterParam.label}
@@ -72,7 +82,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                                     className={classes.TextFieldDate}
                                                     InputProps={{
                                                         style: {
-                                                            fontSize: '1.3rem',
+                                                            fontSize: '1rem',
                                                         },
                                                         readOnly: true,
                                                     }}
@@ -87,14 +97,9 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                                         horizontal: 'left',
                                                     }}
                                                 >
-                                                    {console.log(originalDate[index])}
-
                                                     <DayPicker
                                                         mode="single"
-                                                        // TODO: selected date
-                                                        // selected={
-                                                        //     new Date(formatDate2(originalDate[index] || '20230514'))
-                                                        // }
+                                                        selected={new Date()}
                                                         onDayClick={(date) => {
                                                             const newDate = originalDate
                                                             newDate[index] = formatDate(date)
@@ -110,35 +115,57 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                                         locale={zhTW}
                                                     />
                                                 </Popover>
-                                            </>
+                                            </Grid>
                                         )
                                     })}
-                                </Box>
+                                </>
                             )
                         case 'text':
                             return (
-                                <TextField
-                                    variant="standard"
-                                    label={filterParam.label}
-                                    value={value[filterParam]}
-                                    key={filterParam.name}
-                                    className={classes.TextField}
-                                    onChange={(e) => {
-                                        setValue({ ...value, [filterParam.name]: e.target.value })
-                                    }}
-                                    onKeyPress={(e) => {
-                                        if (e.key === 'Enter') {
-                                            handleSearch(value)
-                                        }
-                                    }}
-                                />
+                                <Grid item xs={12} md={6} lg={4}>
+                                    <TextField
+                                        variant="standard"
+                                        label={filterParam.label}
+                                        value={value[filterParam.name]}
+                                        key={filterParam.name}
+                                        className={classes.TextField}
+                                        onChange={(e) => {
+                                            setValue({ ...value, [filterParam.name]: e.target.value })
+                                        }}
+                                        onKeyPress={(e) => {
+                                            if (e.key === 'Enter') {
+                                                handleSearch(value)
+                                            }
+                                        }}
+                                    />
+                                </Grid>
                             )
                     }
                 })}
-            </Box>
-            <Box style={{ marginLeft: '1rem' }}>
-                {loading ? <CircularProgress color="primary" size={20} /> : <Box style={{ width: '20px' }}></Box>}
-            </Box>
+                <Grid item xs={6} md={6} lg={2}>
+                    <Button
+                        className={classes.button}
+                        sx={{ fontSize: '1.1rem' }}
+                        startIcon={<SearchIcon />}
+                        onClick={() => handleSearch(value)}
+                    >
+                        搜尋
+                    </Button>
+                </Grid>
+                <Grid item xs={6} md={6} lg={2}>
+                    <Button
+                        className={classes.button}
+                        sx={{ color: 'red.main', fontSize: '1.1rem' }}
+                        startIcon={<CleaningServicesIcon />}
+                        onClick={handleClear}
+                    >
+                        清除
+                    </Button>
+                </Grid>
+                <Grid item xs={1} md={1} lg={1}>
+                    {loading ? <CircularProgress color="primary" size={20} /> : <Box style={{ width: '20px' }}></Box>}
+                </Grid>
+            </Grid>
         </Box>
     )
 }

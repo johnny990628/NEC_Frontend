@@ -1,18 +1,14 @@
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
-    button: {},
-    TextField: {
-        width: '15rem',
-        margin: '0.5rem',
+    button: {
+        width: '100%',
     },
-    DateBox: {
-        width: '15rem',
-        margin: '0.5rem',
+    TextField: {
+        width: '100%',
     },
     TextFieldDate: {
-        width: '7rem',
-        margin: '0.2rem',
+        width: '100%',
     },
 }))
 
