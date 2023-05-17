@@ -4,12 +4,18 @@ import {
     Button,
     CircularProgress,
     InputAdornment,
+    IconButton,
+    ListItemButton,
+    ListItemIcon,
     Grid,
     Accordion,
     AccordionDetails,
     AccordionSummary,
     Popover,
     Typography,
+    List,
+    ListItemText,
+    Icon,
 } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { DayPicker } from 'react-day-picker'
@@ -21,12 +27,14 @@ import SearchIcon from '@mui/icons-material/Search'
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import AddIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
 
 const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterParams }) => {
     const classes = useStyles()
     const [expand, setExpand] = useState(false)
     const [anchorE, setAnchorE] = useState({ Start: null, End: null })
-
+    const [newFilterParams, setNewFilterParams] = useState(filterParams.filter((filterParam) => filterParam.preset))
+    const [anchorEAdd, setAnchorEAdd] = useState(null)
     const originalData = {
         ...filterParams.reduce((obj, item) => {
             obj[item.name] = ''
@@ -34,6 +42,9 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
         }, {}),
         StudyDate: formatDate(new Date('2001-01-01')) + '-' + formatDate(new Date()),
     }
+
+    const openAddIcon = Boolean(anchorEAdd)
+    const openAddId = openAddIcon ? 'simple-popover' : undefined
 
     //filterParams to be array of objects
     const [value, setValue] = useState(originalData)
@@ -75,10 +86,10 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
             case 'rangeDate':
                 const originalDate = value[filterParam.name].split('-')
                 return (
-                    <Grid container spacing={1}>
+                    <>
                         {['Start', 'End'].map((item, index) => {
                             return (
-                                <Grid item xs={12} md={6} lg={6}>
+                                <Grid item xs={6} md={3} lg={1.5}>
                                     <TextField
                                         variant="outlined"
                                         label={item + ' ' + filterParam.label}
@@ -94,6 +105,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                     />
                                     <Popover
                                         open={Boolean(anchorE[item])}
+                                        id={item}
                                         anchorEl={anchorE[item]}
                                         onClose={() => setAnchorE({ ...anchorE, [item]: null })}
                                         anchorOrigin={{
@@ -101,52 +113,64 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                             horizontal: 'left',
                                         }}
                                     >
-                                        <DayPicker
-                                            mode="single"
-                                            selected={new Date()}
-                                            onDayClick={(date) => {
-                                                const newDate = originalDate
-                                                newDate[index] = formatDate(date)
-                                                setValue({
-                                                    ...value,
-                                                    [filterParam.name]: newDate.join('-'),
-                                                })
-                                                setAnchorE({ ...anchorE, [item]: null })
-                                            }}
-                                            fromYear={1930}
-                                            toYear={new Date().getFullYear()}
-                                            captionLayout="dropdown"
-                                            locale={zhTW}
-                                        />
+                                        <Typography>
+                                            <DayPicker
+                                                mode="single"
+                                                selected={new Date()}
+                                                onDayClick={(date) => {
+                                                    const newDate = originalDate
+                                                    newDate[index] = formatDate(date)
+                                                    setValue({
+                                                        ...value,
+                                                        [filterParam.name]: newDate.join('-'),
+                                                    })
+                                                    setAnchorE({ ...anchorE, [item]: null })
+                                                }}
+                                                fromYear={1930}
+                                                toYear={new Date().getFullYear()}
+                                                captionLayout="dropdown"
+                                                locale={zhTW}
+                                            />
+                                        </Typography>
                                     </Popover>
                                 </Grid>
                             )
                         })}
-                    </Grid>
+                    </>
                 )
             case 'text':
                 return (
-                    <TextField
-                        variant="outlined"
-                        label={filterParam.label}
-                        value={value[filterParam.name]}
-                        key={filterParam.name}
-                        className={classes.TextField}
-                        onChange={(e) => {
-                            setValue({ ...value, [filterParam.name]: e.target.value })
-                        }}
-                        onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                                handleSearch(value)
-                            }
-                        }}
-                    />
+                    <Grid item xs={12} md={6} lg={3}>
+                        <TextField
+                            variant="outlined"
+                            label={filterParam.label}
+                            value={value[filterParam.name]}
+                            key={filterParam.name}
+                            className={classes.TextField}
+                            onChange={(e) => {
+                                setValue({ ...value, [filterParam.name]: e.target.value })
+                            }}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSearch(value)
+                                }
+                            }}
+                        />
+                    </Grid>
                 )
         }
     }
 
     const toggleAcordion = () => {
         setExpand((prev) => !prev)
+    }
+
+    const handleClickAddIcon = (event) => {
+        setAnchorEAdd(event.currentTarget)
+    }
+
+    const handleCloseAddIcon = () => {
+        setAnchorEAdd(null)
     }
 
     return (
@@ -158,21 +182,20 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                     style={{ cursor: 'default' }}
                 >
                     <Grid container spacing={1}>
-                        {filterParams
+                        {newFilterParams
                             .filter((filterParam) => filterParam.preset)
                             .map((filterParam) => {
-                                return (
-                                    <Grid item xs={3} md={3} lg={3} style={{}}>
-                                        <RenderParams filterParam={filterParam} />
-                                    </Grid>
-                                )
+                                return <RenderParams filterParam={filterParam} />
                             })}
 
                         <Grid item xs={6} md={6} lg={1.5}>
                             <Button
                                 className={classes.button}
                                 startIcon={<SearchIcon />}
-                                onClick={() => handleSearch(value)}
+                                onClick={() => {
+                                    handleSearch(value)
+                                    setExpand(false)
+                                }}
                             >
                                 {loading ? <CircularProgress color="primary" size={20} /> : '搜尋'}
                             </Button>
@@ -192,15 +215,46 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                 <AccordionDetails>
                     <Typography>
                         <Grid container spacing={1}>
-                            {filterParams
+                            {newFilterParams
                                 .filter((filterParam) => !filterParam.preset)
                                 .map((filterParam) => {
-                                    return (
-                                        <Grid item xs={3} md={3} lg={3}>
-                                            <RenderParams filterParam={filterParam} />
-                                        </Grid>
-                                    )
+                                    return <RenderParams filterParam={filterParam} />
                                 })}
+                            <Grid item xs={1} md={1} lg={1}>
+                                <IconButton className={classes.customHoverFocus} onClick={handleClickAddIcon}>
+                                    <AddIcon style={{ backgroundColor: '#12312' }} />
+                                </IconButton>
+                                <Popover
+                                    id={openAddId}
+                                    open={openAddIcon}
+                                    anchorEl={anchorEAdd}
+                                    onClose={handleCloseAddIcon}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                >
+                                    <Typography>
+                                        <List component="nav">
+                                            {filterParams
+                                                .filter((filterParam) => !filterParam.preset)
+                                                .filter((filterParam) => !newFilterParams.includes(filterParam))
+                                                .map((filterProps) => {
+                                                    return (
+                                                        <ListItemButton
+                                                            onClick={(event) => {
+                                                                setNewFilterParams([...newFilterParams, filterProps])
+                                                                handleCloseAddIcon()
+                                                            }}
+                                                        >
+                                                            <ListItemText primary={filterProps.label} />
+                                                        </ListItemButton>
+                                                    )
+                                                })}
+                                        </List>
+                                    </Typography>
+                                </Popover>
+                            </Grid>
                         </Grid>
                     </Typography>
                 </AccordionDetails>

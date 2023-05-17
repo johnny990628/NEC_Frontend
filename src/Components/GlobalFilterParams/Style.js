@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme) => ({
     TextFieldDate: {
         width: '100%',
     },
+    customHoverFocus: {
+        top: '50%',
+        transform: 'translate(0, -50%)',
+        backgroundColor: 'rgb(122,220,180)',
+        '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgb(0,208,130)' },
+    },
 }))
 
 export default useStyles
