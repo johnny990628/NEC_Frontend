@@ -103,7 +103,7 @@ const CustomTable = ({
                     mb: 2,
                 }}
             >
-                <Grid item xs={12} md={6} lg={8} sx={{ display: 'flex', justifyContent: 'left' }}>
+                <Grid item xs={12} md={12} lg={8} sx={{ justifyContent: 'left' }}>
                     {GlobalFilter && (
                         <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} loading={loading} />
                     )}
@@ -119,7 +119,7 @@ const CustomTable = ({
                 </Grid>
                 <Grid
                     xs={12}
-                    md={6}
+                    md={12}
                     lg={4}
                     sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center', color: 'text.gray' }}
                 >
