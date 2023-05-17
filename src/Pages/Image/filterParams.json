@@ -2,26 +2,31 @@
     {
         "name": "PatientName",
         "label": "姓名",
-        "type": "text"
+        "type": "text",
+        "preset": true
     },
     {
         "name": "PatientID",
         "label": "身分證字號",
-        "type": "text"
+        "type": "text",
+        "preset": true
     },
     {
         "name": "ModalitiesInStudy",
         "label": "Modality",
-        "type": "text"
+        "type": "text",
+        "preset": true
     },
     {
         "name": "AccessionNumber",
         "label": "Accession Number",
-        "type": "text"
+        "type": "text",
+        "preset": false
     },
     {
         "name": "StudyDate",
         "label": "Date",
-        "type": "rangeDate"
+        "type": "rangeDate",
+        "preset": false
     }
 ]
