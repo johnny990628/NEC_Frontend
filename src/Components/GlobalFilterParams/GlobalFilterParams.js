@@ -80,7 +80,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                             return (
                                 <Grid item xs={12} md={6} lg={6}>
                                     <TextField
-                                        variant="standard"
+                                        variant="outlined"
                                         label={item + ' ' + filterParam.label}
                                         value={originalDate[index]}
                                         className={classes.TextFieldDate}
@@ -127,7 +127,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
             case 'text':
                 return (
                     <TextField
-                        variant="standard"
+                        variant="outlined"
                         label={filterParam.label}
                         value={value[filterParam.name]}
                         key={filterParam.name}
