@@ -26,7 +26,7 @@ import { fetchDicom } from './../../Redux/Slices/Dicom'
 import axios from 'axios'
 import { apiDownloadDCM } from '../../Axios/Dicom'
 import CustomTableForm from '../../Components/CustomTableForm/CustomTableDrawer'
-import filterParams from './filterParams.json'
+import filterParams from '../../Assets/Json/FilterParams.json'
 
 const Image = () => {
     const dispatch = useDispatch()
