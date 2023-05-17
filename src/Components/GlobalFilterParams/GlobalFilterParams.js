@@ -20,7 +20,7 @@ import useStyles from './Style'
 import SearchIcon from '@mui/icons-material/Search'
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add'
 
 const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterParams }) => {
     const classes = useStyles()
@@ -158,18 +158,19 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                     style={{ cursor: 'default' }}
                 >
                     <Grid container spacing={1}>
-                        {filterParams.slice(0, 3).map((filterParam) => {
-                            return (
-                                <Grid item xs={3} md={3} lg={3} style={{ marginTop: '-0.5rem' }}>
-                                    <RenderParams filterParam={filterParam} />
-                                </Grid>
-                            )
-                        })}
+                        {filterParams
+                            .filter((filterParam) => filterParam.preset)
+                            .map((filterParam) => {
+                                return (
+                                    <Grid item xs={3} md={3} lg={3} style={{}}>
+                                        <RenderParams filterParam={filterParam} />
+                                    </Grid>
+                                )
+                            })}
 
                         <Grid item xs={6} md={6} lg={1.5}>
                             <Button
                                 className={classes.button}
-                                sx={{ fontSize: '1.1rem' }}
                                 startIcon={<SearchIcon />}
                                 onClick={() => handleSearch(value)}
                             >
@@ -179,7 +180,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                         <Grid item xs={6} md={6} lg={1.5}>
                             <Button
                                 className={classes.button}
-                                sx={{ color: 'red.main', fontSize: '1.1rem' }}
+                                sx={{ color: 'red.main' }}
                                 startIcon={<CleaningServicesIcon />}
                                 onClick={handleClear}
                             >
@@ -191,13 +192,15 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                 <AccordionDetails>
                     <Typography>
                         <Grid container spacing={1}>
-                            {filterParams.slice(3).map((filterParam) => {
-                                return (
-                                    <Grid item xs={3} md={3} lg={3}>
-                                        <RenderParams filterParam={filterParam} />
-                                    </Grid>
-                                )
-                            })}
+                            {filterParams
+                                .filter((filterParam) => !filterParam.preset)
+                                .map((filterParam) => {
+                                    return (
+                                        <Grid item xs={3} md={3} lg={3}>
+                                            <RenderParams filterParam={filterParam} />
+                                        </Grid>
+                                    )
+                                })}
                         </Grid>
                     </Typography>
                 </AccordionDetails>
