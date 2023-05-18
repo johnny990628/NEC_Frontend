@@ -21,7 +21,7 @@ const CustomTableSetting = ({ columns, setColumns }) => {
 
     const List = () => {
         return (
-            <Box role="presentation" sx={{ width: 400, padding: '1rem' }}>
+            <Box role="presentation" sx={{ width: 400 }}>
                 <TableTransferList listItemDatas={columns} setListItemDatas={setColumns} />
                 <Divider />
             </Box>
