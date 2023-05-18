@@ -153,7 +153,7 @@ const CustomTable = ({
                 xs={1}
                 sx={{
                     padding: '0 2',
-                    mb: 1,
+                    mb: 0,
                 }}
             >
                 {GlobalFilter && (
