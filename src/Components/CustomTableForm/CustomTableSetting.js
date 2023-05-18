@@ -49,7 +49,7 @@ const CustomTableSetting = ({ columns, setColumns, className }) => {
                 onClose={handleClose}
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'center',
+                    horizontal: 'left',
                 }}
                 transformOrigin={{
                     vertical: 'top',
