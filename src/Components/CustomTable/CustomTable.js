@@ -244,7 +244,6 @@ const CustomTable = ({
                         </TableBody>
                     </Table>
                 </CustomScrollbar>
-                {GlobalFilterParams && <TablePagination />}
             </Grid>
 
             {/* <Grid item xs={2} className={classes.tableFooter}>
@@ -292,6 +291,12 @@ const CustomTable = ({
                     </ButtonGroup>
                 </Box>
             </Grid> */}
+
+            {GlobalFilterParams && (
+                <Box>
+                    <TablePagination />
+                </Box>
+            )}
         </Grid>
     )
 }
