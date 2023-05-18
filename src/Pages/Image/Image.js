@@ -154,6 +154,8 @@ const Image = () => {
         <Box className={classes.container}>
             <CustomTable
                 columns={columns.filter((column) => column.showInCustomTable === true)}
+                originalColumns={columns}
+                setColumns={setColumns}
                 fetchData={fetchData}
                 data={results}
                 loading={loading}
@@ -162,7 +164,6 @@ const Image = () => {
                 GlobalFilterParams={GlobalFilterParams}
                 filterParams={filterParams}
             />
-            <CustomTableSetting columns={columns} setColumns={setColumns} />
             <ReportDialog mode="edit" />
         </Box>
     )

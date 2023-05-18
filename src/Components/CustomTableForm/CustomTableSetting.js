@@ -1,11 +1,14 @@
 import react, { useState, useEffect } from 'react'
 import SettingsIcon from '@mui/icons-material/Settings'
+import useStyles from '../GlobalFilterParams/Style'
 
 import { Popover, Typography, Divider, Button, Box } from '@mui/material'
 
 import TableTransferList from './TableTransferList'
 
-const CustomTableSetting = ({ columns, setColumns }) => {
+const CustomTableSetting = ({ columns, setColumns, className }) => {
+    const classes = useStyles()
+
     const [anchorEl, setAnchorEl] = useState(null)
 
     const handleClick = (event) => {
@@ -29,9 +32,15 @@ const CustomTableSetting = ({ columns, setColumns }) => {
     }
 
     return (
-        <Box sx={{ marginRight: '1em', marginLeft: 'auto', marginBottom: '1em' }}>
-            <Button aria-describedby={id} variant="contained" onClick={handleClick} startIcon={<SettingsIcon />}>
-                設定表格
+        <Box className={classes.button}>
+            <Button
+                aria-describedby={id}
+                sx={{ width: '100%', fontSize: '1.1rem' }}
+                variant="contained"
+                onClick={handleClick}
+                startIcon={<SettingsIcon />}
+            >
+                表格
             </Button>
             <Popover
                 id={id}
@@ -39,12 +48,12 @@ const CustomTableSetting = ({ columns, setColumns }) => {
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                    vertical: 'bottom',
+                    horizontal: 'center',
                 }}
                 transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
+                    vertical: 'top',
+                    horizontal: 'center',
                 }}
             >
                 <Typography>

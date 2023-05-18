@@ -28,8 +28,9 @@ import CleaningServicesIcon from '@mui/icons-material/CleaningServices'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
+import CustomTableSetting from '../CustomTableForm/CustomTableSetting'
 
-const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterParams }) => {
+const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterParams, setColumns, columns }) => {
     const classes = useStyles()
     const [expand, setExpand] = useState(false)
     const [anchorE, setAnchorE] = useState({ Start: null, End: null })
@@ -188,27 +189,39 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                 return <RenderParams filterParam={filterParam} />
                             })}
 
-                        <Grid item xs={6} md={6} lg={1.5}>
-                            <Button
-                                className={classes.button}
-                                startIcon={<SearchIcon />}
-                                onClick={() => {
-                                    handleSearch(value)
-                                    setExpand(false)
+                        <Grid item xs={12} md={6} lg={3}>
+                            <Box
+                                sx={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    paddingRight: '10px',
                                 }}
                             >
-                                {loading ? <CircularProgress color="primary" size={20} /> : '搜尋'}
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6} md={6} lg={1.5}>
-                            <Button
-                                className={classes.button}
-                                sx={{ color: 'red.main' }}
-                                startIcon={<CleaningServicesIcon />}
-                                onClick={handleClear}
-                            >
-                                清除
-                            </Button>
+                                <Button
+                                    className={classes.button}
+                                    startIcon={<SearchIcon />}
+                                    onClick={() => {
+                                        handleSearch(value)
+                                        setExpand(false)
+                                    }}
+                                >
+                                    {loading ? <CircularProgress color="primary" size={20} /> : '搜尋'}
+                                </Button>
+                                <Button
+                                    className={classes.button}
+                                    sx={{ color: 'red.main' }}
+                                    startIcon={<CleaningServicesIcon />}
+                                    onClick={handleClear}
+                                >
+                                    清除
+                                </Button>
+                                <CustomTableSetting
+                                    setColumns={setColumns}
+                                    columns={columns}
+                                    className={classes.button}
+                                />
+                            </Box>
                         </Grid>
                     </Grid>
                 </AccordionSummary>
