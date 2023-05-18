@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Checkbox from '@mui/material/Checkbox'
-import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
-import { Box, IconButton } from '@mui/material'
+import { Paper, ListItem, List, ListItemText, Checkbox } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 const TableTransferList = ({ listItemDatas, setListItemDatas }) => {
     return (
-        <Paper sx={{ height: 230, overflow: 'auto', width: '100%' }}>
+        <Paper sx={{ overflow: 'auto', width: '100%' }}>
             <List dense component="div" role="list">
                 {listItemDatas.map((value, index) => {
                     const labelId = `transfer-list-item-${value.accessor}-label`
@@ -24,7 +16,7 @@ const TableTransferList = ({ listItemDatas, setListItemDatas }) => {
                                 <Checkbox
                                     edge="end"
                                     checked={value.showInCustomTable}
-                                    onChange={() => {
+                                    onClick={() => {
                                         const originalDatas = [...listItemDatas]
                                         originalDatas[index].showInCustomTable = !originalDatas[index].showInCustomTable
                                         setListItemDatas(originalDatas)
@@ -32,7 +24,7 @@ const TableTransferList = ({ listItemDatas, setListItemDatas }) => {
                                 />
                             }
                         >
-                            <ListItemText id={labelId} primary={`List item ${value.Header}`} />
+                            <ListItemText id={labelId} primary={value.Header} />
                         </ListItem>
                     )
                 })}
