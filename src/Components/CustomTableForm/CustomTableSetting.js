@@ -5,13 +5,7 @@ import { Popover, Typography, Divider, Button, Box } from '@mui/material'
 
 import TableTransferList from './TableTransferList'
 
-const CustomTableSetting = () => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [listItemDatas, setListItemDatas] = useState({
-        onSelected: [1, 2, 3, 4, 5, 10],
-        totalSelect: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    })
-
+const CustomTableSetting = ({ columns, setColumns }) => {
     const [anchorEl, setAnchorEl] = useState(null)
 
     const handleClick = (event) => {
@@ -27,8 +21,8 @@ const CustomTableSetting = () => {
 
     const List = () => {
         return (
-            <Box role="presentation" sx={{ width: 600, padding: '1em' }}>
-                <TableTransferList listItemDatas={listItemDatas} setListItemDatas={setListItemDatas} />
+            <Box role="presentation" sx={{ width: 400, padding: '1rem' }}>
+                <TableTransferList listItemDatas={columns} setListItemDatas={setColumns} />
                 <Divider />
             </Box>
         )
@@ -53,7 +47,7 @@ const CustomTableSetting = () => {
                     horizontal: 'right',
                 }}
             >
-                <Typography sx={{ p: 2 }}>
+                <Typography>
                     <List />
                 </Typography>
             </Popover>

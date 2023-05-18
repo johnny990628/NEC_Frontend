@@ -11,43 +11,33 @@ import { Box, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 const TableTransferList = ({ listItemDatas, setListItemDatas }) => {
-    
     return (
-        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ padding: '1em' }}>
-            <Paper sx={{ width: '90%', height: 230, overflow: 'auto' }}>
-                <List dense component="div" role="list">
-                    {listItemDatas.totalSelect.map((value) => {
-                        const labelId = `transfer-list-item-${value}-label`
-                        return (
-                            <ListItem
-                                key={value}
-                                role="listitem"
-                                secondaryAction={
-                                    <Checkbox
-                                        edge="end"
-                                        checked={listItemDatas.onSelected.indexOf(value) !== -1}
-                                        onChange={() => {
-                                            if (listItemDatas.onSelected.indexOf(value) !== -1) {
-                                                listItemDatas.onSelected.splice(
-                                                    listItemDatas.onSelected.indexOf(value),
-                                                    1
-                                                )
-                                                setListItemDatas({ ...listItemDatas })
-                                            } else {
-                                                listItemDatas.onSelected.push(value)
-                                                setListItemDatas({ ...listItemDatas })
-                                            }
-                                        }}
-                                    />
-                                }
-                            >
-                                <ListItemText id={labelId} primary={`List item ${value}`} />
-                            </ListItem>
-                        )
-                    })}
-                </List>
-            </Paper>
-        </Grid>
+        <Paper sx={{ height: 230, overflow: 'auto', width: '100%' }}>
+            <List dense component="div" role="list">
+                {listItemDatas.map((value, index) => {
+                    const labelId = `transfer-list-item-${value.accessor}-label`
+                    return (
+                        <ListItem
+                            key={value.accessor}
+                            role="listitem"
+                            secondaryAction={
+                                <Checkbox
+                                    edge="end"
+                                    checked={value.showInCustomTable}
+                                    onChange={() => {
+                                        const originalDatas = [...listItemDatas]
+                                        originalDatas[index].showInCustomTable = !originalDatas[index].showInCustomTable
+                                        setListItemDatas(originalDatas)
+                                    }}
+                                />
+                            }
+                        >
+                            <ListItemText id={labelId} primary={`List item ${value.Header}`} />
+                        </ListItem>
+                    )
+                })}
+            </List>
+        </Paper>
     )
 }
 

@@ -1,16 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
-    Button,
-    FormControlLabel,
-    FormGroup,
-    IconButton,
-    Switch,
-    Tooltip,
-} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Box, Button, IconButton, Tooltip } from '@mui/material'
 import { useDebouncedCallback } from 'use-debounce'
 import moment from 'moment'
 import FileDownload from 'js-file-download'
@@ -38,8 +27,10 @@ const Image = () => {
         dispatch(fetchDicom(params))
     }
 
-    const columns = useMemo(
-        () => [
+    const [columns, setColumns] = useState([])
+
+    useEffect(() => {
+        setColumns([
             {
                 accessor: 'image',
                 Header: '超音波',
@@ -58,10 +49,26 @@ const Image = () => {
                         />
                     </Button>
                 ),
+                showInCustomTable: true,
             },
-            { accessor: 'PatientName', Header: '姓名', Cell: (row) => row.row.original.PatientName['Alphabetic'] },
-            { accessor: 'PatientID', Header: '身分證字號', Cell: (row) => row.row.original.PatientID },
-            { accessor: 'PatientSex', Header: '性別', Cell: (row) => row.row.original.PatientSex },
+            {
+                accessor: 'PatientName',
+                Header: '姓名',
+                Cell: (row) => row.row.original.PatientName['Alphabetic'],
+                showInCustomTable: true,
+            },
+            {
+                accessor: 'PatientID',
+                Header: '身分證字號',
+                Cell: (row) => row.row.original.PatientID,
+                showInCustomTable: true,
+            },
+            {
+                accessor: 'PatientSex',
+                Header: '性別',
+                Cell: (row) => row.row.original.PatientSex,
+                showInCustomTable: true,
+            },
             {
                 accessor: 'StudyDate',
                 Header: '報告日期',
@@ -86,6 +93,7 @@ const Image = () => {
                         )
                     }
                 },
+                showInCustomTable: true,
             },
             {
                 accessor: 'StudyInstanceUID',
@@ -115,6 +123,7 @@ const Image = () => {
                         </Button>
                     </>
                 ),
+                showInCustomTable: true,
             },
             {
                 accessor: 'DownloadDCM',
@@ -136,15 +145,15 @@ const Image = () => {
                         <CloudDownload />
                     </IconButton>
                 ),
+                showInCustomTable: true,
             },
-        ],
-        []
-    )
+        ])
+    }, [])
 
     return (
         <Box className={classes.container}>
             <CustomTable
-                columns={columns}
+                columns={columns.filter((column) => column.showInCustomTable === true)}
                 fetchData={fetchData}
                 data={results}
                 loading={loading}
@@ -153,7 +162,7 @@ const Image = () => {
                 GlobalFilterParams={GlobalFilterParams}
                 filterParams={filterParams}
             />
-            <CustomTableSetting />
+            <CustomTableSetting columns={columns} setColumns={setColumns} />
             <ReportDialog mode="edit" />
         </Box>
     )
