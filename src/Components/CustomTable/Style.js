@@ -3,9 +3,10 @@ import { makeStyles } from '@mui/styles'
 const useStyles = makeStyles((theme) => ({
     container: {
         width: '100%',
-        height: '86vh',
+        height: '92vh',
         padding: '1rem',
         paddingTop: '0px',
+        paddingBottom: '0px',
     },
     headerFont: {
         color: theme.palette.text.gray,
