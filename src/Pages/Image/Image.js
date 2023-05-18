@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
 import axios from 'axios'
 import { apiDownloadDCM } from '../../Axios/Dicom'
-import CustomTableForm from '../../Components/CustomTableForm/CustomTableDrawer'
+import CustomTableSetting from '../../Components/CustomTableForm/CustomTableSetting'
 import filterParams from '../../Assets/Json/FilterParams.json'
 
 const Image = () => {
@@ -153,7 +153,7 @@ const Image = () => {
                 GlobalFilterParams={GlobalFilterParams}
                 filterParams={filterParams}
             />
-            <CustomTableForm />
+            <CustomTableSetting />
             <ReportDialog mode="edit" />
         </Box>
     )

@@ -14,7 +14,7 @@ import SettingsIcon from '@mui/icons-material/Settings'
 
 import TableTransferList from './TableTransferList'
 
-const CustomTableForm = () => {
+const CustomTableSetting = () => {
     const [isOpen, setIsOpen] = React.useState(false)
     const [listItemDatas, setListItemDatas] = React.useState({
         onSelected: [1, 2, 3, 4, 5, 10],
@@ -42,4 +42,4 @@ const CustomTableForm = () => {
     )
 }
 
-export default CustomTableForm
+export default CustomTableSetting
