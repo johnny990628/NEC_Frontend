@@ -9,6 +9,7 @@ import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import GlobalFilterParams from './../../Components/GlobalFilterParams/GlobalFilterParams'
+import CustomModal from '../../Components/CustomModal/CustomModal'
 import { ArrowDropDown, ContentCopy, CloudDownload } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
@@ -96,35 +97,50 @@ const Image = () => {
                 showInCustomTable: true,
             },
             {
-                accessor: 'StudyInstanceUID',
-                Header: '報告ID',
+                accessor: 'Series',
+                Header: 'Series內容',
                 Cell: (row) => (
-                    <>
-                        <Tooltip
-                            title={row.row.original.StudyInstanceUID}
-                            placement="top"
-                            onClick={() => {
-                                navigator.clipboard.writeText(row.row.original.StudyInstanceUID)
-                            }}
-                        >
-                            <IconButton>
-                                <ContentCopy />
-                            </IconButton>
-                        </Tooltip>
-                        <Button
-                            variant="outlined"
-                            sx={{ ml: 2 }}
-                            onClick={() => {
-                                const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
-                                window.open(iframeURL, '_blank')
-                            }}
-                        >
-                            在新分頁開啟
-                        </Button>
-                    </>
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                            console.log(row.row.original)
+                        }}
+                    >
+                        open series-{row.row.original.series.length}
+                    </Button>
                 ),
                 showInCustomTable: true,
             },
+            // {
+            //     accessor: 'StudyInstanceUID',
+            //     Header: '報告ID',
+            //     Cell: (row) => (
+            //         <>
+            //             <Tooltip
+            //                 title={row.row.original.StudyInstanceUID}
+            //                 placement="top"
+            //                 onClick={() => {
+            //                     navigator.clipboard.writeText(row.row.original.StudyInstanceUID)
+            //                 }}
+            //             >
+            //                 <IconButton>
+            //                     <ContentCopy />
+            //                 </IconButton>
+            //             </Tooltip>
+            //             <Button
+            //                 variant="outlined"
+            //                 sx={{ ml: 2 }}
+            //                 onClick={() => {
+            //                     const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
+            //                     window.open(iframeURL, '_blank')
+            //                 }}
+            //             >
+            //                 在新分頁開啟
+            //             </Button>
+            //         </>
+            //     ),
+            //     showInCustomTable: true,
+            // },
             {
                 accessor: 'DownloadDCM',
                 Header: '下載DCM',
@@ -164,6 +180,7 @@ const Image = () => {
                 GlobalFilterParams={GlobalFilterParams}
                 filterParams={filterParams}
             />
+            <CustomModal />
             <ReportDialog mode="edit" />
         </Box>
     )
