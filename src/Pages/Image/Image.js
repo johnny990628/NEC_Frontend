@@ -23,6 +23,7 @@ const Image = () => {
     const classes = useStyles()
     const { results, count, page, loading } = useSelector((state) => state.dicom)
     const [file, setFile] = useState(null)
+    const [modalSeries, setModalSeries] = useState(null)
 
     const fetchData = async (params) => {
         dispatch(fetchDicom(params))
@@ -51,24 +52,28 @@ const Image = () => {
                     </Button>
                 ),
                 showInCustomTable: true,
+                required: false,
             },
             {
                 accessor: 'PatientName',
                 Header: '姓名',
                 Cell: (row) => row.row.original.PatientName['Alphabetic'],
                 showInCustomTable: true,
+                required: true,
             },
             {
                 accessor: 'PatientID',
                 Header: '身分證字號',
                 Cell: (row) => row.row.original.PatientID,
                 showInCustomTable: true,
+                required: true,
             },
             {
                 accessor: 'PatientSex',
                 Header: '性別',
                 Cell: (row) => row.row.original.PatientSex,
                 showInCustomTable: true,
+                required: false,
             },
             {
                 accessor: 'StudyDate',
@@ -95,6 +100,7 @@ const Image = () => {
                     }
                 },
                 showInCustomTable: true,
+                required: false,
             },
             {
                 accessor: 'Series',
@@ -103,13 +109,14 @@ const Image = () => {
                     <Button
                         variant="outlined"
                         onClick={() => {
-                            console.log(row.row.original)
+                            setModalSeries(row.row.original.series)
                         }}
                     >
                         open series-{row.row.original.series.length}
                     </Button>
                 ),
                 showInCustomTable: true,
+                required: true,
             },
             // {
             //     accessor: 'StudyInstanceUID',
@@ -162,6 +169,7 @@ const Image = () => {
                     </IconButton>
                 ),
                 showInCustomTable: true,
+                required: false,
             },
         ])
     }, [])
@@ -180,7 +188,7 @@ const Image = () => {
                 GlobalFilterParams={GlobalFilterParams}
                 filterParams={filterParams}
             />
-            <CustomModal />
+            <CustomModal modalSeries={modalSeries} setModalSeries={setModalSeries} />
             <ReportDialog mode="edit" />
         </Box>
     )
