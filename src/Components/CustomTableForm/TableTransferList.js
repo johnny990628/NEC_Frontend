@@ -12,11 +12,15 @@ const TableTransferList = ({ listItemDatas, setListItemDatas }) => {
                         <ListItem
                             key={value.accessor}
                             role="listitem"
-                            secondaryAction={<Checkbox edge="end" checked={value.showInCustomTable} />}
+                            secondaryAction={
+                                <Checkbox edge="end" checked={value.showInCustomTable} disabled={value.required} />
+                            }
                             onClick={() => {
-                                const originalDatas = [...listItemDatas]
-                                originalDatas[index].showInCustomTable = !originalDatas[index].showInCustomTable
-                                setListItemDatas(originalDatas)
+                                if (!value.required) {
+                                    const originalDatas = [...listItemDatas]
+                                    originalDatas[index].showInCustomTable = !originalDatas[index].showInCustomTable
+                                    setListItemDatas(originalDatas)
+                                }
                             }}
                         >
                             <ListItemText id={labelId} primary={value.Header} />

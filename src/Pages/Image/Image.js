@@ -9,6 +9,7 @@ import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import GlobalFilterParams from './../../Components/GlobalFilterParams/GlobalFilterParams'
+import CustomModal from '../../Components/CustomModal/CustomModal'
 import { ArrowDropDown, ContentCopy, CloudDownload } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
@@ -16,18 +17,42 @@ import axios from 'axios'
 import { apiDownloadDCM } from '../../Axios/Dicom'
 import CustomTableSetting from '../../Components/CustomTableForm/CustomTableSetting'
 import filterParams from '../../Assets/Json/FilterParams.json'
+import useAlert from '../../Hooks/useAlert'
 
 const Image = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { results, count, page, loading } = useSelector((state) => state.dicom)
     const [file, setFile] = useState(null)
+    const [modalSeries, setModalSeries] = useState(null)
 
     const fetchData = async (params) => {
         dispatch(fetchDicom(params))
     }
 
     const [columns, setColumns] = useState([])
+    const showAlert = useAlert()
+
+    const SeriesColumns = [
+        {
+            accessor: 'SeriesInstanceUID',
+            Header: 'SeriesInstanceUID',
+        },
+        {
+            accessor: 'Number',
+            Header: 'SeriesNumber',
+        },
+        {
+            accessor: 'Modality',
+            Header: 'Modality',
+        },
+
+        {
+            accessor: 'instances',
+            Header: 'Instances',
+            Cell: (row) => <Button variant="outlined">{row.row.original.instances.length}</Button>,
+        },
+    ]
 
     useEffect(() => {
         setColumns([
@@ -50,24 +75,28 @@ const Image = () => {
                     </Button>
                 ),
                 showInCustomTable: true,
+                required: false,
             },
             {
                 accessor: 'PatientName',
                 Header: '姓名',
                 Cell: (row) => row.row.original.PatientName['Alphabetic'],
                 showInCustomTable: true,
+                required: true,
             },
             {
                 accessor: 'PatientID',
                 Header: '身分證字號',
                 Cell: (row) => row.row.original.PatientID,
                 showInCustomTable: true,
+                required: true,
             },
             {
                 accessor: 'PatientSex',
                 Header: '性別',
                 Cell: (row) => row.row.original.PatientSex,
                 showInCustomTable: true,
+                required: false,
             },
             {
                 accessor: 'StudyDate',
@@ -94,37 +123,60 @@ const Image = () => {
                     }
                 },
                 showInCustomTable: true,
+                required: false,
             },
             {
-                accessor: 'StudyInstanceUID',
-                Header: '報告ID',
+                accessor: 'Series',
+                Header: 'Series內容',
                 Cell: (row) => (
-                    <>
-                        <Tooltip
-                            title={row.row.original.StudyInstanceUID}
-                            placement="top"
-                            onClick={() => {
-                                navigator.clipboard.writeText(row.row.original.StudyInstanceUID)
-                            }}
-                        >
-                            <IconButton>
-                                <ContentCopy />
-                            </IconButton>
-                        </Tooltip>
-                        <Button
-                            variant="outlined"
-                            sx={{ ml: 2 }}
-                            onClick={() => {
-                                const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
-                                window.open(iframeURL, '_blank')
-                            }}
-                        >
-                            在新分頁開啟
-                        </Button>
-                    </>
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                            showAlert({
+                                icon: 'success',
+                                type: 'table',
+                                columns: SeriesColumns,
+                                data: row.row.original.series,
+                                modalComponent: <CustomModal modalSeries={row.row.original.series} />,
+                            })
+                        }}
+                    >
+                        open series-{row.row.original.series.length}
+                    </Button>
                 ),
                 showInCustomTable: true,
+                required: true,
             },
+            // {
+            //     accessor: 'StudyInstanceUID',
+            //     Header: '報告ID',
+            //     Cell: (row) => (
+            //         <>
+            //             <Tooltip
+            //                 title={row.row.original.StudyInstanceUID}
+            //                 placement="top"
+            //                 onClick={() => {
+            //                     navigator.clipboard.writeText(row.row.original.StudyInstanceUID)
+            //                 }}
+            //             >
+            //                 <IconButton>
+            //                     <ContentCopy />
+            //                 </IconButton>
+            //             </Tooltip>
+            //             <Button
+            //                 variant="outlined"
+            //                 sx={{ ml: 2 }}
+            //                 onClick={() => {
+            //                     const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
+            //                     window.open(iframeURL, '_blank')
+            //                 }}
+            //             >
+            //                 在新分頁開啟
+            //             </Button>
+            //         </>
+            //     ),
+            //     showInCustomTable: true,
+            // },
             {
                 accessor: 'DownloadDCM',
                 Header: '下載DCM',
@@ -146,10 +198,10 @@ const Image = () => {
                     </IconButton>
                 ),
                 showInCustomTable: true,
+                required: false,
             },
         ])
     }, [])
-
     return (
         <Box className={classes.container}>
             <CustomTable
