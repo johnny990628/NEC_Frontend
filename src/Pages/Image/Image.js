@@ -17,6 +17,7 @@ import axios from 'axios'
 import { apiDownloadDCM } from '../../Axios/Dicom'
 import CustomTableSetting from '../../Components/CustomTableForm/CustomTableSetting'
 import filterParams from '../../Assets/Json/FilterParams.json'
+import useAlert from '../../Hooks/useAlert'
 
 const Image = () => {
     const dispatch = useDispatch()
@@ -30,6 +31,28 @@ const Image = () => {
     }
 
     const [columns, setColumns] = useState([])
+    const showAlert = useAlert()
+
+    const SeriesColumns = [
+        {
+            accessor: 'SeriesInstanceUID',
+            Header: 'SeriesInstanceUID',
+        },
+        {
+            accessor: 'Number',
+            Header: 'SeriesNumber',
+        },
+        {
+            accessor: 'Modality',
+            Header: 'Modality',
+        },
+
+        {
+            accessor: 'instances',
+            Header: 'Instances',
+            Cell: (row) => <Button variant="outlined">{row.row.original.instances.length}</Button>,
+        },
+    ]
 
     useEffect(() => {
         setColumns([
@@ -109,7 +132,13 @@ const Image = () => {
                     <Button
                         variant="outlined"
                         onClick={() => {
-                            setModalSeries(row.row.original.series)
+                            showAlert({
+                                icon: 'success',
+                                type: 'table',
+                                columns: SeriesColumns,
+                                data: row.row.original.series,
+                                modalComponent: <CustomModal modalSeries={row.row.original.series} />,
+                            })
                         }}
                     >
                         open series-{row.row.original.series.length}
@@ -173,7 +202,6 @@ const Image = () => {
             },
         ])
     }, [])
-
     return (
         <Box className={classes.container}>
             <CustomTable
@@ -188,7 +216,6 @@ const Image = () => {
                 GlobalFilterParams={GlobalFilterParams}
                 filterParams={filterParams}
             />
-            <CustomModal modalSeries={modalSeries} setModalSeries={setModalSeries} />
             <ReportDialog mode="edit" />
         </Box>
     )
