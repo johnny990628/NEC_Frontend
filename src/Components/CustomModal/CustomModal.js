@@ -1,31 +1,43 @@
-import React from 'react'
-import { Box, Button, Typography, Modal } from '@mui/material'
+import React, { useState, useEffect, useMemo } from 'react'
+import { useTable } from 'react-table'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+
+import CustomTable from '../CustomTable/CustomTable'
 import useStyles from './Style'
 
-const CustomModal = () => {
+const CustomModal = ({ columns, data }) => {
     const classes = useStyles()
-
-    const [open, setOpen] = React.useState(false)
-    const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+        columns,
+        data,
+    })
 
     return (
-        <Box>
-            <Button onClick={handleOpen}>Open modal</Button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box className={classes.modalBox}>
-                    <Box sx={{ width: '100%' }}>adwawd</Box>
-                    <Box sx={{ width: '100%' }}>
-                        
-                    </Box>
-                </Box>
-            </Modal>
-        </Box>
+        <TableContainer>
+            <Table {...getTableProps()}>
+                <TableHead>
+                    {headerGroups.map((headerGroup) => (
+                        <TableRow {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map((column) => (
+                                <TableCell {...column.getHeaderProps()}>{column.render('Header')}</TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableHead>
+                <TableBody {...getTableBodyProps()}>
+                    {rows.map((row) => {
+                        prepareRow(row)
+                        return (
+                            <TableRow {...row.getRowProps()}>
+                                {row.cells.map((cell) => (
+                                    <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                                ))}
+                            </TableRow>
+                        )
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 }
 
