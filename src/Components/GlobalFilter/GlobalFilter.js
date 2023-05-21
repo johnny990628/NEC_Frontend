@@ -8,7 +8,7 @@ const GlobalFilter = ({ setSearch, search, totalCount, loading }) => {
     const classes = useStyles()
     const [value, setValue] = useState('')
     const handleSearch = useDebouncedCallback((text) => {
-        setSearch(text)
+        setSearch({ search: text })
     }, 500)
 
     return (
@@ -24,7 +24,7 @@ const GlobalFilter = ({ setSearch, search, totalCount, loading }) => {
                         handleSearch(e.target.value)
                     }}
                     onKeyPress={(e) => {
-                        e.key === 'Enter' && setSearch(value)
+                        e.key === 'Enter' && setSearch({ search: value })
                     }}
                     sx={{ width: '20rem' }}
                 />

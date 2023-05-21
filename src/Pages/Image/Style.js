@@ -8,9 +8,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         backgroundColor: theme.palette.secondary.main,
         borderRadius: '1rem',
+        height: '100%',
         // boxShadow: '6px 6px 10px rgba(0,0,0,0.2)',
         // border: `.5px solid ${theme.palette.border.main}`,
-        padding: '.5rem',
+        paddingBottom: '0rem',
 
         // height: '100%',
     },

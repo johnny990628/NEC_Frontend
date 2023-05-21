@@ -24,9 +24,23 @@ import { useDebouncedCallback } from 'use-debounce'
 import useStyles from './Style'
 
 import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
+import CustomTableSetting from '../CustomTableForm/CustomTableSetting'
 
-const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPage, totalCount, GlobalFilter }) => {
-    const [search, setSearch] = useState('')
+const CustomTable = ({
+    columns,
+    renderSubRow,
+    fetchData,
+    data,
+    loading,
+    totalPage,
+    totalCount,
+    GlobalFilter,
+    GlobalFilterParams,
+    filterParams,
+    originalColumns,
+    setColumns,
+}) => {
+    const [search, setSearch] = useState({})
     const [status, setStatus] = useState('all')
 
     const classes = useStyles()
@@ -74,12 +88,62 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
         fetchData({
             limit: pageSize,
             offset: pageIndex,
-            search,
+            ...search,
             status,
             sort: sortBy[0]?.id,
             desc: sortBy[0]?.desc ? -1 : 1,
         })
     }, [pageIndex, pageSize, search, sortBy, totalCount, status])
+
+    const TablePagination = () => {
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'right',
+                    alignItems: 'center',
+                    color: 'text.gray',
+                }}
+            >
+                <Box className={classes.tableFooterItem} sx={{ fontSize: '1.1rem' }}>
+                    {`第${pageIndex + 1}/${pageOptions.length}頁`}
+                </Box>
+                <ButtonGroup variant="outlined" className={classes.tableFooterItem}>
+                    <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                        {'<<'}
+                    </Button>
+                    <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                        {'<'}
+                    </Button>
+                    <Button onClick={() => nextPage()} disabled={!canNextPage}>
+                        {'>'}
+                    </Button>
+                    <Button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                        {'>>'}
+                    </Button>
+                </ButtonGroup>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="rows">列數</InputLabel>
+                    <Select
+                        labelId="rows"
+                        label="列數"
+                        value={pageSize}
+                        onChange={(e) => {
+                            setPageSize(Number(e.target.value))
+                        }}
+                        className={classes.tableFooterItem}
+                        sx={{ color: 'text.gray' }}
+                    >
+                        {[5, 10, 20, 30, 40].map((pageSize) => (
+                            <MenuItem key={pageSize} value={pageSize}>
+                                {pageSize}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Box>
+        )
+    }
 
     return (
         <Grid container direction="column" wrap="nowrap" className={classes.container}>
@@ -89,54 +153,30 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                 xs={1}
                 sx={{
                     padding: '0 2',
-                    mb: 2,
+                    mb: 0,
                 }}
             >
-                <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'left' }}>
-                    {GlobalFilter && (
+                {GlobalFilter && (
+                    <Grid item xs={12} md={12} lg={8} sx={{ justifyContent: 'left' }}>
                         <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} loading={loading} />
-                    )}
-                </Grid>
-                <Grid
-                    xs={4}
-                    sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center', color: 'text.gray' }}
-                >
-                    <Box className={classes.tableFooterItem} sx={{ fontSize: '1.1rem' }}>
-                        {`第${pageIndex + 1}/${pageOptions.length}頁`}
-                    </Box>
-                    <ButtonGroup variant="outlined" className={classes.tableFooterItem}>
-                        <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                            {'<<'}
-                        </Button>
-                        <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                            {'<'}
-                        </Button>
-                        <Button onClick={() => nextPage()} disabled={!canNextPage}>
-                            {'>'}
-                        </Button>
-                        <Button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                            {'>>'}
-                        </Button>
-                    </ButtonGroup>
-                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="rows">列數</InputLabel>
-                        <Select
-                            labelId="rows"
-                            label="列數"
-                            value={pageSize}
-                            onChange={(e) => {
-                                setPageSize(Number(e.target.value))
-                            }}
-                            className={classes.tableFooterItem}
-                            sx={{ color: 'text.gray' }}
-                        >
-                            {[5, 10, 20, 30, 40].map((pageSize) => (
-                                <MenuItem key={pageSize} value={pageSize}>
-                                    {pageSize}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    </Grid>
+                )}
+                {GlobalFilterParams && (
+                    <Grid item xs={12} md={12} lg={12} sx={{ justifyContent: 'left' }}>
+                        <GlobalFilterParams
+                            setSearch={setSearch}
+                            search={search}
+                            totalCount={totalCount}
+                            loading={loading}
+                            filterParams={filterParams}
+                            setColumns={setColumns}
+                            columns={originalColumns}
+                        />
+                    </Grid>
+                )}
+
+                <Grid item xs={12} md={12} lg={4} sx={{ justifyContent: 'right' }}>
+                    {GlobalFilter && <TablePagination />}
                 </Grid>
             </Grid>
             <Grid item xs={9} {...getTableProps()} className={classes.tableBody}>
@@ -205,6 +245,7 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                     </Table>
                 </CustomScrollbar>
             </Grid>
+
             {/* <Grid item xs={2} className={classes.tableFooter}>
                 <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.gray' }}>
                     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
@@ -250,6 +291,12 @@ const CustomTable = ({ columns, renderSubRow, fetchData, data, loading, totalPag
                     </ButtonGroup>
                 </Box>
             </Grid> */}
+
+            {GlobalFilterParams && (
+                <Box>
+                    <TablePagination />
+                </Box>
+            )}
         </Grid>
     )
 }

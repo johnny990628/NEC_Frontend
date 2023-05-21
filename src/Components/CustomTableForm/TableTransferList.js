@@ -1,53 +1,34 @@
 import React, { useState, useEffect } from 'react'
-import Grid from '@mui/material/Grid'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Checkbox from '@mui/material/Checkbox'
-import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
-import { Box, IconButton } from '@mui/material'
+import { Paper, ListItem, List, ListItemText, Checkbox } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 const TableTransferList = ({ listItemDatas, setListItemDatas }) => {
-    
     return (
-        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ padding: '1em' }}>
-            <Paper sx={{ width: '90%', height: 230, overflow: 'auto' }}>
-                <List dense component="div" role="list">
-                    {listItemDatas.totalSelect.map((value) => {
-                        const labelId = `transfer-list-item-${value}-label`
-                        return (
-                            <ListItem
-                                key={value}
-                                role="listitem"
-                                secondaryAction={
-                                    <Checkbox
-                                        edge="end"
-                                        checked={listItemDatas.onSelected.indexOf(value) !== -1}
-                                        onChange={() => {
-                                            if (listItemDatas.onSelected.indexOf(value) !== -1) {
-                                                listItemDatas.onSelected.splice(
-                                                    listItemDatas.onSelected.indexOf(value),
-                                                    1
-                                                )
-                                                setListItemDatas({ ...listItemDatas })
-                                            } else {
-                                                listItemDatas.onSelected.push(value)
-                                                setListItemDatas({ ...listItemDatas })
-                                            }
-                                        }}
-                                    />
+        <Paper sx={{ overflow: 'auto', width: '100%' }}>
+            <List dense role="list" component="div">
+                {listItemDatas.map((value, index) => {
+                    const labelId = `transfer-list-item-${value.accessor}-label`
+                    return (
+                        <ListItem
+                            key={value.accessor}
+                            role="listitem"
+                            secondaryAction={
+                                <Checkbox edge="end" checked={value.showInCustomTable} disabled={value.required} />
+                            }
+                            onClick={() => {
+                                if (!value.required) {
+                                    const originalDatas = [...listItemDatas]
+                                    originalDatas[index].showInCustomTable = !originalDatas[index].showInCustomTable
+                                    setListItemDatas(originalDatas)
                                 }
-                            >
-                                <ListItemText id={labelId} primary={`List item ${value}`} />
-                            </ListItem>
-                        )
-                    })}
-                </List>
-            </Paper>
-        </Grid>
+                            }}
+                        >
+                            <ListItemText id={labelId} primary={value.Header} />
+                        </ListItem>
+                    )
+                })}
+            </List>
+        </Paper>
     )
 }
 

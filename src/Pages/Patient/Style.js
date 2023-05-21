@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        height: '95vh',
         // backgroundColor: theme.palette.background.default,
         backgroundColor: theme.palette.secondary.main,
         borderRadius: '1rem',
