@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTheme } from '@mui/styles'
 import Swal from 'sweetalert2'
+import ReactDOMServer from 'react-dom/server'
+import CustomModal from '../Components/CustomModal/CustomModal'
 
 const useAlert = () => {
     const [alertData, setAlertData] = useState(null)
@@ -20,7 +22,19 @@ const useAlert = () => {
 
     useEffect(() => {
         if (alertData) {
-            const { type, options, toastTitle, alertTitle, text, icon = 'success', event, preConfirm } = alertData
+            const {
+                type,
+                options,
+                toastTitle,
+                alertTitle,
+                text,
+                icon = 'success',
+                event,
+                preConfirm,
+                modalComponent,
+                columns,
+                data,
+            } = alertData
             switch (type) {
                 case 'confirm':
                     Swal.fire({
@@ -95,6 +109,30 @@ const useAlert = () => {
                         } else {
                             handleClose()
                         }
+                    })
+                    break
+                case 'table':
+                    Swal.fire({
+                        title: alertTitle,
+                        // backdrop: false,
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        html: ReactDOMServer.renderToString(<CustomModal columns={columns} data={data} />),
+                        confirmButtonColor: theme.palette.red.main,
+                        width: '50%',
+                    }).then((result) => {
+                        // if (result.isConfirmed) {
+                        //     event().then(() =>
+                        //         Toast.fire({
+                        //             icon: icon,
+                        //             title: toastTitle,
+                        //             text: text,
+                        //         }).then(handleClose)
+                        //     )
+                        // } else {
+                        //     handleClose()
+                        // }
                     })
                     break
                 default:
