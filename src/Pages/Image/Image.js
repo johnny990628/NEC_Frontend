@@ -18,6 +18,7 @@ import { apiDownloadDCM } from '../../Axios/Dicom'
 import CustomTableSetting from '../../Components/CustomTableForm/CustomTableSetting'
 import filterParams from '../../Assets/Json/FilterParams.json'
 import useAlert from '../../Hooks/useAlert'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 
 const Image = () => {
     const dispatch = useDispatch()
@@ -50,6 +51,7 @@ const Image = () => {
             Cell: (row) => (
                 <Button
                     variant="outlined"
+                    endIcon={<OpenInNewIcon />}
                     onClick={() => {
                         const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}&SeriesInstanceUID=${row.row.original.SeriesInstanceUID}`
                         window.open(iframeURL, '_blank')
