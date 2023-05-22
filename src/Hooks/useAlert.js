@@ -120,7 +120,7 @@ const useAlert = () => {
                         showCloseButton: true,
                         html: ReactDOMServer.renderToString(<CustomModal columns={columns} data={data} />),
                         confirmButtonColor: theme.palette.red.main,
-                        width: '50%',
+                        width: '70%',
                     }).then((result) => {
                         // if (result.isConfirmed) {
                         //     event().then(() =>
