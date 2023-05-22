@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTheme } from '@mui/styles'
 import Swal from 'sweetalert2'
-import ReactDOMServer from 'react-dom/server'
 import CustomModal from '../Components/CustomModal/CustomModal'
+import ReactDOM from 'react-dom'
 
 const useAlert = () => {
     const [alertData, setAlertData] = useState(null)
@@ -31,9 +31,9 @@ const useAlert = () => {
                 icon = 'success',
                 event,
                 preConfirm,
-                modalComponent,
                 columns,
                 data,
+                URL,
             } = alertData
             switch (type) {
                 case 'confirm':
@@ -118,7 +118,10 @@ const useAlert = () => {
                         showCancelButton: false,
                         showConfirmButton: false,
                         showCloseButton: true,
-                        html: ReactDOMServer.renderToString(<CustomModal columns={columns} data={data} />),
+                        html: `<div id="my-component"></div>`,
+                        didOpen: () => {
+                            ReactDOM.render(<CustomModal columns={columns} data={data} />, document.getElementById('my-component'))
+                        },
                         confirmButtonColor: theme.palette.red.main,
                         width: '70%',
                     }).then((result) => {

@@ -23,8 +23,6 @@ const Image = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { results, count, page, loading } = useSelector((state) => state.dicom)
-    const [file, setFile] = useState(null)
-    const [modalSeries, setModalSeries] = useState(null)
 
     const fetchData = async (params) => {
         dispatch(fetchDicom(params))
@@ -46,11 +44,25 @@ const Image = () => {
             accessor: 'Modality',
             Header: 'Modality',
         },
-
+        {
+            accessor: 'OpenSeries',
+            Header: 'OpenSeries',
+            Cell: (row) => (
+                <Button
+                    variant="outlined"
+                    onClick={() => {
+                        const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}&SeriesInstanceUID=${row.row.original.SeriesInstanceUID}`
+                        window.open(iframeURL, '_blank')
+                    }}
+                >
+                    Open Series
+                </Button>
+            ),
+        },
         {
             accessor: 'instances',
             Header: 'Instances',
-            Cell: (row) => <Button variant="outlined">{row.row.original.instances.length}</Button>,
+            Cell: (row) => <Button>{row.row.original.instances.length}</Button>,
         },
     ]
 
@@ -137,7 +149,6 @@ const Image = () => {
                                 type: 'table',
                                 columns: SeriesColumns,
                                 data: row.row.original.series,
-                                modalComponent: <CustomModal modalSeries={row.row.original.series} />,
                             })
                         }}
                     >
