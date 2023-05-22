@@ -208,8 +208,9 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                     style={{ cursor: 'default' }}
                 >
                     <Grid container spacing={1}>
-                        {newFilterParams
+                        {filterParams
                             .filter((filterParam) => filterParam.preset)
+                            .slice(0, 3)
                             .map((filterParam) => {
                                 return <RenderParams filterParam={filterParam} />
                             })}
@@ -253,12 +254,13 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                 <AccordionDetails>
                     <Typography>
                         <Grid container spacing={1}>
-                            {newFilterParams
-                                .filter((filterParam) => !filterParam.preset)
+                            {filterParams
+                                .filter((filterParam) => filterParam.preset)
+                                .slice(3)
                                 .map((filterParam) => {
                                     return <RenderParams filterParam={filterParam} />
                                 })}
-                            <Grid item xs={1} md={1} lg={1}>
+                            {/* <Grid item xs={1} md={1} lg={1}>
                                 <IconButton className={classes.customHoverFocus} onClick={handleClickAddIcon}>
                                     <AddIcon style={{ backgroundColor: '#12312' }} />
                                 </IconButton>
@@ -292,7 +294,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                         </List>
                                     </Typography>
                                 </Popover>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </Typography>
                 </AccordionDetails>

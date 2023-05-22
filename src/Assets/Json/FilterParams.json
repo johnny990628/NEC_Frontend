@@ -63,12 +63,18 @@
         "name": "AccessionNumber",
         "label": "Accession Number",
         "type": "text",
-        "preset": false
+        "preset": true
+    },
+    {
+        "name": "StudyInstanceUID",
+        "label": "Study UID",
+        "type": "text",
+        "preset": true
     },
     {
         "name": "StudyDate",
         "label": "Date",
         "type": "rangeDate",
-        "preset": false
+        "preset": true
     }
 ]
