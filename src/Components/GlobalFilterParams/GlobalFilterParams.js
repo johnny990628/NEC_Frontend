@@ -3,10 +3,10 @@ import {
     TextField,
     Button,
     CircularProgress,
-    InputAdornment,
+    InputLabel,
     IconButton,
     ListItemButton,
-    ListItemIcon,
+    Select,
     Grid,
     Accordion,
     AccordionDetails,
@@ -15,7 +15,8 @@ import {
     Typography,
     List,
     ListItemText,
-    Icon,
+    MenuItem,
+    FormControl,
 } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { DayPicker } from 'react-day-picker'
@@ -157,6 +158,30 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                 }
                             }}
                         />
+                    </Grid>
+                )
+            case 'select':
+                return (
+                    <Grid item xs={12} md={6} lg={3}>
+                        <FormControl className={classes.TextField}>
+                            <InputLabel id="demo-simple-select-helper-label">{filterParam.label}</InputLabel>
+                            <Select
+                                value={value[filterParam.name]}
+                                label={filterParam.label}
+                                onChange={(e) => {
+                                    setValue({ ...value, [filterParam.name]: e.target.value })
+                                }}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {filterParam.options.map((option) => (
+                                    <MenuItem value={option.label} key={option.value}>
+                                        {option.value}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
                 )
         }

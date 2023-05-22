@@ -14,7 +14,49 @@
     {
         "name": "ModalitiesInStudy",
         "label": "Modality",
-        "type": "text",
+        "type": "select",
+        "options": [
+            {
+                "label": "CT",
+                "value": "CT"
+            },
+            {
+                "label": "CR",
+                "value": "CR"
+            },
+            {
+                "label": "DX",
+                "value": "DX"
+            },
+            {
+                "label": "MR",
+                "value": "MR"
+            },
+            {
+                "label": "NM",
+                "value": "NM"
+            },
+            {
+                "label": "OT",
+                "value": "OT"
+            },
+            {
+                "label": "PT",
+                "value": "PT"
+            },
+            {
+                "label": "RF",
+                "value": "RF"
+            },
+            {
+                "label": "US",
+                "value": "US"
+            },
+            {
+                "label": "XA",
+                "value": "XA"
+            }
+        ],
         "preset": true
     },
     {
