@@ -146,6 +146,7 @@ const Image = () => {
                     <Button
                         variant="outlined"
                         sx={{ ml: 2 }}
+                        endIcon={<OpenInNewIcon />}
                         onClick={() => {
                             const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
                             window.open(iframeURL, '_blank')
@@ -155,6 +156,7 @@ const Image = () => {
                     </Button>
                 ),
                 showInCustomTable: true,
+                required: true,
             },
             {
                 accessor: 'Series',
