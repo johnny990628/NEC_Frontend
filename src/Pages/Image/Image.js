@@ -140,6 +140,23 @@ const Image = () => {
                 required: false,
             },
             {
+                accessor: 'OPENBLUELIGHT',
+                Header: '打開Viewer',
+                Cell: (row) => (
+                    <Button
+                        variant="outlined"
+                        sx={{ ml: 2 }}
+                        onClick={() => {
+                            const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
+                            window.open(iframeURL, '_blank')
+                        }}
+                    >
+                        在新分頁開啟
+                    </Button>
+                ),
+                showInCustomTable: true,
+            },
+            {
                 accessor: 'Series',
                 Header: 'Series內容',
                 Cell: (row) => (
@@ -160,36 +177,6 @@ const Image = () => {
                 showInCustomTable: true,
                 required: true,
             },
-            // {
-            //     accessor: 'StudyInstanceUID',
-            //     Header: '報告ID',
-            //     Cell: (row) => (
-            //         <>
-            //             <Tooltip
-            //                 title={row.row.original.StudyInstanceUID}
-            //                 placement="top"
-            //                 onClick={() => {
-            //                     navigator.clipboard.writeText(row.row.original.StudyInstanceUID)
-            //                 }}
-            //             >
-            //                 <IconButton>
-            //                     <ContentCopy />
-            //                 </IconButton>
-            //             </Tooltip>
-            //             <Button
-            //                 variant="outlined"
-            //                 sx={{ ml: 2 }}
-            //                 onClick={() => {
-            //                     const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
-            //                     window.open(iframeURL, '_blank')
-            //                 }}
-            //             >
-            //                 在新分頁開啟
-            //             </Button>
-            //         </>
-            //     ),
-            //     showInCustomTable: true,
-            // },
             {
                 accessor: 'DownloadDCM',
                 Header: '下載DCM',
