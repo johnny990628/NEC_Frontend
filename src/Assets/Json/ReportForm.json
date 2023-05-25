@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Shape",
+        "label": "Shape",
+        "type": "select",
+        "options": ["Oval", "Round", "Irregular"]
+    },
+    {
+        "name": "Orientation",
+        "label": "Orientation",
+        "type": "select",
+        "options": ["Parallel", "Not parallel"]
+    },
+    {
+        "name": "Margin",
+        "label": "Margin",
+        "type": "select",
+        "options": ["Circumscribed", "Indistinct", "Angular", "Microlobulated", "Spiculated"]
+    },
+    {
+        "name": "EchoPattern",
+        "label": "Echo Pattern",
+        "type": "select",
+        "options": ["Anechoic", "Hyperechoic", "Complex", "Hypoechoic", "Isoechoic"]
+    },
+    {
+        "name": "PosteriorFeatures",
+        "label": "Posterior Features",
+        "type": "select",
+        "options": ["No posterior acoustic features", "Enhancement", "Shadowing", "Combined pattern"]
+    },
+    {
+        "name": "AssociatedFeatures",
+        "label": "Associated Features",
+        "type": "select",
+        "options": [
+            "Architectural distortion",
+            "Duct changes",
+            "Skin changes/Skin Thickening",
+            "Skin changes/Skin Retraction",
+            "Edema"
+        ]
+    },
+    {
+        "name": "Vascularity",
+        "label": "Vascularity",
+        "type": "select",
+        "options": [
+            "Not assessed",
+            "Vascularity/Absent",
+            "Vascularity/Internal Vascularity",
+            "Vascularity/Vessels in Rim"
+        ]
+    },
+    {
+        "name": "SurroundingChanges",
+        "label": "Surrounding Changes",
+        "type": "select",
+        "options": [
+            "Duct changes",
+            "Cooper's ligament changes",
+            "Edema Change",
+            "Architectural distortion",
+            "Skin thickening",
+            "Skin retraction/irregularity"
+        ]
+    },
+    {
+        "name": "SpecialCases",
+        "label": "Special Cases",
+        "type": "select",
+        "options": [
+            "Clustered microcysts",
+            "Complicated cyst",
+            "Mass in or on skin",
+            "Foreign body",
+            "Simple cysts",
+            "Vascular Abnormalities/AVM",
+            "Vascular Abnormalities/Mondor Disease",
+            "Postsurgical Fluid Collection",
+            "Fat Necrosis",
+            "Lymph nodes - intramammary",
+            "Lymph nodes - axillary"
+        ]
+    },
+    {
+        "name": "Calcifications",
+        "label": "Calcifications",
+        "type": "select",
+        "options": ["Intraductal", "Microcalcifications out of mass", "Microcalcifications in mass"]
+    },
+    {
+        "name": "Elasticity",
+        "label": "Elasticity",
+        "type": "select",
+        "options": ["Not assessed", "Soft", "Intermediate", "Hard"]
+    }
+]

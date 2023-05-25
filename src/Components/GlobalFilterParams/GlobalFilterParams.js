@@ -3,10 +3,10 @@ import {
     TextField,
     Button,
     CircularProgress,
-    InputAdornment,
+    InputLabel,
     IconButton,
     ListItemButton,
-    ListItemIcon,
+    Select,
     Grid,
     Accordion,
     AccordionDetails,
@@ -15,7 +15,8 @@ import {
     Typography,
     List,
     ListItemText,
-    Icon,
+    MenuItem,
+    FormControl,
 } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { DayPicker } from 'react-day-picker'
@@ -159,6 +160,30 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                         />
                     </Grid>
                 )
+            case 'select':
+                return (
+                    <Grid item xs={12} md={6} lg={3}>
+                        <FormControl className={classes.TextField}>
+                            <InputLabel id="demo-simple-select-helper-label">{filterParam.label}</InputLabel>
+                            <Select
+                                value={value[filterParam.name]}
+                                label={filterParam.label}
+                                onChange={(e) => {
+                                    setValue({ ...value, [filterParam.name]: e.target.value })
+                                }}
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {filterParam.options.map((option) => (
+                                    <MenuItem value={option.label} key={option.value}>
+                                        {option.value}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                )
         }
     }
 
@@ -183,8 +208,9 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                     style={{ cursor: 'default' }}
                 >
                     <Grid container spacing={1}>
-                        {newFilterParams
+                        {filterParams
                             .filter((filterParam) => filterParam.preset)
+                            .slice(0, 3)
                             .map((filterParam) => {
                                 return <RenderParams filterParam={filterParam} />
                             })}
@@ -228,12 +254,13 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                 <AccordionDetails>
                     <Typography>
                         <Grid container spacing={1}>
-                            {newFilterParams
-                                .filter((filterParam) => !filterParam.preset)
+                            {filterParams
+                                .filter((filterParam) => filterParam.preset)
+                                .slice(3)
                                 .map((filterParam) => {
                                     return <RenderParams filterParam={filterParam} />
                                 })}
-                            <Grid item xs={1} md={1} lg={1}>
+                            {/* <Grid item xs={1} md={1} lg={1}>
                                 <IconButton className={classes.customHoverFocus} onClick={handleClickAddIcon}>
                                     <AddIcon style={{ backgroundColor: '#12312' }} />
                                 </IconButton>
@@ -267,7 +294,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                         </List>
                                     </Typography>
                                 </Popover>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </Typography>
                 </AccordionDetails>

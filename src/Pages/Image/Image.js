@@ -18,13 +18,12 @@ import { apiDownloadDCM } from '../../Axios/Dicom'
 import CustomTableSetting from '../../Components/CustomTableForm/CustomTableSetting'
 import filterParams from '../../Assets/Json/FilterParams.json'
 import useAlert from '../../Hooks/useAlert'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 
 const Image = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { results, count, page, loading } = useSelector((state) => state.dicom)
-    const [file, setFile] = useState(null)
-    const [modalSeries, setModalSeries] = useState(null)
 
     const fetchData = async (params) => {
         dispatch(fetchDicom(params))
@@ -46,11 +45,26 @@ const Image = () => {
             accessor: 'Modality',
             Header: 'Modality',
         },
-
+        {
+            accessor: 'OpenSeries',
+            Header: 'OpenSeries',
+            Cell: (row) => (
+                <Button
+                    variant="outlined"
+                    endIcon={<OpenInNewIcon />}
+                    onClick={() => {
+                        const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}&SeriesInstanceUID=${row.row.original.SeriesInstanceUID}`
+                        window.open(iframeURL, '_blank')
+                    }}
+                >
+                    Open Series
+                </Button>
+            ),
+        },
         {
             accessor: 'instances',
             Header: 'Instances',
-            Cell: (row) => <Button variant="outlined">{row.row.original.instances.length}</Button>,
+            Cell: (row) => <Button>{row.row.original.instances.length}</Button>,
         },
     ]
 
@@ -126,6 +140,25 @@ const Image = () => {
                 required: false,
             },
             {
+                accessor: 'OPENBLUELIGHT',
+                Header: '打開Viewer',
+                Cell: (row) => (
+                    <Button
+                        variant="outlined"
+                        sx={{ ml: 2 }}
+                        endIcon={<OpenInNewIcon />}
+                        onClick={() => {
+                            const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
+                            window.open(iframeURL, '_blank')
+                        }}
+                    >
+                        在新分頁開啟
+                    </Button>
+                ),
+                showInCustomTable: true,
+                required: true,
+            },
+            {
                 accessor: 'Series',
                 Header: 'Series內容',
                 Cell: (row) => (
@@ -137,7 +170,6 @@ const Image = () => {
                                 type: 'table',
                                 columns: SeriesColumns,
                                 data: row.row.original.series,
-                                modalComponent: <CustomModal modalSeries={row.row.original.series} />,
                             })
                         }}
                     >
@@ -147,36 +179,6 @@ const Image = () => {
                 showInCustomTable: true,
                 required: true,
             },
-            // {
-            //     accessor: 'StudyInstanceUID',
-            //     Header: '報告ID',
-            //     Cell: (row) => (
-            //         <>
-            //             <Tooltip
-            //                 title={row.row.original.StudyInstanceUID}
-            //                 placement="top"
-            //                 onClick={() => {
-            //                     navigator.clipboard.writeText(row.row.original.StudyInstanceUID)
-            //                 }}
-            //             >
-            //                 <IconButton>
-            //                     <ContentCopy />
-            //                 </IconButton>
-            //             </Tooltip>
-            //             <Button
-            //                 variant="outlined"
-            //                 sx={{ ml: 2 }}
-            //                 onClick={() => {
-            //                     const iframeURL = `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${row.row.original.StudyInstanceUID}`
-            //                     window.open(iframeURL, '_blank')
-            //                 }}
-            //             >
-            //                 在新分頁開啟
-            //             </Button>
-            //         </>
-            //     ),
-            //     showInCustomTable: true,
-            // },
             {
                 accessor: 'DownloadDCM',
                 Header: '下載DCM',
