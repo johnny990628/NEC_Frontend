@@ -31,10 +31,16 @@ import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import CustomTableSetting from '../CustomTableForm/CustomTableSetting'
 
+function formatDate(date) {
+    const year = date.getFullYear().toString()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    return `${year}${month}${day}`
+}
+
 const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterParams, setColumns, columns }) => {
     const classes = useStyles()
     const [expand, setExpand] = useState(false)
-    const [anchorE, setAnchorE] = useState({ Start: null, End: null })
     const [newFilterParams, setNewFilterParams] = useState(filterParams.filter((filterParam) => filterParam.preset))
     const [anchorEAdd, setAnchorEAdd] = useState(null)
     const originalData = {
@@ -55,136 +61,13 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
         setSearch(value)
     }, [])
 
-    function removeEmpty(obj) {
-        Object.keys(obj).forEach((key) => {
-            if (obj[key] && typeof obj[key] === 'object') {
-                removeEmpty(obj[key])
-            } else if (obj[key] === undefined || obj[key] === null || obj[key] === '') {
-                delete obj[key]
-            }
-        })
-        return obj
-    }
-
     const handleSearch = useDebouncedCallback((text) => {
-        //const result = removeEmpty(text)
         setSearch(text)
     }, 500)
-
-    function formatDate(date) {
-        const year = date.getFullYear().toString()
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const day = date.getDate().toString().padStart(2, '0')
-        return `${year}${month}${day}`
-    }
 
     const handleClear = () => {
         setValue(originalData)
         setSearch(originalData)
-    }
-
-    const RenderParams = ({ filterParam }) => {
-        switch (filterParam.type) {
-            case 'rangeDate':
-                const originalDate = value[filterParam.name].split('-')
-                return (
-                    <>
-                        {['Start', 'End'].map((item, index) => {
-                            return (
-                                <Grid item xs={6} md={3} lg={1.5}>
-                                    <TextField
-                                        variant="outlined"
-                                        label={item + ' ' + filterParam.label}
-                                        value={originalDate[index]}
-                                        className={classes.TextFieldDate}
-                                        InputProps={{
-                                            style: {
-                                                fontSize: '1rem',
-                                            },
-                                            readOnly: true,
-                                        }}
-                                        onClick={(e) => setAnchorE({ ...anchorE, [item]: e.currentTarget })}
-                                    />
-                                    <Popover
-                                        open={Boolean(anchorE[item])}
-                                        id={item}
-                                        anchorEl={anchorE[item]}
-                                        onClose={() => setAnchorE({ ...anchorE, [item]: null })}
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'left',
-                                        }}
-                                    >
-                                        <Typography>
-                                            <DayPicker
-                                                mode="single"
-                                                selected={new Date()}
-                                                onDayClick={(date) => {
-                                                    const newDate = originalDate
-                                                    newDate[index] = formatDate(date)
-                                                    setValue({
-                                                        ...value,
-                                                        [filterParam.name]: newDate.join('-'),
-                                                    })
-                                                    setAnchorE({ ...anchorE, [item]: null })
-                                                }}
-                                                fromYear={1930}
-                                                toYear={new Date().getFullYear()}
-                                                captionLayout="dropdown"
-                                                locale={zhTW}
-                                            />
-                                        </Typography>
-                                    </Popover>
-                                </Grid>
-                            )
-                        })}
-                    </>
-                )
-            case 'text':
-                return (
-                    <Grid item xs={12} md={6} lg={3}>
-                        <TextField
-                            variant="outlined"
-                            label={filterParam.label}
-                            value={value[filterParam.name]}
-                            key={filterParam.name}
-                            className={classes.TextField}
-                            onChange={(e) => {
-                                setValue({ ...value, [filterParam.name]: e.target.value })
-                            }}
-                            onKeyPress={(e) => {
-                                if (e.key === 'Enter') {
-                                    handleSearch(value)
-                                }
-                            }}
-                        />
-                    </Grid>
-                )
-            case 'select':
-                return (
-                    <Grid item xs={12} md={6} lg={3}>
-                        <FormControl className={classes.TextField}>
-                            <InputLabel id="demo-simple-select-helper-label">{filterParam.label}</InputLabel>
-                            <Select
-                                value={value[filterParam.name]}
-                                label={filterParam.label}
-                                onChange={(e) => {
-                                    setValue({ ...value, [filterParam.name]: e.target.value })
-                                }}
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                {filterParam.options.map((option) => (
-                                    <MenuItem value={option.label} key={option.value}>
-                                        {option.value}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                )
-        }
     }
 
     const toggleAcordion = () => {
@@ -212,7 +95,14 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                             .filter((filterParam) => filterParam.preset)
                             .slice(0, 3)
                             .map((filterParam) => {
-                                return <RenderParams filterParam={filterParam} />
+                                return (
+                                    <RenderParams
+                                        filterParam={filterParam}
+                                        value={value}
+                                        setValue={setValue}
+                                        handleSearch={handleSearch}
+                                    />
+                                )
                             })}
 
                         <Grid item xs={12} md={6} lg={3}>
@@ -258,49 +148,128 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                 .filter((filterParam) => filterParam.preset)
                                 .slice(3)
                                 .map((filterParam) => {
-                                    return <RenderParams filterParam={filterParam} />
+                                    return (
+                                        <RenderParams
+                                            filterParam={filterParam}
+                                            value={value}
+                                            setValue={setValue}
+                                            handleSearch={handleSearch}
+                                        />
+                                    )
                                 })}
-                            {/* <Grid item xs={1} md={1} lg={1}>
-                                <IconButton className={classes.customHoverFocus} onClick={handleClickAddIcon}>
-                                    <AddIcon style={{ backgroundColor: '#12312' }} />
-                                </IconButton>
-                                <Popover
-                                    id={openAddId}
-                                    open={openAddIcon}
-                                    anchorEl={anchorEAdd}
-                                    onClose={handleCloseAddIcon}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                    }}
-                                >
-                                    <Typography>
-                                        <List component="nav">
-                                            {filterParams
-                                                .filter((filterParam) => !filterParam.preset)
-                                                .filter((filterParam) => !newFilterParams.includes(filterParam))
-                                                .map((filterProps) => {
-                                                    return (
-                                                        <ListItemButton
-                                                            onClick={(event) => {
-                                                                setNewFilterParams([...newFilterParams, filterProps])
-                                                                handleCloseAddIcon()
-                                                            }}
-                                                        >
-                                                            <ListItemText primary={filterProps.label} />
-                                                        </ListItemButton>
-                                                    )
-                                                })}
-                                        </List>
-                                    </Typography>
-                                </Popover>
-                            </Grid> */}
                         </Grid>
                     </Typography>
                 </AccordionDetails>
             </Accordion>
         </Box>
     )
+}
+
+const RenderParams = ({ filterParam, value, setValue, handleSearch }) => {
+    const classes = useStyles()
+    const [anchorE, setAnchorE] = useState({ Start: null, End: null })
+
+    switch (filterParam.type) {
+        case 'rangeDate':
+            const originalDate = value[filterParam.name].split('-')
+            return (
+                <>
+                    {['Start', 'End'].map((item, index) => {
+                        return (
+                            <Grid item xs={6} md={3} lg={1.5}>
+                                <TextField
+                                    variant="outlined"
+                                    label={item + ' ' + filterParam.label}
+                                    value={originalDate[index]}
+                                    className={classes.TextFieldDate}
+                                    InputProps={{
+                                        style: {
+                                            fontSize: '1rem',
+                                        },
+                                        readOnly: true,
+                                    }}
+                                    onClick={(e) => setAnchorE({ ...anchorE, [item]: e.currentTarget })}
+                                />
+                                <Popover
+                                    open={Boolean(anchorE[item])}
+                                    id={item}
+                                    anchorEl={anchorE[item]}
+                                    onClose={() => setAnchorE({ ...anchorE, [item]: null })}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                >
+                                    <Typography>
+                                        <DayPicker
+                                            mode="single"
+                                            selected={new Date()}
+                                            onDayClick={(date) => {
+                                                const newDate = originalDate
+                                                newDate[index] = formatDate(date)
+                                                setValue({
+                                                    ...value,
+                                                    [filterParam.name]: newDate.join('-'),
+                                                })
+                                                setAnchorE({ ...anchorE, [item]: null })
+                                            }}
+                                            fromYear={1930}
+                                            toYear={new Date().getFullYear()}
+                                            captionLayout="dropdown"
+                                            locale={zhTW}
+                                        />
+                                    </Typography>
+                                </Popover>
+                            </Grid>
+                        )
+                    })}
+                </>
+            )
+        case 'text':
+            return (
+                <Grid item xs={12} md={6} lg={3}>
+                    <TextField
+                        variant="outlined"
+                        label={filterParam.label}
+                        value={value[filterParam.name]}
+                        key={filterParam.name}
+                        className={classes.TextField}
+                        onChange={(e) => {
+                            setValue({ ...value, [filterParam.name]: e.target.value })
+                        }}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSearch(value)
+                            }
+                        }}
+                    />
+                </Grid>
+            )
+        case 'select':
+            return (
+                <Grid item xs={12} md={6} lg={3}>
+                    <FormControl className={classes.TextField}>
+                        <InputLabel id="demo-simple-select-helper-label">{filterParam.label}</InputLabel>
+                        <Select
+                            value={value[filterParam.name]}
+                            label={filterParam.label}
+                            onChange={(e) => {
+                                setValue({ ...value, [filterParam.name]: e.target.value })
+                            }}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            {filterParam.options.map((option) => (
+                                <MenuItem value={option.label} key={option.value}>
+                                    {option.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+            )
+    }
 }
 
 export default GlobalFilterParams
