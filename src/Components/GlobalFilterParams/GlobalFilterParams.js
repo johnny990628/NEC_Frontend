@@ -95,7 +95,14 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                             .filter((filterParam) => filterParam.preset)
                             .slice(0, 3)
                             .map((filterParam) => {
-                                return <RenderParams filterParam={filterParam} value={value} setValue={setValue} />
+                                return (
+                                    <RenderParams
+                                        filterParam={filterParam}
+                                        value={value}
+                                        setValue={setValue}
+                                        handleSearch={handleSearch}
+                                    />
+                                )
                             })}
 
                         <Grid item xs={12} md={6} lg={3}>
@@ -141,7 +148,14 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                                 .filter((filterParam) => filterParam.preset)
                                 .slice(3)
                                 .map((filterParam) => {
-                                    return <RenderParams filterParam={filterParam} value={value} setValue={setValue} />
+                                    return (
+                                        <RenderParams
+                                            filterParam={filterParam}
+                                            value={value}
+                                            setValue={setValue}
+                                            handleSearch={handleSearch}
+                                        />
+                                    )
                                 })}
                         </Grid>
                     </Typography>
@@ -151,7 +165,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
     )
 }
 
-const RenderParams = ({ filterParam, value, setValue }) => {
+const RenderParams = ({ filterParam, value, setValue, handleSearch }) => {
     const classes = useStyles()
     const [anchorE, setAnchorE] = useState({ Start: null, End: null })
 
@@ -223,11 +237,11 @@ const RenderParams = ({ filterParam, value, setValue }) => {
                         onChange={(e) => {
                             setValue({ ...value, [filterParam.name]: e.target.value })
                         }}
-                        // onKeyPress={(e) => {
-                        //     if (e.key === 'Enter') {
-                        //         handleSearch(value)
-                        //     }
-                        // }}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSearch(value)
+                            }
+                        }}
                     />
                 </Grid>
             )
