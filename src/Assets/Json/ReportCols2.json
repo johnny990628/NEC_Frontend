@@ -1,8 +1,8 @@
 [
     {
-        "name": "SHAPE",
+        "name": "Shape",
         "label": "Shape",
-        "type": "radio",
+        "type": "select",
         "section": "Other",
         "divider": true,
         "options": [
@@ -21,9 +21,9 @@
         ]
     },
     {
-        "name": "ORIENTATION",
+        "name": "Orientation",
         "label": "Orientation",
-        "type": "radio",
+        "type": "select",
         "section": "Other",
         "divider": true,
         "options": [
@@ -38,7 +38,7 @@
         ]
     },
     {
-        "name": "MARGIN",
+        "name": "Margin",
         "label": "Margin",
         "type": "select",
         "section": "Other",
@@ -67,7 +67,7 @@
         ]
     },
     {
-        "name": "EP",
+        "name": "EchoPattern",
         "label": "Echo Pattern",
         "type": "select",
         "section": "Other",
@@ -96,8 +96,8 @@
         ]
     },
     {
-        "name": "PF",
-        "label": "Posterior Fatures",
+        "name": "PosteriorFeatures",
+        "label": "Posterior Features",
         "type": "select",
         "section": "Other",
         "divider": true,
@@ -121,8 +121,8 @@
         ]
     },
     {
-        "name": "AF",
-        "label": "Associated Fatures",
+        "name": "AssociatedFeatures",
+        "label": "Associated Features",
         "type": "select",
         "section": "Other",
         "divider": true,
@@ -150,7 +150,7 @@
         ]
     },
     {
-        "name": "VASCULARITY",
+        "name": "Vascularity",
         "label": "Vascularity",
         "type": "select",
         "section": "Other",
@@ -175,9 +175,9 @@
         ]
     },
     {
-        "name": "SUC",
-        "label": "Surrounding Change (Multiple)",
-        "type": "select_multiple",
+        "name": "SurroundingChanges",
+        "label": "Surrounding Changes",
+        "type": "select",
         "section": "Other",
         "divider": true,
         "options": [
@@ -208,8 +208,8 @@
         ]
     },
     {
-        "name": "SPC",
-        "label": "Special Case",
+        "name": "SpecialCases",
+        "label": "Special Cases",
         "type": "select",
         "section": "Other",
         "divider": true,
@@ -261,7 +261,7 @@
         ]
     },
     {
-        "name": "CALCIFICATIONS",
+        "name": "Calcifications",
         "label": "Calcifications",
         "type": "select",
         "section": "Other",
@@ -282,8 +282,8 @@
         ]
     },
     {
-        "name": "EA",
-        "label": "Elasticity Assessment",
+        "name": "Elasticity",
+        "label": "Elasticity",
         "type": "select",
         "section": "Other",
         "divider": true,
@@ -305,23 +305,5 @@
                 "value": "hard"
             }
         ]
-    },
-    {
-        "name": "IS",
-        "label": "檢查總結",
-        "type": "text",
-        "section": "Other"
-    },
-    {
-        "name": "BIRADS",
-        "label": "BI-RADS",
-        "type": "text",
-        "section": "Other"
-    },
-    {
-        "name": "RADARMARK",
-        "label": "腫瘤雷達圖",
-        "type": "modal",
-        "section": "Other"
     }
 ]
