@@ -30,11 +30,7 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (p
 export const addSchedule = createAsyncThunk('schedule/addSchedule', async ({ patientID, procedureCode }, thunkAPI) => {
     try {
         const workListResponse = await apiAddWorklist(patientID).then((res) => res.data)
-        const reportResponse = await apiCreateReport({
-            patientID,
-            accessionNumber: workListResponse.accessionNumber,
-            StudyInstanceUID: workListResponse.StudyInstanceUID,
-        })
+        const reportResponse = await apiCreateReport({ patientID })
         const reportID = reportResponse.data._id
         await apiAddSchedule({
             patientID,
