@@ -37,6 +37,7 @@ import {
     PostAdd,
     Summarize,
     SummarizeOutlined,
+    LocalPrintshop,
 } from '@mui/icons-material'
 import { useTheme } from '@mui/styles'
 import { zhTW } from 'date-fns/locale'
@@ -139,7 +140,13 @@ const CreateReport = () => {
     useEffect(() => {
         if (version) {
             const currentRecord = report.records.find((record) => record.id === version)
-            if (currentRecord) dispatch(setupReport(currentRecord.report))
+            if (currentRecord) {
+                dispatch(setupReport(currentRecord.report))
+                // dispatch(setupBirads(currentRecord.birads))
+                for (const item of ['L', 'R']) {
+                    dispatch(setupBirads({ side: [item], value: currentRecord.birads[item] }))
+                }
+            }
         }
     }, [version])
 
@@ -538,14 +545,30 @@ const CreateReport = () => {
                                     variant="outlined"
                                     color="red"
                                     startIcon={<Close />}
-                                    sx={{
-                                        borderRadius: '2rem',
-                                        height: '2.5rem',
-                                    }}
+                                    sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
                                     onClick={deleteReportAndSchedule}
                                 >
                                     刪除報告
                                 </Button>
+                                {schedule?.status === 'finish' && (
+                                    <Button
+                                        variant="contained"
+                                        color="green"
+                                        startIcon={<LocalPrintshop />}
+                                        sx={{
+                                            borderRadius: '2rem',
+                                            height: '2.5rem',
+                                        }}
+                                        onClick={() => {
+                                            showAlert({
+                                                icon: 'success',
+                                                type: 'exportReport',
+                                            })
+                                        }}
+                                    >
+                                        列印報告
+                                    </Button>
+                                )}
                             </Box>
                         </Box>
                         {toggleMode === 'report' && (

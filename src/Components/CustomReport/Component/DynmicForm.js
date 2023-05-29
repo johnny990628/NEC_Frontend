@@ -16,11 +16,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { removePoint, updatePoint } from '../../../Redux/Slices/Breast'
 import { Clear, Remove, Add } from '@mui/icons-material'
-import ReportForm from '../../../Assets/Json/ReportForm.json'
+import ReportForm from '../../../Assets/Json/ReportCols2.json'
 
 const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, inputForm }) => {
     const dispatch = useDispatch()
     const { CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
+    const REPORT = useSelector((state) => state.reportForm)
     const [clock, setClock] = useState(12)
     const [size, setSize] = useState(1)
     const [form, setForm] = useState([])
@@ -31,14 +32,12 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
         dispatch(updatePoint({ side, id, data: { id, clock, distance: distance * 1, size: size * 1, form } }))
     }, [clock, size, distance, form])
 
-    console.log(form)
-
     useEffect(() => {
         setSize((size) => (inputSize ? inputSize : size))
         setClock((clock) => (inputClock ? inputClock : clock))
         setDistance((diatance) => (inputDistance ? inputDistance : diatance))
         setForm((form) => (inputForm ? inputForm : form))
-    }, [])
+    }, [REPORT])
 
     const handleDelete = () => {
         dispatch(removePoint({ side, id }))
@@ -181,8 +180,8 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
                                     }
                                 >
                                     {ReportForm.filter((Rf) => Rf.name === item.key)[0].options.map((RfItem) => (
-                                        <MenuItem key={RfItem} value={RfItem}>
-                                            {RfItem}
+                                        <MenuItem key={RfItem.value} value={RfItem.value}>
+                                            {RfItem.value}
                                         </MenuItem>
                                     ))}
                                 </Select>

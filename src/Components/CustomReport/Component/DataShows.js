@@ -34,7 +34,6 @@ const DataShows = ({ side }) => {
                         no={index + 1}
                     />
                 ))}
-            {console.log(report)}
             <Box mt={4}>
                 <Button variant="outlined" fullWidth startIcon={<Add />} onClick={handleAdd}>
                     添加
