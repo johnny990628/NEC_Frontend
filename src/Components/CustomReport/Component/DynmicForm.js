@@ -21,6 +21,7 @@ import ReportForm from '../../../Assets/Json/ReportForm.json'
 const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, inputForm }) => {
     const dispatch = useDispatch()
     const { CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
+    const REPORT = useSelector((state) => state.reportForm)
     const [clock, setClock] = useState(12)
     const [size, setSize] = useState(1)
     const [form, setForm] = useState([])
@@ -31,14 +32,12 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
         dispatch(updatePoint({ side, id, data: { id, clock, distance: distance * 1, size: size * 1, form } }))
     }, [clock, size, distance, form])
 
-    console.log(form)
-
     useEffect(() => {
         setSize((size) => (inputSize ? inputSize : size))
         setClock((clock) => (inputClock ? inputClock : clock))
         setDistance((diatance) => (inputDistance ? inputDistance : diatance))
         setForm((form) => (inputForm ? inputForm : form))
-    }, [])
+    }, [REPORT])
 
     const handleDelete = () => {
         dispatch(removePoint({ side, id }))
