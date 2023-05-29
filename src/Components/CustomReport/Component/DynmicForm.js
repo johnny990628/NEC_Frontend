@@ -16,7 +16,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { removePoint, updatePoint } from '../../../Redux/Slices/Breast'
 import { Clear, Remove, Add } from '@mui/icons-material'
-import ReportForm from '../../../Assets/Json/ReportForm.json'
+import ReportForm from '../../../Assets/Json/ReportCols2.json'
 
 const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, inputForm }) => {
     const dispatch = useDispatch()
@@ -180,8 +180,8 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
                                     }
                                 >
                                     {ReportForm.filter((Rf) => Rf.name === item.key)[0].options.map((RfItem) => (
-                                        <MenuItem key={RfItem} value={RfItem}>
-                                            {RfItem}
+                                        <MenuItem key={RfItem.value} value={RfItem.value}>
+                                            {RfItem.value}
                                         </MenuItem>
                                     ))}
                                 </Select>
