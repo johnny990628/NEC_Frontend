@@ -131,7 +131,12 @@ const breastSlice = createSlice({
         },
         setupBirads: (state, action) => {
             const { side, value } = action.payload
-            state['birads'] = { ...state['birads'], [side]: value }
+            //判斷是"更新"還是"載入版本"
+            if (value) {
+                state['birads'] = { ...state['birads'], [side]: value }
+            } else {
+                state['birads'] = action.payload
+            }
         },
     },
     extraReducers: {
