@@ -58,9 +58,8 @@ const useStyles = makeStyles((theme) => ({
     },
     closeIcon: {
         position: 'absolute',
-        bottom: 10,
-        left: '10rem',
-        padding: '1.5rem',
+        bottom: 20,
+        left: 20,
         color: theme.palette.primary.main,
         '&:hover': {
             cursor: 'pointer',

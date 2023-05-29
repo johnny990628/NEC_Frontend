@@ -85,11 +85,6 @@ const Main = () => {
         }
     }, 1000)
 
-    const actions = [
-        { icon: <Logout />, name: '登出', event: () => dispatch(logout()) },
-        { icon: <Refresh />, name: '重新載入', event: refresh },
-    ]
-
     useEffect(() => {
         setPage(SidebarItem.find((item) => item.path === pathName))
     }, [location.pathname])
@@ -100,20 +95,6 @@ const Main = () => {
             <CustomScrollbar>
                 <Box className={`${classes.container} ${isOpen || 'close'}`}>
                     <Router />
-                    <SpeedDial
-                        ariaLabel="SpeedDial basic example"
-                        sx={{ position: 'fixed', bottom: 25, right: 25 }}
-                        icon={<Dehaze />}
-                    >
-                        {actions.map((action) => (
-                            <SpeedDialAction
-                                key={action.name}
-                                icon={action.icon}
-                                tooltipTitle={action.name}
-                                onClick={action.event}
-                            />
-                        ))}
-                    </SpeedDial>
                 </Box>
             </CustomScrollbar>
         </Box>

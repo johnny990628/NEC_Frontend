@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { List, ListItem, Box, Drawer, Tooltip, useMediaQuery } from '@mui/material'
+import { List, ListItem, Box, Drawer, Tooltip, useMediaQuery, Button } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { Dehaze, DoubleArrow } from '@mui/icons-material'
+import { Dehaze, DoubleArrow, Logout } from '@mui/icons-material'
 
 import useStyles from './Style'
 
 import SidebarItem from '../Router.config'
 import { openSidebar, closeSidebar } from '../../Redux/Slices/Sidebar'
 import Authorized from './../Authorized/Authorized'
+import { logout } from '../../Redux/Slices/Auth'
 
 const Sidebar = () => {
     const classes = useStyles()
@@ -44,13 +45,6 @@ const Sidebar = () => {
                 <img src="./logo.gif" className={classes.logo} alt="logo" onMouseEnter={() => setAnimation(true)} />
             )}
 
-            {/* {isOpen ? (
-                <img src="./GHL.png" className={classes.logo} alt="logo" />
-            ) : (
-                <Box className={classes.openIcon} onClick={() => dispatch(openSidebar())}>
-                    <Dehaze />
-                </Box>
-            )} */}
             <List className={classes.list}>
                 {SidebarItem.map((item, index) => (
                     <Authorized
@@ -77,30 +71,15 @@ const Sidebar = () => {
                                 <Box className={`${classes.text} ${index === activeItem && 'active'}`}>
                                     {item.display_name}
                                 </Box>
-
-                                {/* {isOpen && (
-                                    <Box className={`${classes.text} ${index === activeItem && 'active'}`}>
-                                        {item.display_name}
-                                    </Box>
-                                )} */}
                             </ListItem>
                         </Link>
                     </Authorized>
                 ))}
             </List>
-            {isOpen && (
-                <Box className={classes.closeIcon} onClick={() => dispatch(closeSidebar())}>
-                    <DoubleArrow sx={{ transform: 'rotate(180deg)' }} />
-                </Box>
-            )}
-            {/* {isOpen && (
-                <img
-                    src="./logo.jpg"
-                    className={classes.logo}
-                    alt="logo"
-                    style={{ width: '3.8rem', height: '4rem', position: 'fixed', top: 2 }}
-                />
-            )} */}
+
+            <Button className={classes.closeIcon} onClick={() => dispatch(logout())} startIcon={<Logout />}>
+                登出
+            </Button>
         </Drawer>
     )
 }
