@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
     Box,
@@ -12,14 +12,20 @@ import {
     ListItem,
     IconButton,
     ListItemText,
+    ListItemButton,
+    ListItemIcon,
+    Dialog,
+    DialogContent,
 } from '@mui/material'
 import DataShows from './DataShows'
 import { useSelector, useDispatch } from 'react-redux'
 import { setupBirads } from '../../../Redux/Slices/Breast'
+import { Add } from '@mui/icons-material'
 
 function ChestMarker({}) {
     const { report, CHESTMAXSIZE, CHESTMAXRADIUS, birads } = useSelector((state) => state.breast)
-
+    const [hovered, setHovered] = useState({ side: '', index: 0 })
+    const [dialogOpen, setDialogOpen] = useState(false)
     const { user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const lines = Array.from({ length: 12 }).map((_, i) => {
@@ -28,6 +34,10 @@ function ChestMarker({}) {
         const y = 200 - Math.cos((angle * Math.PI) / 180) * 200
         return { x, y }
     })
+
+    const handleMarkerHover = ({ side = '', index = 0 }) => {
+        setHovered({ side, index })
+    }
 
     const Circle = ({ pos, side }) => {
         return (
@@ -45,9 +55,13 @@ function ChestMarker({}) {
                     const y = CHESTMAXSIZE + Math.cos(radians) * distance * (CHESTMAXSIZE / CHESTMAXRADIUS)
                     return (
                         <Tooltip key={id} title={`${side}${index + 1}`}>
-                            <>
-                                <circle cx={x} cy={y} r={size * 10} fill="red" />
-                                <text
+                            <circle
+                                cx={x}
+                                cy={y}
+                                r={size * 10}
+                                fill={hovered.side === side && hovered.index === index ? 'yellow' : 'red'}
+                            />
+                            {/* <text
                                     font-size="12"
                                     x={x}
                                     y={y}
@@ -56,8 +70,7 @@ function ChestMarker({}) {
                                     fill="black"
                                 >
                                     {side + (index + 1).toString()}
-                                </text>
-                            </>
+                                </text> */}
                         </Tooltip>
                     )
                 })}
@@ -66,18 +79,31 @@ function ChestMarker({}) {
     }
     return (
         <Box>
-            <Grid container spacing={5}>
+            <Grid container spacing={5} ml={1}>
                 <Grid item xs={2}>
                     <List sx={{ width: '100%', maxWidth: 360 }}>
                         {report['R'].length > 0 &&
                             report['R'].map(({ clock, distance, size, id, form }, index) => (
-                                <ListItem key={id} disableGutters secondaryAction={<IconButton></IconButton>}>
-                                    <ListItemText
-                                        primary={`R${index + 1}`}
-                                        secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
-                                    />
+                                <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
+                                    <ListItemButton
+                                        onMouseEnter={() => handleMarkerHover({ side: 'R', index })}
+                                        onMouseLeave={handleMarkerHover}
+                                    >
+                                        <ListItemText
+                                            primary={`R${index + 1}`}
+                                            secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
+                                        />
+                                    </ListItemButton>
                                 </ListItem>
                             ))}
+                        <ListItem>
+                            <ListItemButton onClick={() => setDialogOpen(true)}>
+                                <ListItemIcon>
+                                    <Add />
+                                </ListItemIcon>
+                                <ListItemText primary={'新增腫瘤'} />
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                 </Grid>
                 {['R', 'L'].map((side) => {
@@ -110,10 +136,15 @@ function ChestMarker({}) {
                         {report['L'].length > 0 &&
                             report['L'].map(({ clock, distance, size, id, form }, index) => (
                                 <ListItem key={id} disableGutters secondaryAction={<IconButton></IconButton>}>
-                                    <ListItemText
-                                        primary={`L${index + 1}`}
-                                        secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
-                                    />
+                                    <ListItemButton
+                                        onMouseEnter={() => handleMarkerHover({ side: 'L', index })}
+                                        onMouseLeave={handleMarkerHover}
+                                    >
+                                        <ListItemText
+                                            primary={`L${index + 1}`}
+                                            secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
+                                        />
+                                    </ListItemButton>
                                 </ListItem>
                             ))}
                     </List>
@@ -128,6 +159,11 @@ function ChestMarker({}) {
                     })}
                 </Grid> */}
             </Grid>
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogContent>
+                    <DataShows side={'R'} />
+                </DialogContent>
+            </Dialog>
         </Box>
     )
 }
