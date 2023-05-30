@@ -93,7 +93,7 @@ export const finishReport = createAsyncThunk('breast/finishReport', async (_, { 
 })
 
 const breastSlice = createSlice({
-    name: 'reportForm',
+    name: 'breast',
     initialState,
     reducers: {
         addPoint: (state, action) => {

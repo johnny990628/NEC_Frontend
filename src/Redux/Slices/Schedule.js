@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { apiAddBlood } from '../../Axios/Blood'
 import { apiCreateReport, apiDeleteReport } from '../../Axios/Report'
-import {
-    apiAddSchedule,
-    apiDeleteScheduleAndBloodAndReport,
-    apiGetSchdules,
-    apiRemoveSchedule,
-} from '../../Axios/Schedule'
+import { apiAddSchedule, apiDeleteScheduleAndReport, apiGetSchdules, apiRemoveSchedule } from '../../Axios/Schedule'
 import { apiAddWorklist } from './../../Axios/WorkList'
 import { apiUpdateScheduleStatus } from './../../Axios/Schedule'
 
@@ -20,6 +15,7 @@ export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (p
         return {
             schedules: results,
             count,
+            page: Math.ceil(count / params.limit),
         }
     } catch (e) {
         thunkAPI.dispatch(handleError(e.response))
@@ -58,9 +54,9 @@ export const changeScheduleStatus = createAsyncThunk(
     }
 )
 
-export const removeSchedule = createAsyncThunk('schedule/removeSchedule', async (patientID, thunkAPI) => {
+export const removeSchedule = createAsyncThunk('schedule/removeSchedule', async (scheduleID, thunkAPI) => {
     try {
-        const response = await apiDeleteScheduleAndBloodAndReport(patientID)
+        const response = await apiDeleteScheduleAndReport(scheduleID)
         return response.data
     } catch (e) {
         thunkAPI.dispatch(handleError(e.response))
@@ -68,20 +64,7 @@ export const removeSchedule = createAsyncThunk('schedule/removeSchedule', async 
     }
 })
 
-export const removeScheduleByID = createAsyncThunk(
-    'schedule/removeScheduleByID',
-    async ({ reportID, scheduleID }, thunkAPI) => {
-        try {
-            await apiDeleteReport(reportID)
-            await apiRemoveSchedule(scheduleID)
-        } catch (e) {
-            thunkAPI.dispatch(handleError(e.response))
-            return thunkAPI.rejectWithValue()
-        }
-    }
-)
-
-const initialState = { schedules: [], count: 0, loading: false }
+const initialState = { schedules: [], count: 0, page: 1, loading: false }
 const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,

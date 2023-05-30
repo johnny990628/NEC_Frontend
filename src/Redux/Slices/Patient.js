@@ -4,7 +4,6 @@ import {
     apiGetPatients,
     apiUpdatePatient,
 } from '../../Axios/Patient'
-import { apiDeleteScheduleAndBloodAndReport } from '../../Axios/Schedule'
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
@@ -48,16 +47,6 @@ export const updatePatient = createAsyncThunk('patients/updatePatient', async (d
 export const deletePatient = createAsyncThunk('patients/deletePatient', async ({ patientID }, thunkAPI) => {
     try {
         const response = await apiDeletePatientAndBloodAndSchedule(patientID)
-        return response.data
-    } catch (e) {
-        thunkAPI.dispatch(handleError(e.response))
-        return thunkAPI.rejectWithValue()
-    }
-})
-
-export const removeProcessing = createAsyncThunk('patients/removeProcessing', async (patientID, thunkAPI) => {
-    try {
-        const response = await apiDeleteScheduleAndBloodAndReport(patientID)
         return response.data
     } catch (e) {
         thunkAPI.dispatch(handleError(e.response))

@@ -127,14 +127,14 @@ const Patient = () => {
                     // const hasReport = row.row.original.report.length > 0
                     const { id, name, gender } = row.row.original
                     const mr = gender === 'm' ? '先生' : '小姐'
+                    const on_call = row.row.original?.schedule?.find(({ status }) => status === 'on-call')
+                    const wait_examination = row.row.original?.schedule?.find(
+                        ({ status }) => status === 'wait-examination'
+                    )
+                    const wait_finish = row.row.original?.schedule?.find(({ status }) => status === 'wait-finish')
 
                     const scheduleStatus = () => {
-                        const onCall = row.row.original?.schedule?.find(({ status }) => status === 'on-call')
-                        const wait_examination = row.row.original?.schedule?.find(
-                            ({ status }) => status === 'wait-examination'
-                        )
-                        const wait_finish = row.row.original?.schedule?.find(({ status }) => status === 'wait-finish')
-                        if (onCall) return { status: 'on-call', class: 'call', text: '檢查中', icon: <AccessTime /> }
+                        if (on_call) return { status: 'on-call', class: 'call', text: '檢查中', icon: <AccessTime /> }
                         if (wait_examination)
                             return {
                                 status: 'wait-examination',
@@ -167,7 +167,7 @@ const Patient = () => {
                                                 toastTitle: '取消排程',
                                                 text: `${name} ${mr}`,
                                                 type: 'confirm',
-                                                event: () => dispatch(removeSchedule(id)),
+                                                event: () => dispatch(removeSchedule(wait_examination._id)),
                                             })
 
                                             break

@@ -41,7 +41,7 @@ const FormSection = ({ list, mode }) => {
     )
 }
 
-const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
+const CustomReportForm = ({ schedule }) => {
     const classes = useStyles()
     const theme = useTheme()
     const isComputer = useMediaQuery(theme.breakpoints.up('lg'))
@@ -172,28 +172,8 @@ const CustomReportForm = ({ cols1, cols2, schedule, mode }) => {
                     <Grid item xs={12}>
                         <CustomScrollbar>
                             <ChestMarker />
-                            {/* <Grid container spacing={2}>
-                                <Grid item xs={12} xl={6}>
-                                    {cols1?.map((col) => (
-                                        <FormSection key={col.name} list={col} mode={mode} />
-                                    ))}
-                                </Grid>
-                                <Grid item xs={12} xl={5}>
-                                    {cols2?.map((col) => (
-                                        <FormSection key={col.name} list={col} mode={mode} />
-                                    ))}
-                                </Grid>
-                            </Grid> */}
                         </CustomScrollbar>
                     </Grid>
-                    {/* {isComputer && patient.reports.length > 1 && (
-                        <Grid item xs={2}>
-                            <CustomScrollbar>
-                                <Box className={classes.formLabel}>歷史報告</Box>
-                                <ReportList patient={patient} />
-                            </CustomScrollbar>
-                        </Grid>
-                    )} */}
                 </Grid>
             </Box>
         </>

@@ -1,12 +1,25 @@
 import React from 'react'
 
-import { Box, Grid, Tooltip, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import {
+    Box,
+    Grid,
+    Tooltip,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    List,
+    ListItem,
+    IconButton,
+    ListItemText,
+} from '@mui/material'
 import DataShows from './DataShows'
 import { useSelector, useDispatch } from 'react-redux'
 import { setupBirads } from '../../../Redux/Slices/Breast'
 
 function ChestMarker({}) {
     const { report, CHESTMAXSIZE, CHESTMAXRADIUS, birads } = useSelector((state) => state.breast)
+
     const { user } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const lines = Array.from({ length: 12 }).map((_, i) => {
@@ -52,12 +65,26 @@ function ChestMarker({}) {
         )
     }
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
             <Grid container spacing={5}>
+                <Grid item xs={2}>
+                    <List sx={{ width: '100%', maxWidth: 360 }}>
+                        {report['R'].length > 0 &&
+                            report['R'].map(({ clock, distance, size, id, form }, index) => (
+                                <ListItem key={id} disableGutters secondaryAction={<IconButton></IconButton>}>
+                                    <ListItemText
+                                        primary={`R${index + 1}`}
+                                        secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
+                                    />
+                                </ListItem>
+                            ))}
+                    </List>
+                </Grid>
                 {['R', 'L'].map((side) => {
                     return (
-                        <Grid item xs={6} mt={2} display="flex" justifyContent="center" alignItems="center">
+                        <Grid item xs={4} display="flex" justifyContent="center" alignItems="center">
                             <Box>
+                                <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
                                 <Circle pos={report[side]} side={side} />
                                 <FormControl variant="standard" sx={{ width: '6rem', mr: 2, marginBottom: '1em' }}>
                                     <InputLabel id="select-birads">BI-RADS</InputLabel>
@@ -78,7 +105,20 @@ function ChestMarker({}) {
                         </Grid>
                     )
                 })}
-                <Grid container item xs={12}>
+                <Grid item xs={2}>
+                    <List sx={{ width: '100%', maxWidth: 360 }}>
+                        {report['L'].length > 0 &&
+                            report['L'].map(({ clock, distance, size, id, form }, index) => (
+                                <ListItem key={id} disableGutters secondaryAction={<IconButton></IconButton>}>
+                                    <ListItemText
+                                        primary={`L${index + 1}`}
+                                        secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
+                                    />
+                                </ListItem>
+                            ))}
+                    </List>
+                </Grid>
+                {/* <Grid container item xs={12}>
                     {['R', 'L'].map((side) => {
                         return (
                             <Grid key={side} item xs={6} sx={{ pl: 3 }}>
@@ -86,7 +126,7 @@ function ChestMarker({}) {
                             </Grid>
                         )
                     })}
-                </Grid>
+                </Grid> */}
             </Grid>
         </Box>
     )

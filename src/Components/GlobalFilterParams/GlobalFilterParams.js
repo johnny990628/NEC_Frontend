@@ -269,6 +269,8 @@ const RenderParams = ({ filterParam, value, setValue, handleSearch }) => {
                     </FormControl>
                 </Grid>
             )
+        default:
+            return
     }
 }
 

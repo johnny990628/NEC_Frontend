@@ -71,7 +71,7 @@ import {
     setupBirads,
 } from '../../Redux/Slices/Breast'
 
-import { fetchSchedule, removeSchedule, removeScheduleByID, setupDate } from '../../Redux/Slices/Schedule'
+import { fetchSchedule, removeSchedule, setupDate } from '../../Redux/Slices/Schedule'
 
 import PROCEDURECODE from '../../Assets/Json/ProcedureCode.json'
 import { deleteReport } from '../../Redux/Slices/Report'
@@ -205,7 +205,7 @@ const CreateReport = () => {
                 toastTitle: '刪除成功',
                 icon: 'success',
                 type: 'confirm',
-                event: () => dispatch(removeSchedule(schedule.patientID)),
+                event: () => dispatch(removeSchedule(schedule._id)),
             })
         }
         if (schedule.status === 'wait-finish' || schedule.status === 'finish') {
@@ -214,7 +214,7 @@ const CreateReport = () => {
                 toastTitle: '刪除成功',
                 icon: 'success',
                 type: 'confirm',
-                event: () => dispatch(removeScheduleByID({ reportID: schedule.reportID, scheduleID: schedule._id })),
+                event: () => dispatch(removeSchedule(schedule._id)),
             })
         }
     }
