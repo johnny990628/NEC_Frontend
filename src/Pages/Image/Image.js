@@ -106,6 +106,13 @@ const Image = () => {
                 required: true,
             },
             {
+                accessor: 'AccessionNumber',
+                Header: 'AccessionNumber',
+                Cell: (row) => row.row.original.AccessionNumber || 'null',
+                showInCustomTable: true,
+                required: false,
+            },
+            {
                 accessor: 'PatientSex',
                 Header: '性別',
                 Cell: (row) => row.row.original.PatientSex,
