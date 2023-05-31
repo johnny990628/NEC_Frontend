@@ -131,7 +131,7 @@ const useAlert = () => {
                             )
                         },
                         confirmButtonColor: theme.palette.red.main,
-                        width: '70%',
+                        width: '80%',
                     }).then((result) => {
                         // if (result.isConfirmed) {
                         //     event().then(() =>
