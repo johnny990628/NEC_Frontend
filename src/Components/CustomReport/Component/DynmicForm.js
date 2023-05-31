@@ -19,7 +19,7 @@ import { Clear, Remove, Add } from '@mui/icons-material'
 import ReportForm from '../../../Assets/Json/ReportCols2.json'
 import useStyles from '../Style'
 
-const DynamicForm = ({ side, id }) => {
+const DynamicForm = ({ side, label, id }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { report, CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
@@ -56,7 +56,7 @@ const DynamicForm = ({ side, id }) => {
         <Box>
             <Grid container mb={6} sx={{ width: '100%' }} spacing={4}>
                 <Grid item xs={2}>
-                    <Box sx={{ fontSize: '2rem', fontWeight: 'bold' }}>{side}</Box>
+                    <Box sx={{ fontSize: '2rem', fontWeight: 'bold' }}>{label}</Box>
                 </Grid>
                 <Grid item xs={3.3} display="flex" alignItems="center">
                     <Box className={classes.selectLabel}>方向</Box>

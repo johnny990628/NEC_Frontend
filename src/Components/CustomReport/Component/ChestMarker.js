@@ -30,6 +30,8 @@ function ChestMarker({}) {
     const [hovered, setHovered] = useState({ side: '', index: 0 })
     const [dialogOpen, setDialogOpen] = useState(false)
     const [id, setId] = useState('')
+    const [side, setSide] = useState('')
+    const [label, setLabel] = useState('')
 
     const lines = Array.from({ length: 12 }).map((_, i) => {
         const angle = i * 30
@@ -41,14 +43,18 @@ function ChestMarker({}) {
     const handleMarkerHover = ({ side = '', index = 0 }) => {
         setHovered({ side, index })
     }
-    const handleMarkerClick = (markerId) => {
-        if (markerId) {
-            setId(markerId)
+    const handleMarkerClick = ({ side, id, index }) => {
+        if (id) {
+            setId(id)
+            setLabel(`${side}${index + 1}`)
         } else {
             const randomID = v4()
-            dispatch(addPoint({ side: 'R', id: randomID }))
+            dispatch(addPoint({ side, id: randomID }))
             setId(randomID)
+            setLabel(`${side}${report[side].length + 1}`)
         }
+        setSide(side)
+
         setDialogOpen(true)
     }
 
@@ -99,7 +105,7 @@ function ChestMarker({}) {
                             report['R'].map(({ clock, distance, size, id, form }, index) => (
                                 <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
                                     <ListItemButton
-                                        onClick={() => handleMarkerClick(id)}
+                                        onClick={() => handleMarkerClick({ side: 'R', id, index })}
                                         onMouseEnter={() => handleMarkerHover({ side: 'R', index })}
                                         onMouseLeave={handleMarkerHover}
                                     >
@@ -111,7 +117,7 @@ function ChestMarker({}) {
                                 </ListItem>
                             ))}
                         <ListItem>
-                            <ListItemButton onClick={() => handleMarkerClick()}>
+                            <ListItemButton onClick={() => handleMarkerClick({ side: 'R' })}>
                                 <ListItemIcon>
                                     <Add />
                                 </ListItemIcon>
@@ -149,8 +155,9 @@ function ChestMarker({}) {
                     <List sx={{ width: '100%', maxWidth: 360 }}>
                         {report['L'].length > 0 &&
                             report['L'].map(({ clock, distance, size, id, form }, index) => (
-                                <ListItem key={id} disableGutters secondaryAction={<IconButton></IconButton>}>
+                                <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
                                     <ListItemButton
+                                        onClick={() => handleMarkerClick({ side: 'L', id, index })}
                                         onMouseEnter={() => handleMarkerHover({ side: 'L', index })}
                                         onMouseLeave={handleMarkerHover}
                                     >
@@ -161,21 +168,20 @@ function ChestMarker({}) {
                                     </ListItemButton>
                                 </ListItem>
                             ))}
+                        <ListItem>
+                            <ListItemButton onClick={() => handleMarkerClick({ side: 'L' })}>
+                                <ListItemIcon>
+                                    <Add />
+                                </ListItemIcon>
+                                <ListItemText primary={'新增腫瘤'} />
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                 </Grid>
-                {/* <Grid container item xs={12}>
-                    {['R', 'L'].map((side) => {
-                        return (
-                            <Grid key={side} item xs={6} sx={{ pl: 3 }}>
-                                <DataShows side={side} />
-                            </Grid>
-                        )
-                    })}
-                </Grid> */}
             </Grid>
             <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md">
                 <DialogContent>
-                    <DynamicForm id={id} side="R" />
+                    <DynamicForm id={id} side={side} label={label} />
                 </DialogContent>
             </Dialog>
         </Box>
