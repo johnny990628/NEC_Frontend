@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux'
 import { Announcement } from '@mui/icons-material'
 import Main from '../CustomReport/Component/component/Main'
 import Chest from './component/Chest'
-import DataShows from '../CustomReport/Component/DataShows'
 
 export const ReportFormForPDF = React.forwardRef((_, ref) => {
     return (
@@ -162,7 +161,7 @@ const FormSection = ({ list, checked, options, text }) => {
                                                 alignItems: 'center',
                                             }}
                                         >
-                                            <DataShows azimut={JSON.parse(text)} side={side} />
+                                            {/* <DataShows azimut={JSON.parse(text)} side={side} /> */}
                                             <Chest azimut={JSON.parse(text)} side={side} />
                                         </div>
                                     )

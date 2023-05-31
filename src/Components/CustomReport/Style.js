@@ -73,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
         padding: '.5rem',
         maxHeight: '30rem',
     },
+    selectLabel: {
+        width: '40%',
+    },
 }))
 
 export default useStyles

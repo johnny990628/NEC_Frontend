@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Box,
@@ -17,17 +17,20 @@ import {
     Dialog,
     DialogContent,
 } from '@mui/material'
-import DataShows from './DataShows'
 import { useSelector, useDispatch } from 'react-redux'
-import { setupBirads } from '../../../Redux/Slices/Breast'
+import { addPoint, setupBirads } from '../../../Redux/Slices/Breast'
 import { Add } from '@mui/icons-material'
+import { v4 } from 'uuid'
+import DynamicForm from './DynmicForm'
 
 function ChestMarker({}) {
+    const dispatch = useDispatch()
     const { report, CHESTMAXSIZE, CHESTMAXRADIUS, birads } = useSelector((state) => state.breast)
+    const { user } = useSelector((state) => state.auth)
     const [hovered, setHovered] = useState({ side: '', index: 0 })
     const [dialogOpen, setDialogOpen] = useState(false)
-    const { user } = useSelector((state) => state.auth)
-    const dispatch = useDispatch()
+    const [id, setId] = useState('')
+
     const lines = Array.from({ length: 12 }).map((_, i) => {
         const angle = i * 30
         const x = 200 + Math.sin((angle * Math.PI) / 180) * 200
@@ -37,6 +40,16 @@ function ChestMarker({}) {
 
     const handleMarkerHover = ({ side = '', index = 0 }) => {
         setHovered({ side, index })
+    }
+    const handleMarkerClick = (markerId) => {
+        if (markerId) {
+            setId(markerId)
+        } else {
+            const randomID = v4()
+            dispatch(addPoint({ side: 'R', id: randomID }))
+            setId(randomID)
+        }
+        setDialogOpen(true)
     }
 
     const Circle = ({ pos, side }) => {
@@ -86,6 +99,7 @@ function ChestMarker({}) {
                             report['R'].map(({ clock, distance, size, id, form }, index) => (
                                 <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
                                     <ListItemButton
+                                        onClick={() => handleMarkerClick(id)}
                                         onMouseEnter={() => handleMarkerHover({ side: 'R', index })}
                                         onMouseLeave={handleMarkerHover}
                                     >
@@ -97,7 +111,7 @@ function ChestMarker({}) {
                                 </ListItem>
                             ))}
                         <ListItem>
-                            <ListItemButton onClick={() => setDialogOpen(true)}>
+                            <ListItemButton onClick={() => handleMarkerClick()}>
                                 <ListItemIcon>
                                     <Add />
                                 </ListItemIcon>
@@ -159,9 +173,9 @@ function ChestMarker({}) {
                     })}
                 </Grid> */}
             </Grid>
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md">
                 <DialogContent>
-                    <DataShows side={'R'} />
+                    <DynamicForm id={id} side="R" />
                 </DialogContent>
             </Dialog>
         </Box>

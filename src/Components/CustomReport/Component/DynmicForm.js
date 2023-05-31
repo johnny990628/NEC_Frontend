@@ -17,11 +17,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { removePoint, updatePoint } from '../../../Redux/Slices/Breast'
 import { Clear, Remove, Add } from '@mui/icons-material'
 import ReportForm from '../../../Assets/Json/ReportCols2.json'
+import useStyles from '../Style'
 
-const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, inputForm }) => {
+const DynamicForm = ({ side, id }) => {
     const dispatch = useDispatch()
-    const { CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
-    const REPORT = useSelector((state) => state.reportForm)
+    const classes = useStyles()
+    const { report, CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
     const [clock, setClock] = useState(12)
     const [size, setSize] = useState(1)
     const [form, setForm] = useState([])
@@ -29,19 +30,16 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
     const [anchorEl, setAnchorEl] = useState(null)
 
     useEffect(() => {
-        dispatch(updatePoint({ side, id, data: { id, clock, distance: distance * 1, size: size * 1, form } }))
-    }, [clock, size, distance, form])
+        const inputForm = report[side].find((r) => r.id === id)
+        setSize((size) => (inputForm.size ? inputForm.size : size))
+        setClock((clock) => (inputForm.clock ? inputForm.clock : clock))
+        setDistance((diatance) => (inputForm.diatance ? inputForm.diatance : diatance))
+        setForm((form) => (inputForm.form ? inputForm.form : form))
+    }, [id])
 
     useEffect(() => {
-        setSize((size) => (inputSize ? inputSize : size))
-        setClock((clock) => (inputClock ? inputClock : clock))
-        setDistance((diatance) => (inputDistance ? inputDistance : diatance))
-        setForm((form) => (inputForm ? inputForm : form))
-    }, [REPORT])
-
-    const handleDelete = () => {
-        dispatch(removePoint({ side, id }))
-    }
+        dispatch(updatePoint({ side, id, data: { id, clock, distance: distance * 1, size: size * 1, form } }))
+    }, [clock, size, distance, form])
 
     const handleAngleChange = (e) => {
         setClock(e.target.value)
@@ -54,44 +52,20 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
         setDistance(e.target.value <= CHESTMAXRADIUS ? e.target.value : CHESTMAXRADIUS)
     }
 
-    const handleAdd = (e) => {
-        setAnchorEl(e.currentTarget)
-    }
-
-    const handleAddFormList = (item) => {
-        setForm([...form, { key: item.name, value: '' }])
-    }
-
     return (
-        <Grid mb={4} container spacing={1}>
-            <Grid xs={1} md={1} lg={1}>
-                <Box sx={{ fontSize: '1rem', fontWeight: 'bold' }}>{`${no}`}</Box>
-            </Grid>
-            <Grid xs={11} md={11} lg={11}>
-                <Stack direction="row" spacing={2} mb={'1rem'} alignItems="end">
-                    <TextField
-                        variant="standard"
-                        label="大小"
-                        type="number"
-                        set="any"
-                        inputProps={{ step: 0.01 }}
-                        value={size}
-                        onChange={handleSizeChange}
-                    />
-                    <TextField
-                        variant="standard"
-                        label="距離"
-                        type="number"
-                        set="any"
-                        inputProps={{ step: 0.01 }}
-                        value={distance}
-                        onChange={handleDistanceChange}
-                    />
-                    <FormControl variant="standard">
+        <Box>
+            <Grid container mb={6} sx={{ width: '100%' }} spacing={4}>
+                <Grid item xs={2}>
+                    <Box sx={{ fontSize: '2rem', fontWeight: 'bold' }}>{side}</Box>
+                </Grid>
+                <Grid item xs={3.3} display="flex" alignItems="center">
+                    <Box className={classes.selectLabel}>方向</Box>
+                    <FormControl fullWidth>
                         <InputLabel id="select-angle">方向</InputLabel>
                         <Select
+                            size="small"
                             labelId="select-angle"
-                            sx={{ minWidth: '3rem' }}
+                            label="方向"
                             value={clock}
                             onChange={handleAngleChange}
                         >
@@ -102,7 +76,63 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
                             ))}
                         </Select>
                     </FormControl>
-                    <IconButton color="green" onClick={handleAdd}>
+                </Grid>
+
+                <Grid item xs={3.3} display="flex" alignItems="center">
+                    <Box className={classes.selectLabel}>距離</Box>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        label="距離"
+                        type="number"
+                        set="any"
+                        inputProps={{ step: 0.01 }}
+                        value={distance}
+                        onChange={handleDistanceChange}
+                    />
+                </Grid>
+
+                <Grid item xs={3.3} display="flex" alignItems="center">
+                    <Box className={classes.selectLabel}>大小</Box>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        label="大小"
+                        type="number"
+                        set="any"
+                        inputProps={{ step: 0.01 }}
+                        value={size}
+                        onChange={handleSizeChange}
+                    />
+                </Grid>
+            </Grid>
+            <Grid container spacing={4}>
+                {ReportForm.map(({ name, label, options }) => (
+                    <Grid item xs={6} key={name} display="flex" alignItems="center">
+                        <Box mr={2} className={classes.selectLabel}>
+                            {label}
+                        </Box>
+                        <FormControl fullWidth>
+                            <InputLabel id={`select-form-${name}`}>{label}</InputLabel>
+                            <Select
+                                size="small"
+                                labelId={`select-form-${name}`}
+                                label={label}
+                                value={form.find((f) => f.value === name)?.value}
+                                onChange={(e) => {
+                                    setForm([...form, { key: name, value: e.target.value }])
+                                }}
+                            >
+                                {options.map(({ value, label }) => (
+                                    <MenuItem key={value} value={value}>
+                                        {label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                ))}
+                {/* <IconButton color="green" onClick={handleAdd}>
                         <Add />
                     </IconButton>
                     <Popover
@@ -135,62 +165,9 @@ const DynamicForm = ({ inputClock, inputDistance, inputSize, side, id, no, input
                     </Popover>
                     <IconButton color="red" onClick={handleDelete}>
                         <Clear />
-                    </IconButton>
-                </Stack>
-
-                <Grid container spacing={1}>
-                    {form.map((item) => (
-                        <Grid item xs={6} md={4} lg={3} key={item.key} sx={{ display: 'flex' }}>
-                            <FormControl variant="standard" fullWidth>
-                                <InputLabel id="select-angle">{item.key}</InputLabel>
-                                <Select
-                                    labelId="select-angle"
-                                    value={item.value}
-                                    sx={{ width: '90%' }}
-                                    onChange={(e) => {
-                                        const newForm = form.map((f) => {
-                                            if (f.key === item.key) {
-                                                return { key: f.key, value: e.target.value }
-                                            } else {
-                                                return f
-                                            }
-                                        })
-                                        setForm(newForm)
-                                    }}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            {item.value && (
-                                                <IconButton
-                                                    edge="end"
-                                                    sx={{
-                                                        marginRight: '-1rem',
-                                                        color: 'red',
-                                                        padding: '0',
-                                                        width: '1rem',
-                                                        height: '1rem',
-                                                    }}
-                                                    onClick={() => {
-                                                        setForm(form.filter((f) => f.key !== item.key))
-                                                    }}
-                                                >
-                                                    <Clear fontSize="small" />
-                                                </IconButton>
-                                            )}
-                                        </InputAdornment>
-                                    }
-                                >
-                                    {ReportForm.filter((Rf) => Rf.name === item.key)[0].options.map((RfItem) => (
-                                        <MenuItem key={RfItem.value} value={RfItem.value}>
-                                            {RfItem.value}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                    ))}
-                </Grid>
+                    </IconButton> */}
             </Grid>
-        </Grid>
+        </Box>
     )
 }
 
