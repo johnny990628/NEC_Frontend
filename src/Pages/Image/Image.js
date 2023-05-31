@@ -42,6 +42,11 @@ const Image = () => {
             Header: 'SeriesNumber',
         },
         {
+            accessor: '	SeriesDescription',
+            Header: 'SeriesDescription',
+            Cell: (row) => row.row.original.SeriesDescription || 'null',
+        },
+        {
             accessor: 'Modality',
             Header: 'Modality',
         },
