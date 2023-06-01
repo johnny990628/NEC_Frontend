@@ -37,6 +37,11 @@ const Image = () => {
             Header: 'SeriesNumber',
         },
         {
+            accessor: '	SeriesDescription',
+            Header: 'SeriesDescription',
+            Cell: (row) => row.row.original.SeriesDescription || 'null',
+        },
+        {
             accessor: 'Modality',
             Header: 'Modality',
         },
@@ -99,6 +104,13 @@ const Image = () => {
                 Cell: (row) => row.row.original.PatientID,
                 showInCustomTable: true,
                 required: true,
+            },
+            {
+                accessor: 'AccessionNumber',
+                Header: 'AccessionNumber',
+                Cell: (row) => row.row.original.AccessionNumber || 'null',
+                showInCustomTable: true,
+                required: false,
             },
             {
                 accessor: 'PatientSex',

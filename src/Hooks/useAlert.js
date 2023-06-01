@@ -3,6 +3,7 @@ import { useTheme } from '@mui/styles'
 import Swal from 'sweetalert2'
 import CustomModal from '../Components/CustomModal/CustomModal'
 import ReactDOM from 'react-dom'
+import './useAlert.css'
 
 const useAlert = () => {
     const [alertData, setAlertData] = useState(null)
@@ -17,6 +18,10 @@ const useAlert = () => {
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
+        },
+        customClass: {
+            container: 'custom-swal-container', // 自定义容器类名
+            popup: 'custom-swal-popup', // 自定义弹出框类名
         },
     })
 
@@ -120,10 +125,13 @@ const useAlert = () => {
                         showCloseButton: true,
                         html: `<div id="my-component"></div>`,
                         didOpen: () => {
-                            ReactDOM.render(<CustomModal columns={columns} data={data} />, document.getElementById('my-component'))
+                            ReactDOM.render(
+                                <CustomModal columns={columns} data={data} />,
+                                document.getElementById('my-component')
+                            )
                         },
                         confirmButtonColor: theme.palette.red.main,
-                        width: '70%',
+                        width: '80%',
                     }).then((result) => {
                         // if (result.isConfirmed) {
                         //     event().then(() =>
