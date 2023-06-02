@@ -27,14 +27,15 @@ const DynamicForm = ({ side, label, id }) => {
     const [size, setSize] = useState(1)
     const [form, setForm] = useState([])
     const [distance, setDistance] = useState(0)
-    const [anchorEl, setAnchorEl] = useState(null)
 
     useEffect(() => {
-        const inputForm = report[side].find((r) => r.id === id)
-        setSize((size) => (inputForm.size ? inputForm.size : size))
-        setClock((clock) => (inputForm.clock ? inputForm.clock : clock))
-        setDistance((diatance) => (inputForm.diatance ? inputForm.diatance : diatance))
-        setForm((form) => (inputForm.form ? inputForm.form : form))
+        if (id) {
+            const inputForm = report[side].find((r) => r.id === id)
+            setSize((size) => (inputForm.size ? inputForm.size : size))
+            setClock((clock) => (inputForm.clock ? inputForm.clock : clock))
+            setDistance((distance) => (inputForm.distance ? inputForm.distance : distance))
+            setForm((form) => (inputForm.form ? inputForm.form : form))
+        }
     }, [id])
 
     useEffect(() => {
@@ -112,6 +113,7 @@ const DynamicForm = ({ side, label, id }) => {
                         <Box mr={2} className={classes.selectLabel}>
                             {label}
                         </Box>
+
                         <FormControl fullWidth>
                             <InputLabel id={`select-form-${name}`}>{label}</InputLabel>
                             <Select

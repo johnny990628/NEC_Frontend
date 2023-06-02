@@ -16,6 +16,7 @@ import {
     ListItemIcon,
     Dialog,
     DialogContent,
+    Popover,
 } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { addPoint, setupBirads } from '../../../Redux/Slices/Breast'
@@ -32,6 +33,7 @@ function ChestMarker({}) {
     const [id, setId] = useState('')
     const [side, setSide] = useState('')
     const [label, setLabel] = useState('')
+    const [popoverAnchorEl, setPopoverAnchorEl] = useState(null)
 
     const lines = Array.from({ length: 12 }).map((_, i) => {
         const angle = i * 30
@@ -40,9 +42,15 @@ function ChestMarker({}) {
         return { x, y }
     })
 
-    const handleMarkerHover = ({ side = '', index = 0 }) => {
+    const handleMarkerEnter = ({ event, side = '', index = 0 }) => {
         setHovered({ side, index })
+        // setPopoverAnchorEl(event.currentTarget)
     }
+    const handleMarkerLeave = () => {
+        setHovered({ side: '', index: 0 })
+        // setPopoverAnchorEl(null)
+    }
+
     const handleMarkerClick = ({ side, id, index }) => {
         if (id) {
             setId(id)
@@ -106,8 +114,8 @@ function ChestMarker({}) {
                                 <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
                                     <ListItemButton
                                         onClick={() => handleMarkerClick({ side: 'R', id, index })}
-                                        onMouseEnter={() => handleMarkerHover({ side: 'R', index })}
-                                        onMouseLeave={handleMarkerHover}
+                                        onMouseEnter={(e) => handleMarkerEnter({ event: e, side: 'R', index })}
+                                        onMouseLeave={handleMarkerLeave}
                                     >
                                         <ListItemText
                                             primary={`R${index + 1}`}
@@ -158,8 +166,8 @@ function ChestMarker({}) {
                                 <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
                                     <ListItemButton
                                         onClick={() => handleMarkerClick({ side: 'L', id, index })}
-                                        onMouseEnter={() => handleMarkerHover({ side: 'L', index })}
-                                        onMouseLeave={handleMarkerHover}
+                                        onMouseEnter={(e) => handleMarkerEnter({ event: e, side: 'L', index })}
+                                        onMouseLeave={handleMarkerLeave}
                                     >
                                         <ListItemText
                                             primary={`L${index + 1}`}
@@ -184,6 +192,15 @@ function ChestMarker({}) {
                     <DynamicForm id={id} side={side} label={label} />
                 </DialogContent>
             </Dialog>
+            <Popover
+                open={Boolean(popoverAnchorEl)}
+                anchorEl={popoverAnchorEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                onClose={() => setPopoverAnchorEl(null)}
+            ></Popover>
         </Box>
     )
 }
