@@ -25,6 +25,7 @@ import { v4 } from 'uuid'
 import DynamicForm from './DynmicForm'
 import useStyles from '../Style'
 import Circle from './Circle'
+import CustomScrollbar from './../../CustomScrollbar/CustomScrollbar'
 
 function ChestMarker({}) {
     const classes = useStyles()
@@ -105,28 +106,30 @@ function ChestMarker({}) {
     }
 
     return (
-        <Box>
-            <Grid container spacing={5} ml={1}>
+        <Box sx={{ height: '100%' }}>
+            <Grid container spacing={5} sx={{ height: '100%' }}>
                 <Grid item xs={2}>
-                    <List sx={{ width: '100%', maxWidth: 400 }}>
-                        {report['R'].length > 0 &&
-                            report['R'].map((props, index) => {
-                                return <TumorList {...props} index={index} side="R" />
-                            })}
-                        <ListItem>
-                            <ListItemButton onClick={() => handleMarkerClick({ side: 'R' })}>
-                                <ListItemIcon>
-                                    <Add />
-                                </ListItemIcon>
+                    <List sx={{ maxWidth: 300, height: '80vh', overflowY: 'auto' }}>
+                        <CustomScrollbar>
+                            {report['R'].length > 0 &&
+                                report['R'].map((props, index) => {
+                                    return <TumorList {...props} index={index} side="R" />
+                                })}
+                            <ListItem>
+                                <ListItemButton onClick={() => handleMarkerClick({ side: 'R' })}>
+                                    <ListItemIcon>
+                                        <Add />
+                                    </ListItemIcon>
 
-                                <ListItemText primary={'新增腫瘤'} />
-                            </ListItemButton>
-                        </ListItem>
+                                    <ListItemText primary={'新增腫瘤'} />
+                                </ListItemButton>
+                            </ListItem>
+                        </CustomScrollbar>
                     </List>
                 </Grid>
                 {['R', 'L'].map((side) => {
                     return (
-                        <Grid item xs={4} display="flex" justifyContent="center" alignItems="center">
+                        <Grid item xs={4} display="flex" justifyContent="center">
                             <Box>
                                 <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
                                 <Circle maxSize={200} pos={report[side]} side={side} focused={hovered} />
@@ -150,17 +153,19 @@ function ChestMarker({}) {
                     )
                 })}
                 <Grid item xs={2}>
-                    <List sx={{ width: '100%', maxWidth: 360 }}>
-                        {report['L'].length > 0 &&
-                            report['L'].map((props, index) => <TumorList {...props} index={index} side="L" />)}
-                        <ListItem>
-                            <ListItemButton onClick={() => handleMarkerClick({ side: 'L' })}>
-                                <ListItemIcon>
-                                    <Add />
-                                </ListItemIcon>
-                                <ListItemText primary={'新增腫瘤'} />
-                            </ListItemButton>
-                        </ListItem>
+                    <List sx={{ maxWidth: 400, height: '80vh', overflowY: 'auto' }}>
+                        <CustomScrollbar>
+                            {report['L'].length > 0 &&
+                                report['L'].map((props, index) => <TumorList {...props} index={index} side="L" />)}
+                            <ListItem>
+                                <ListItemButton onClick={() => handleMarkerClick({ side: 'L' })}>
+                                    <ListItemIcon>
+                                        <Add />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'新增腫瘤'} />
+                                </ListItemButton>
+                            </ListItem>
+                        </CustomScrollbar>
                     </List>
                 </Grid>
             </Grid>
