@@ -76,6 +76,11 @@ const useStyles = makeStyles((theme) => ({
     selectLabel: {
         width: '40%',
     },
+    tooltip: {
+        background: theme.palette.primary.light_secondary,
+        color: theme.palette.text.primary,
+        backdropFilter: 'blur(5px)',
+    },
 }))
 
 export default useStyles

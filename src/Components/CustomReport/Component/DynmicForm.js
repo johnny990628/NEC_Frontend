@@ -53,6 +53,15 @@ const DynamicForm = ({ side, label, id }) => {
         setDistance(e.target.value <= CHESTMAXRADIUS ? e.target.value : CHESTMAXRADIUS)
     }
 
+    const handleSelectChange = ({ e, name }) => {
+        if (e.target.value) {
+            setForm([...form, { key: name, value: e.target.value }])
+        } else {
+            const tmpForm = form.filter((f) => f.key !== name)
+            setForm([...tmpForm])
+        }
+    }
+
     return (
         <Box>
             <Grid container mb={6} sx={{ width: '100%' }} spacing={4}>
@@ -108,32 +117,33 @@ const DynamicForm = ({ side, label, id }) => {
                 </Grid>
             </Grid>
             <Grid container spacing={4}>
-                {ReportForm.map(({ name, label, options }) => (
-                    <Grid item xs={6} key={name} display="flex" alignItems="center">
-                        <Box mr={2} className={classes.selectLabel}>
-                            {label}
-                        </Box>
-
-                        <FormControl fullWidth>
-                            <InputLabel id={`select-form-${name}`}>{label}</InputLabel>
-                            <Select
-                                size="small"
-                                labelId={`select-form-${name}`}
-                                label={label}
-                                value={form.find((f) => f.value === name)?.value}
-                                onChange={(e) => {
-                                    setForm([...form, { key: name, value: e.target.value }])
-                                }}
-                            >
-                                {options.map(({ value, label }) => (
-                                    <MenuItem key={value} value={value}>
-                                        {label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                ))}
+                {ReportForm.map(({ name, label, options }) => {
+                    const row = form.find((f) => f.key === name)
+                    return (
+                        <Grid item xs={6} key={name} display="flex" alignItems="center">
+                            <Box mr={2} className={classes.selectLabel}>
+                                {label}
+                            </Box>
+                            <FormControl fullWidth>
+                                <InputLabel id={`select-form-${name}`}>{label}</InputLabel>
+                                <Select
+                                    size="small"
+                                    labelId={`select-form-${name}`}
+                                    label={label}
+                                    value={row ? row.value : ''}
+                                    onChange={(e) => handleSelectChange({ e, name })}
+                                >
+                                    <MenuItem value={''} sx={{ height: 35 }}></MenuItem>
+                                    {options.map(({ value, label }) => (
+                                        <MenuItem key={value} value={value}>
+                                            {label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    )
+                })}
                 {/* <IconButton color="green" onClick={handleAdd}>
                         <Add />
                     </IconButton>
@@ -167,7 +177,7 @@ const DynamicForm = ({ side, label, id }) => {
                     </Popover>
                     <IconButton color="red" onClick={handleDelete}>
                         <Clear />
-                    </IconButton> */}
+                    </IconButton>  */}
             </Grid>
         </Box>
     )

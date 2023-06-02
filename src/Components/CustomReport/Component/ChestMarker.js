@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import {
     Box,
@@ -23,8 +23,10 @@ import { addPoint, setupBirads } from '../../../Redux/Slices/Breast'
 import { Add } from '@mui/icons-material'
 import { v4 } from 'uuid'
 import DynamicForm from './DynmicForm'
+import useStyles from '../Style'
 
 function ChestMarker({}) {
+    const classes = useStyles()
     const dispatch = useDispatch()
     const { report, CHESTMAXSIZE, CHESTMAXRADIUS, birads } = useSelector((state) => state.breast)
     const { user } = useSelector((state) => state.auth)
@@ -33,7 +35,6 @@ function ChestMarker({}) {
     const [id, setId] = useState('')
     const [side, setSide] = useState('')
     const [label, setLabel] = useState('')
-    const [popoverAnchorEl, setPopoverAnchorEl] = useState(null)
 
     const lines = Array.from({ length: 12 }).map((_, i) => {
         const angle = i * 30
@@ -42,13 +43,11 @@ function ChestMarker({}) {
         return { x, y }
     })
 
-    const handleMarkerEnter = ({ event, side = '', index = 0 }) => {
+    const handleMarkerEnter = ({ side = '', index = 0 }) => {
         setHovered({ side, index })
-        // setPopoverAnchorEl(event.currentTarget)
     }
     const handleMarkerLeave = () => {
         setHovered({ side: '', index: 0 })
-        // setPopoverAnchorEl(null)
     }
 
     const handleMarkerClick = ({ side, id, index }) => {
@@ -62,7 +61,6 @@ function ChestMarker({}) {
             setLabel(`${side}${report[side].length + 1}`)
         }
         setSide(side)
-
         setDialogOpen(true)
     }
 
@@ -104,31 +102,58 @@ function ChestMarker({}) {
             </svg>
         )
     }
+
     return (
         <Box>
             <Grid container spacing={5} ml={1}>
                 <Grid item xs={2}>
-                    <List sx={{ width: '100%', maxWidth: 360 }}>
+                    <List sx={{ width: '100%', maxWidth: 400 }}>
                         {report['R'].length > 0 &&
-                            report['R'].map(({ clock, distance, size, id, form }, index) => (
-                                <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
-                                    <ListItemButton
-                                        onClick={() => handleMarkerClick({ side: 'R', id, index })}
-                                        onMouseEnter={(e) => handleMarkerEnter({ event: e, side: 'R', index })}
-                                        onMouseLeave={handleMarkerLeave}
-                                    >
-                                        <ListItemText
-                                            primary={`R${index + 1}`}
-                                            secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
-                                        />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
+                            report['R'].map(({ clock, distance, size, id, form }, index) => {
+                                return (
+                                    <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
+                                        <Tooltip
+                                            title={
+                                                <Box>
+                                                    <Box
+                                                        sx={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}
+                                                    >{`方位:${clock} 距離:${distance} 大小:${size}`}</Box>
+                                                    {form.map(({ key, value }) => (
+                                                        <Box key={key} sx={{ fontSize: '1rem', mt: '.3rem' }}>
+                                                            <Box sx={{ fontWeight: 'bold' }}>{key}</Box>
+                                                            <Box>{value}</Box>
+                                                        </Box>
+                                                    ))}
+                                                </Box>
+                                            }
+                                            placement="right"
+                                            arrow
+                                            classes={{ tooltip: classes.tooltip }}
+                                        >
+                                            <ListItemButton
+                                                onClick={() => handleMarkerClick({ side: 'R', id, index })}
+                                                onMouseEnter={() => handleMarkerEnter({ side: 'R', index })}
+                                                onMouseLeave={handleMarkerLeave}
+                                            >
+                                                <ListItemText
+                                                    primary={`R${index + 1}`}
+                                                    secondary={
+                                                        <Box sx={{ fontSize: '1rem', whiteSpace: 'nowrap' }}>
+                                                            {`方位:${clock} 距離:${distance} 大小:${size}`}
+                                                        </Box>
+                                                    }
+                                                />
+                                            </ListItemButton>
+                                        </Tooltip>
+                                    </ListItem>
+                                )
+                            })}
                         <ListItem>
                             <ListItemButton onClick={() => handleMarkerClick({ side: 'R' })}>
                                 <ListItemIcon>
                                     <Add />
                                 </ListItemIcon>
+
                                 <ListItemText primary={'新增腫瘤'} />
                             </ListItemButton>
                         </ListItem>
@@ -164,16 +189,39 @@ function ChestMarker({}) {
                         {report['L'].length > 0 &&
                             report['L'].map(({ clock, distance, size, id, form }, index) => (
                                 <ListItem key={id} secondaryAction={<IconButton></IconButton>}>
-                                    <ListItemButton
-                                        onClick={() => handleMarkerClick({ side: 'L', id, index })}
-                                        onMouseEnter={(e) => handleMarkerEnter({ event: e, side: 'L', index })}
-                                        onMouseLeave={handleMarkerLeave}
+                                    <Tooltip
+                                        title={
+                                            <Box>
+                                                <Box
+                                                    sx={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}
+                                                >{`方位:${clock} 距離:${distance} 大小:${size}`}</Box>
+                                                {form.map(({ key, value }) => (
+                                                    <Box key={key} sx={{ fontSize: '1rem', mt: '1rem' }}>
+                                                        <Box sx={{ fontWeight: 'bold' }}>{key}</Box>
+                                                        <Box>{value}</Box>
+                                                    </Box>
+                                                ))}
+                                            </Box>
+                                        }
+                                        placement="left"
+                                        arrow
+                                        classes={{ tooltip: classes.tooltip }}
                                     >
-                                        <ListItemText
-                                            primary={`L${index + 1}`}
-                                            secondary={`方位:${clock} 距離:${distance} 大小:${size}`}
-                                        />
-                                    </ListItemButton>
+                                        <ListItemButton
+                                            onClick={() => handleMarkerClick({ side: 'L', id, index })}
+                                            onMouseEnter={() => handleMarkerEnter({ side: 'L', index })}
+                                            onMouseLeave={handleMarkerLeave}
+                                        >
+                                            <ListItemText
+                                                primary={`L${index + 1}`}
+                                                secondary={
+                                                    <Box sx={{ fontSize: '1rem', whiteSpace: 'nowrap' }}>
+                                                        {`方位:${clock} 距離:${distance} 大小:${size}`}
+                                                    </Box>
+                                                }
+                                            />
+                                        </ListItemButton>
+                                    </Tooltip>
                                 </ListItem>
                             ))}
                         <ListItem>
@@ -187,22 +235,13 @@ function ChestMarker({}) {
                     </List>
                 </Grid>
             </Grid>
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="md">
+
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="lg">
                 <DialogContent>
                     <DynamicForm id={id} side={side} label={label} />
                 </DialogContent>
             </Dialog>
-            <Popover
-                open={Boolean(popoverAnchorEl)}
-                anchorEl={popoverAnchorEl}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                onClose={() => setPopoverAnchorEl(null)}
-            ></Popover>
         </Box>
     )
 }
-
 export default ChestMarker
