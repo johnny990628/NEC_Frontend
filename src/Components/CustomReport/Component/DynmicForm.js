@@ -14,12 +14,13 @@ import {
     Grid,
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { removePoint, updatePoint } from '../../../Redux/Slices/Breast'
-import { Clear, Remove, Add } from '@mui/icons-material'
+import { updatePoint } from '../../../Redux/Slices/Breast'
+
 import ReportForm from '../../../Assets/Json/ReportCols2.json'
 import useStyles from '../Style'
+import Circle from './Circle'
 
-const DynamicForm = ({ side, label, id }) => {
+const DynamicForm = ({ side, label, id, focused }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { report, CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
@@ -67,6 +68,7 @@ const DynamicForm = ({ side, label, id }) => {
             <Grid container mb={6} sx={{ width: '100%' }} spacing={4}>
                 <Grid item xs={2}>
                     <Box sx={{ fontSize: '2rem', fontWeight: 'bold' }}>{label}</Box>
+                    <Circle maxSize={80} pos={report[side]} side={side} focused={focused} />
                 </Grid>
                 <Grid item xs={3.3} display="flex" alignItems="center">
                     <Box className={classes.selectLabel}>方向</Box>
@@ -116,6 +118,7 @@ const DynamicForm = ({ side, label, id }) => {
                     />
                 </Grid>
             </Grid>
+
             <Grid container spacing={4}>
                 {ReportForm.map(({ name, label, options }) => {
                     const row = form.find((f) => f.key === name)

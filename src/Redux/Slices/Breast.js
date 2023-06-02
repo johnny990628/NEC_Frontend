@@ -5,7 +5,6 @@ import { apiUpdateScheduleStatus } from '../../Axios/Schedule'
 import { v4 } from 'uuid'
 
 const initialState = {
-    CHESTMAXSIZE: 200,
     CHESTMAXRADIUS: 6,
     TUMORMAXSIZE: 3,
     schedule: {},
