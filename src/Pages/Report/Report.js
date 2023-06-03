@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box, Button, Stack } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material'
 import {
     AirlineSeatIndividualSuite,
     ArrowBackIos,
@@ -9,6 +9,7 @@ import {
     CheckBoxOutlineBlank,
     Close,
     Delete,
+    Input,
     Visibility,
 } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,6 +29,7 @@ import {
     resetReport,
     setupSchedule,
     fetchReportByReportID,
+    setupReport,
 } from '../../Redux/Slices/Breast'
 
 import Avatar, { genConfig } from 'react-nice-avatar'
@@ -38,6 +40,7 @@ const Report = () => {
 
     const [isExamination, setIsExamination] = useState(false)
     const [selection, setSelection] = useState({})
+    const [version, setVersion] = useState()
 
     const { schedules, count, page, loading } = useSelector((state) => state.schedule)
 
@@ -46,6 +49,16 @@ const Report = () => {
     const fetchData = async (params) => {
         dispatch(fetchSchedule(params))
     }
+
+    useEffect(() => {
+        if (version) {
+            const currentReport = selection.report.records.find((r) => r.id === version)
+            if (currentReport) {
+                const currentRecord = currentReport.report
+                dispatch(setupReport(currentRecord))
+            }
+        }
+    }, [version])
 
     // const handlePreviewReport = (reportID) => dispatch(fetchReportByReportID(reportID))
 
@@ -60,8 +73,10 @@ const Report = () => {
         })
 
     const handleExamination = (schedule) => {
-        if (schedule.status === 'wait-finish' || schedule.status === 'finish')
+        if (schedule.status === 'wait-finish' || schedule.status === 'finish') {
             dispatch(fetchReportByReportID({ reportID: schedule.reportID }))
+            setVersion(schedule.report?.records[schedule.report.records.length - 1].id)
+        }
 
         setSelection(schedule)
         setIsExamination(true)
@@ -97,6 +112,10 @@ const Report = () => {
                 handleCancelExamination()
             },
         })
+    }
+
+    const handleVersionOnChange = (e) => {
+        setVersion(e.target.value)
     }
 
     const columns = useMemo(
@@ -211,29 +230,67 @@ const Report = () => {
         []
     )
 
+    const avatarConfig = (id) => genConfig(id)
+
     return (
         <Box className={classes.container}>
             {isExamination ? (
                 <>
                     <Box
-                        sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', padding: '.5rem 1rem' }}
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: '.5rem 1rem',
+                        }}
                     >
-                        <Box>
+                        <Box display="flex" alignItems="center">
                             <Button startIcon={<ArrowBackIos />} sx={{}} onClick={() => handleCancelExamination()}>
                                 返回
                             </Button>
+                            <Stack direction="row" alignItems="center" spacing={2} ml={4}>
+                                <Avatar
+                                    style={{
+                                        width: '3rem',
+                                        height: '3rem',
+                                    }}
+                                    {...avatarConfig(selection.patientID)}
+                                ></Avatar>
+                                <Box>
+                                    <Box sx={{ fontSize: '1.3rem' }}>{selection.patient.name}</Box>
+                                    <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>{selection.patientID}</Box>
+                                </Box>
+                            </Stack>
+                            {selection?.status === 'finish' && (
+                                <FormControl size="small" variant="outlined" sx={{ width: '5rem', ml: 4 }}>
+                                    <InputLabel id="select-version">報告版本</InputLabel>
+                                    <Select
+                                        labelId="select-version"
+                                        label="報告版本"
+                                        value={version}
+                                        onChange={handleVersionOnChange}
+                                    >
+                                        {selection.report?.records &&
+                                            selection.report?.records.map((record, index) => (
+                                                <MenuItem key={record.id} value={record.id}>{`v${index + 1}`}</MenuItem>
+                                            ))}
+                                    </Select>
+                                </FormControl>
+                            )}
                         </Box>
                         <Box>
                             {selection?.status === 'wait-examination' && (
                                 <Button
                                     variant="outlined"
                                     startIcon={<Check />}
-                                    sx={{ borderRadius: '2rem', marginRight: '1rem' }}
+                                    sx={{ borderRadius: '2rem', margin: '0 1rem' }}
                                     onClick={handleReportSave}
                                 >
                                     暫存報告
                                 </Button>
                             )}
+
                             <Button
                                 variant="contained"
                                 startIcon={<Check />}
@@ -250,6 +307,19 @@ const Report = () => {
                                 onClick={deleteReportAndSchedule}
                             >
                                 刪除報告
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                sx={{ marginLeft: '1rem' }}
+                                onClick={() =>
+                                    window.open(
+                                        `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${selection?.StudyInstanceUID}`,
+                                        '_blank'
+                                    )
+                                }
+                                endIcon={<Input />}
+                            >
+                                超音波影像
                             </Button>
                         </Box>
                     </Box>
