@@ -17,6 +17,8 @@ import {
     Dialog,
     DialogContent,
     Popover,
+    DialogActions,
+    Button,
 } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { addPoint, setupBirads } from '../../../Redux/Slices/Breast'
@@ -26,6 +28,7 @@ import DynamicForm from './DynmicForm'
 import useStyles from '../Style'
 import Circle from './Circle'
 import CustomScrollbar from './../../CustomScrollbar/CustomScrollbar'
+import { removePoint } from '../../../Redux/Slices/Breast'
 
 function ChestMarker({}) {
     const classes = useStyles()
@@ -57,6 +60,11 @@ function ChestMarker({}) {
     const handleDialogClose = () => {
         setDialogOpen(false)
         setFocus({ side: '', index: -1 })
+    }
+
+    const handleDeletePoint = ({ side, id }) => {
+        dispatch(removePoint({ side, id }))
+        setDialogOpen(false)
     }
 
     const TumorList = ({ side, clock, distance, size, id, form, index }) => {
@@ -174,6 +182,11 @@ function ChestMarker({}) {
                 <DialogContent>
                     <DynamicForm id={id} side={side} focused={focus} label={label} />
                 </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" color="red" onClick={() => handleDeletePoint({ side, id })}>
+                        刪除腫瘤
+                    </Button>
+                </DialogActions>
             </Dialog>
         </Box>
     )
