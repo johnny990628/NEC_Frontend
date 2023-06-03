@@ -52,16 +52,12 @@ const useStyles = makeStyles((theme) => ({
         padding: '1rem',
         backgroundColor: theme.palette.secondary.main,
         borderRadius: '1rem',
-        overflowY: 'scroll',
-        // '&::-webkit-scrollbar': {
-        //     display: 'none',
-        // },
     },
     header: {
         display: 'flex',
+        height: '5%',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '1rem',
     },
     title: {
         fontSize: '1.5rem',
@@ -70,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     },
     body: {
         width: '100%',
-        height: '100%',
+        height: '95%',
         backgroundColor: theme.palette.secondary.main,
         borderRadius: '1rem',
     },
