@@ -32,14 +32,14 @@ const routerList = [
         path: '/patient',
         Component: Patient,
     },
-    {
-        display_name: '報告',
-        name: 'createReport',
-        icon: <EventAvailableOutlined />,
-        path: '/createReport',
-        Component: CreateReport,
-        authority: [4, 3, 2],
-    },
+    // {
+    //     display_name: '報告',
+    //     name: 'createReport',
+    //     icon: <EventAvailableOutlined />,
+    //     path: '/createReport',
+    //     Component: CreateReport,
+    //     authority: [4, 3, 2],
+    // },
     {
         display_name: '報告',
         name: 'report',

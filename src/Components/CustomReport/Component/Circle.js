@@ -1,5 +1,6 @@
 import { Tooltip } from '@mui/material'
 import { useSelector } from 'react-redux'
+import './Style.css'
 
 const Circle = ({ maxSize = 200, pos, side, focused }) => {
     const { CHESTMAXRADIUS } = useSelector((state) => state.breast)

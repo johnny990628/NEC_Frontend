@@ -70,17 +70,12 @@ const Home = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Box className={classes.box}>
-                            <LittleTable
-                                title={'尚未檢查'}
-                                rows={schedules}
-                                cols={scheduleCol}
-                                route={'/createReport'}
-                            />
+                            <LittleTable title={'尚未檢查'} rows={schedules} cols={scheduleCol} route={'/report'} />
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
                         <Box className={classes.box}>
-                            <LittleTable title={'目前報告'} rows={reports} cols={reportCol} route={'/createReport'} />
+                            <LittleTable title={'目前報告'} rows={reports} cols={reportCol} route={'/report'} />
                         </Box>
                     </Grid>
                 </Grid>
