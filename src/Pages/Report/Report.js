@@ -86,6 +86,18 @@ const Report = () => {
         setSelection({})
         setIsExamination(false)
     }
+    const deleteReportAndSchedule = () => {
+        showAlert({
+            alertTitle: '確定刪除該報告?',
+            toastTitle: '刪除成功',
+            icon: 'success',
+            type: 'confirm',
+            event: async () => {
+                dispatch(removeSchedule(selection._id))
+                handleCancelExamination()
+            },
+        })
+    }
 
     const columns = useMemo(
         () => [
@@ -229,6 +241,15 @@ const Report = () => {
                                 onClick={() => handleReportSubmit()}
                             >
                                 完成報告
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="red"
+                                startIcon={<Close />}
+                                sx={{ borderRadius: '2rem', marginLeft: '1rem' }}
+                                onClick={deleteReportAndSchedule}
+                            >
+                                刪除報告
                             </Button>
                         </Box>
                     </Box>
