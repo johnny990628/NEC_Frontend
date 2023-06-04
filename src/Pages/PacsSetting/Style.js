@@ -10,65 +10,24 @@ const useStyles = makeStyles((theme) => ({
         // border: `.5px solid ${theme.palette.border.main}`,
         paddingBottom: '0rem',
     },
-    list: {
-        height: '100%',
-        width: '13rem',
-        overflowY: 'scroll',
-        '&::-webkit-scrollbar': {
-            display: 'none',
-        },
-        backgroundColor: theme.palette.secondary.main,
-        borderRadius: '1rem',
-        display: 'flex',
-        flexDirection: 'column',
-        marginRight: '.1rem',
-    },
-    listItem: {
-        textDecoration: 'none',
-        display: 'flex',
-        padding: '1rem',
-        borderRadius: '.5rem',
-        transition: 'transform .1s ease-out',
-        alignItems: 'center',
-        '&:hover': {
-            transform: 'scale(1.01)',
-            cursor: 'pointer',
-        },
-    },
-    icon: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: theme.palette.primary.main,
-        marginRight: theme.spacing(1),
-    },
-    text: {
-        fontSize: '1rem',
-        marginLeft: theme.spacing(1),
-    },
-    content: {
+    Item: {
+        marginTop: '1rem',
         width: '100%',
-        height: '100%',
-        padding: '1rem',
-        backgroundColor: theme.palette.secondary.main,
-        borderRadius: '1rem',
     },
     header: {
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '1rem',
+        height: '2.5rem',
     },
-    title: {
-        fontSize: '1.5rem',
+    HeaderTitle: {
+        fontSize: '1.3rem',
         fontWeight: 'bold',
         color: theme.palette.text.primary,
     },
-    body: {
-        width: '100%',
-        height: '100%',
-        backgroundColor: theme.palette.secondary.main,
-        borderRadius: '1rem',
+    headerValue: {
+        fontSize: '1rem',
+        color: theme.palette.text.secondary,
+        marginLeft: '1rem',
     },
 }))
 

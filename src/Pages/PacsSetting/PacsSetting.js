@@ -8,8 +8,9 @@ import { fetchDicom } from '../../Redux/Slices/Dicom'
 
 import useAlert from '../../Hooks/useAlert'
 import { CheckCircleOutline, InsertPhotoOutlined } from '@mui/icons-material'
+import PacsServer from '../../Components/PacsSetting/PacsServer/PacsServer'
 
-const Setting = () => {
+const PacsSetting = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { results, count, page, loading } = useSelector((state) => state.dicom)
@@ -20,24 +21,25 @@ const Setting = () => {
 
     const showAlert = useAlert()
 
+    const PacsSettingList = [
+        { HeaderTitle: 'PACS Server', headerValue: '各項PACS server 參數設定，拖動Card排序權重比。', body: <PacsServer /> },
+    ]
+
     return (
         <Box className={classes.container}>
-            <List className={classes.list}>
-                <ListItem className={classes.listItem} key={1}>
-                    <Box className={classes.icon}>
-                        <InsertPhotoOutlined />
+            {PacsSettingList.map((PacsSettingItem, index) => {
+                return (
+                    <Box className={classes.Item}>
+                        <Box className={classes.header} key={PacsSettingItem.HeaderTitle}>
+                            <Box className={classes.HeaderTitle}>{PacsSettingItem.HeaderTitle}</Box>
+                            <Box className={classes.headerValue}>{PacsSettingItem.headerValue}</Box>
+                        </Box>
+                        <Box>{PacsSettingItem.body}</Box>
                     </Box>
-                    <Box className={classes.text}>PACS 設定</Box>
-                </ListItem>
-
-                <ListItem className={classes.listItem} key={2}>
-                    <Box className={classes.icon}>
-                        <CheckCircleOutline />
-                    </Box>
-                </ListItem>
-            </List>
+                )
+            })}
         </Box>
     )
 }
 
-export default Setting
+export default PacsSetting

@@ -14,32 +14,10 @@ import { apiDownloadDCM } from '../../Axios/Dicom'
 import filterParams from '../../Assets/Json/FilterParams.json'
 import useAlert from '../../Hooks/useAlert'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import { CheckCircleOutline, InsertPhotoOutlined } from '@mui/icons-material'
 import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
-import User from '../User/User.js'
-import PacsSetting from '../PacsSetting/PacsSetting.js'
-import Image from '../Image/Image'
 
-const settingRouters = [
-    {
-        id: 1,
-        name: 'PACS 設定',
-        icon: InsertPhotoOutlined,
-        body: <PacsSetting />,
-    },
-    {
-        id: 2,
-        name: '用戶設定',
-        icon: CheckCircleOutline,
-        body: <User />,
-    },
-    {
-        id: 3,
-        name: '影像設定',
-        icon: CheckCircleOutline,
-        body: <Image />,
-    },
-]
+import { settingRouters } from './SettingRouters'
+
 const Setting = () => {
     const dispatch = useDispatch()
     const classes = useStyles()

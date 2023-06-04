@@ -67,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
     body: {
         width: '100%',
         height: '95%',
-        backgroundColor: theme.palette.secondary.main,
         borderRadius: '1rem',
     },
 }))
