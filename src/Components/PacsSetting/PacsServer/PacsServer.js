@@ -1,24 +1,39 @@
-import React, { useState } from 'react'
-import { Box, Chip, Switch, Button } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Box, Chip, Switch, Button, Dialog, DialogTitle, DialogContent } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
 import useStyles from './Style'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { fetchPacsSetting, updatePacsSetting } from '../../../Redux/Slices/PacsSetting'
+import { useDispatch, useSelector } from 'react-redux'
+import PacsSettingForm from './PacsSettingForm'
 
-const TestPacsList = [
-    { _id: 'dawdawdx12414srf315rw$%ad1', name: 'Raccoon', URL: 'http://localhost:8042', isOpen: true },
-    { _id: 'dawd412rf135TQ#%qsfaegesfa', name: 'DCM4CHEE', URL: 'http://localhost:8042', isOpen: false },
-]
+const EditPacsDialog = ({ editID, setEditID }) => {
+    return (
+        <Dialog open={Boolean(editID)} onClose={() => setEditID('')}>
+            <DialogContent>
+                <PacsSettingForm editID={editID} setEditID={setEditID} />
+            </DialogContent>
+        </Dialog>
+    )
+}
 
 const PacsServer = () => {
     const classes = useStyles()
-    const [pacsList, setPacsList] = useState(TestPacsList)
+    const dispatch = useDispatch()
+
+    const { results: pacsList } = useSelector((state) => state.pacsSetting)
+    const [editID, setEditID] = useState('')
+
+    useEffect(() => {
+        dispatch(fetchPacsSetting())
+    }, [])
 
     const handleDelete = (_id) => {
         console.info('You clicked the delete icon.', _id)
     }
 
-    const handleEdit = (_id) => {
-        console.info('You clicked the edit icon.', _id)
+    const handleEdit = async (_id) => {
+        setEditID(_id)
     }
 
     const handleDragEnd = (result) => {
@@ -28,7 +43,11 @@ const PacsServer = () => {
         const [reorderedItem] = items.splice(result.source.index, 1)
         items.splice(result.destination.index, 0, reorderedItem)
 
-        setPacsList(items)
+        // setPacsList(items)
+    }
+
+    const onChangeSwitch = (_id, isOpen) => {
+        dispatch(updatePacsSetting({ _id, isOpen }))
     }
 
     return (
@@ -36,6 +55,7 @@ const PacsServer = () => {
             <Droppable droppableId="pacsList">
                 {(provided) => (
                     <Box {...provided.droppableProps} ref={provided.innerRef}>
+                        <EditPacsDialog editID={editID} setEditID={setEditID} />
                         {pacsList.map((pacs, index) => (
                             <Draggable key={pacs._id} draggableId={pacs._id} index={index}>
                                 {(provided) => (
@@ -45,9 +65,15 @@ const PacsServer = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                        <Switch defaultChecked={pacs.isOpen} />
-                                        <Chip className={classes.serverName} label={pacs.name} color="primary" />
-                                        <Box>{pacs.URL}</Box>
+                                        <Switch
+                                            defaultChecked={pacs.isOpen}
+                                            value={pacs.isOpen}
+                                            onChange={(e) => onChangeSwitch(pacs._id, e.target.checked)}
+                                        />
+                                        <Chip className={classes.serverName} label={pacs.pacsName} color="primary" />
+                                        <Box>
+                                            {pacs.pacsURL} - {pacs.pacsAETitle}
+                                        </Box>
                                         <Box>
                                             <Button
                                                 startIcon={<Edit color="primary" />}

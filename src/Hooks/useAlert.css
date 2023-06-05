@@ -1,7 +1,7 @@
 .custom-swal-container {
-    z-index: 1999; /* 设置容器的 z-index 值 */
+    z-index: 3999; /* 设置容器的 z-index 值 */
   }
   
   .custom-swal-popup {
-    z-index: 2000; /* 设置弹出框的 z-index 值 */
+    z-index: 4000; /* 设置弹出框的 z-index 值 */
   }
