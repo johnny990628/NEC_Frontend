@@ -167,7 +167,9 @@ const Patient = () => {
                                                 toastTitle: '取消排程',
                                                 text: `${name} ${mr}`,
                                                 type: 'confirm',
-                                                event: () => dispatch(removeSchedule(wait_examination._id)),
+                                                event: async () => {
+                                                    dispatch(removeSchedule(wait_examination._id))
+                                                },
                                             })
 
                                             break
@@ -178,7 +180,7 @@ const Patient = () => {
                                                 text: `${name} ${mr}`,
                                                 type: 'select',
                                                 options: PROCEDURECODE,
-                                                event: (text) => {
+                                                event: async (text) => {
                                                     dispatch(
                                                         addSchedule({
                                                             patientID: id,
@@ -194,7 +196,7 @@ const Patient = () => {
                                                 toastTitle: '取消檢查狀態',
                                                 text: `${name} ${mr}`,
                                                 type: 'confirm',
-                                                event: () => {
+                                                event: async () => {
                                                     const onCall = row.row.original?.schedule?.find(
                                                         ({ status }) => status === 'on-call'
                                                     )

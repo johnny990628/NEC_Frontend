@@ -31,6 +31,7 @@ import Circle from './Circle'
 import CustomScrollbar from './../../CustomScrollbar/CustomScrollbar'
 import { removePoint } from '../../../Redux/Slices/Breast'
 import { useTheme } from '@mui/styles'
+import useAlert from '../../../Hooks/useAlert'
 
 function ChestMarker({}) {
     const classes = useStyles()
@@ -44,6 +45,8 @@ function ChestMarker({}) {
     const [label, setLabel] = useState('')
     const [focus, setFocus] = useState({ side: '', index: -1 })
     const [circleSize, setCircle] = useState(200)
+
+    const showAlert = useAlert()
 
     const theme = useTheme()
     const tab = useMediaQuery(theme.breakpoints.down('lg'))
@@ -74,8 +77,16 @@ function ChestMarker({}) {
     }
 
     const handleDeletePoint = ({ side, id }) => {
-        dispatch(removePoint({ side, id }))
         setDialogOpen(false)
+        showAlert({
+            alertTitle: `確定要刪除該腫瘤?`,
+            toastTitle: '刪除腫瘤',
+            text: '',
+            type: 'confirm',
+            event: async () => {
+                dispatch(removePoint({ side, id }))
+            },
+        })
     }
 
     const TumorList = ({ side, clock, distance, size, id, form, index }) => {
@@ -113,7 +124,7 @@ function ChestMarker({}) {
                         <ListItemText
                             primary={`${side}${index + 1}`}
                             secondary={
-                                <Box sx={{ fontSize: '1rem', whiteSpace: 'nowrap' }}>
+                                <Box sx={{ fontSize: tab ? '.7rem' : '1rem', whiteSpace: 'nowrap' }}>
                                     {`方位:${clock} 距離:${distance} 大小:${size}`}
                                 </Box>
                             }
@@ -126,7 +137,7 @@ function ChestMarker({}) {
 
     return (
         <Box sx={{ height: '100%' }}>
-            <Grid container spacing={5} sx={{ height: '100%' }}>
+            <Grid container spacing={2} sx={{ height: '100%' }}>
                 <Grid item xs={2}>
                     <List sx={{ maxWidth: 300, height: '80vh', overflowY: 'auto' }}>
                         <CustomScrollbar>
@@ -136,7 +147,7 @@ function ChestMarker({}) {
                                 })}
                             <ListItem>
                                 <ListItemButton onClick={() => handleMarkerClick({ side: 'R' })}>
-                                    <ListItemIcon>
+                                    <ListItemIcon sx={{ minWidth: '2rem' }}>
                                         <Add />
                                     </ListItemIcon>
 
@@ -178,7 +189,7 @@ function ChestMarker({}) {
                                 report['L'].map((props, index) => <TumorList {...props} index={index} side="L" />)}
                             <ListItem>
                                 <ListItemButton onClick={() => handleMarkerClick({ side: 'L' })}>
-                                    <ListItemIcon>
+                                    <ListItemIcon sx={{ minWidth: '2rem' }}>
                                         <Add />
                                     </ListItemIcon>
                                     <ListItemText primary={'新增腫瘤'} />
@@ -194,7 +205,10 @@ function ChestMarker({}) {
                     <DynamicForm id={id} side={side} focused={focus} label={label} />
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined" color="red" onClick={() => handleDeletePoint({ side, id })}>
+                    <Button variant="outlined" color="primary" onClick={() => setDialogOpen(false)}>
+                        確認
+                    </Button>
+                    <Button color="red" onClick={() => handleDeletePoint({ side, id })}>
                         刪除腫瘤
                     </Button>
                 </DialogActions>
