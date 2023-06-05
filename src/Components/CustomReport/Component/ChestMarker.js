@@ -19,6 +19,7 @@ import {
     Popover,
     DialogActions,
     Button,
+    useMediaQuery,
 } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { addPoint, setupBirads } from '../../../Redux/Slices/Breast'
@@ -29,6 +30,7 @@ import useStyles from '../Style'
 import Circle from './Circle'
 import CustomScrollbar from './../../CustomScrollbar/CustomScrollbar'
 import { removePoint } from '../../../Redux/Slices/Breast'
+import { useTheme } from '@mui/styles'
 
 function ChestMarker({}) {
     const classes = useStyles()
@@ -41,6 +43,15 @@ function ChestMarker({}) {
     const [side, setSide] = useState('')
     const [label, setLabel] = useState('')
     const [focus, setFocus] = useState({ side: '', index: -1 })
+    const [circleSize, setCircle] = useState(200)
+
+    const theme = useTheme()
+    const tab = useMediaQuery(theme.breakpoints.down('lg'))
+
+    useEffect(() => {
+        if (tab) setCircle(150)
+        else setCircle(200)
+    }, [tab])
 
     const handleMarkerClick = ({ side, id, index }) => {
         if (id) {
@@ -140,7 +151,7 @@ function ChestMarker({}) {
                         <Grid item xs={4} display="flex" justifyContent="center">
                             <Box>
                                 <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
-                                <Circle maxSize={200} pos={report[side]} side={side} focused={hovered} />
+                                <Circle maxSize={circleSize} pos={report[side]} side={side} focused={hovered} />
                                 <FormControl variant="standard" sx={{ width: '6rem', mr: 2, marginBottom: '1em' }}>
                                     <InputLabel id="select-birads">BI-RADS</InputLabel>
                                     <Select

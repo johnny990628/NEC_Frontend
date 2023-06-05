@@ -278,6 +278,19 @@ const Report = () => {
                                     </Select>
                                 </FormControl>
                             )}
+                            <Button
+                                variant="outlined"
+                                sx={{ marginLeft: '1rem' }}
+                                onClick={() =>
+                                    window.open(
+                                        `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${selection?.StudyInstanceUID}`,
+                                        '_blank'
+                                    )
+                                }
+                                endIcon={<Input />}
+                            >
+                                超音波影像
+                            </Button>
                         </Box>
                         <Box>
                             {selection?.status === 'wait-examination' && (
@@ -307,19 +320,6 @@ const Report = () => {
                                 onClick={deleteReportAndSchedule}
                             >
                                 刪除報告
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                sx={{ marginLeft: '1rem' }}
-                                onClick={() =>
-                                    window.open(
-                                        `${process.env.REACT_APP_BLUELIGHT_URL}?StudyInstanceUID=${selection?.StudyInstanceUID}`,
-                                        '_blank'
-                                    )
-                                }
-                                endIcon={<Input />}
-                            >
-                                超音波影像
                             </Button>
                         </Box>
                     </Box>

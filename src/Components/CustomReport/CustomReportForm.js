@@ -12,17 +12,11 @@ const CustomReportForm = ({}) => {
     const theme = useTheme()
 
     return (
-        <>
-            <Box className={classes.container}>
-                <Grid container sx={{ height: '100%' }}>
-                    <Grid item xs={12}>
-                        <CustomScrollbar>
-                            <ChestMarker />
-                        </CustomScrollbar>
-                    </Grid>
-                </Grid>
-            </Box>
-        </>
+        <Box className={classes.container}>
+            <CustomScrollbar>
+                <ChestMarker />
+            </CustomScrollbar>
+        </Box>
     )
 }
 
