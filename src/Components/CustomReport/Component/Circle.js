@@ -28,7 +28,7 @@ const Circle = ({ maxSize = 200, pos, side, focused }) => {
                 const y = maxSize + Math.cos(radians) * distance * (maxSize / CHESTMAXRADIUS)
                 return (
                     <Tooltip key={id} title={`${side}${index + 1}`}>
-                        <circle cx={x} cy={y} r={size * (maxSize / 20)} fill={fillColor(index)} />
+                        <circle cx={x} cy={y} r={size * (maxSize / 5)} fill={fillColor(index)} />
                         {/* <text
                                     font-size="12"
                                     x={x}
