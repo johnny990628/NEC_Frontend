@@ -531,6 +531,17 @@ const CreateReport = () => {
                                     </FormControl>
                                 )}
 
+                                {schedule?.status === 'wait-finish' && (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<Check />}
+                                        sx={{ borderRadius: '2rem', height: '2.5rem', marginRight: '1rem' }}
+                                        onClick={handleReportSave}
+                                    >
+                                        暫存報告
+                                    </Button>
+                                )}
+
                                 <Button
                                     variant="contained"
                                     startIcon={<Check />}
