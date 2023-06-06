@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, IconButton } from '@mui/material'
+import { Box, Button, IconButton, Chip } from '@mui/material'
 import moment from 'moment'
 
 import useStyles from './Style'
@@ -7,7 +7,7 @@ import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
 import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilterParams from './../../Components/GlobalFilterParams/GlobalFilterParams'
-import { CloudDownload } from '@mui/icons-material'
+import { CloudDownload, Tag } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDicom } from './../../Redux/Slices/Dicom'
 import { apiDownloadDCM } from '../../Axios/Dicom'
@@ -96,6 +96,16 @@ const Image = () => {
                 accessor: 'PatientName',
                 Header: '姓名',
                 Cell: (row) => row.row.original.PatientName['Alphabetic'],
+                showInCustomTable: true,
+                required: true,
+            },
+            {
+                accessor: 'pacsOf',
+                Header: 'PACS',
+                Cell: (row) =>
+                    row.row.original.pacsOf.map((item) => {
+                        return <Chip className={classes.serverName} label={item} color="primary" />
+                    }),
                 showInCustomTable: true,
                 required: true,
             },
