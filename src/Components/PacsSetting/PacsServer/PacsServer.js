@@ -3,7 +3,12 @@ import { Box, Chip, Switch, Button, Dialog, DialogTitle, DialogContent } from '@
 import { Edit, Delete } from '@mui/icons-material'
 import useStyles from './Style'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { fetchPacsSetting, updatePacsSetting } from '../../../Redux/Slices/PacsSetting'
+import {
+    fetchPacsSetting,
+    updatePacsSetting,
+    upDatePacsSettingSort,
+    deletePacsSetting,
+} from '../../../Redux/Slices/PacsSetting'
 import { useDispatch, useSelector } from 'react-redux'
 import PacsSettingForm from './PacsSettingForm'
 
@@ -22,6 +27,7 @@ const PacsServer = () => {
     const dispatch = useDispatch()
 
     const { results: pacsList } = useSelector((state) => state.pacsSetting)
+
     const [editID, setEditID] = useState('')
 
     useEffect(() => {
@@ -29,7 +35,7 @@ const PacsServer = () => {
     }, [])
 
     const handleDelete = (_id) => {
-        console.info('You clicked the delete icon.', _id)
+        dispatch(deletePacsSetting({ _id }))
     }
 
     const handleEdit = async (_id) => {
@@ -37,13 +43,14 @@ const PacsServer = () => {
     }
 
     const handleDragEnd = (result) => {
+        console.log(result)
         if (!result.destination) return
 
         const items = Array.from(pacsList)
         const [reorderedItem] = items.splice(result.source.index, 1)
         items.splice(result.destination.index, 0, reorderedItem)
-
-        // setPacsList(items)
+        const datas = items.map((item, index) => ({ ...item, weights: index }))
+        dispatch(upDatePacsSettingSort(datas))
     }
 
     const onChangeSwitch = (_id, isOpen) => {

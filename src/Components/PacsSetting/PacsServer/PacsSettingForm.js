@@ -32,12 +32,12 @@ const PacsSettingForm = ({ editID, setEditID }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        dispatch(updatePacsSetting(formData))
         setEditID('')
         showAlert({
             alertTitle: '確定修改資料?',
             toastTitle: '修改成功',
             icon: 'success',
-            event: () => dispatch(updatePacsSetting(formData)),
         })
     }
 
