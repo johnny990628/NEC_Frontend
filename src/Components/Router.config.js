@@ -48,6 +48,7 @@ const routerList = [
         icon: <CreateNewFolderOutlined />,
         path: '/report',
         Component: Report,
+        authority: [2, 3, 4],
     },
     // {
     //     display_name: '用戶',
@@ -71,7 +72,7 @@ const routerList = [
         icon: <InsertPhotoOutlined />,
         path: '/image',
         Component: Image,
-        authority: [3, 2, 1],
+        authority: [2, 3, 4],
     },
     {
         display_name: '設定',
@@ -79,7 +80,7 @@ const routerList = [
         icon: <Settings />,
         path: '/setting',
         Component: Setting,
-        authority: [3],
+        authority: [4],
     },
     // {
     //     display_name: '數據中心',

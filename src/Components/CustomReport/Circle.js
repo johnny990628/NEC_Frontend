@@ -1,8 +1,10 @@
-import { Tooltip } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 import { useSelector } from 'react-redux'
 import './Style.css'
+import useStyles from './Style'
 
 const Circle = ({ maxSize = 200, pos, side, focused }) => {
+    const classes = useStyles()
     const { CHESTMAXRADIUS } = useSelector((state) => state.breast)
 
     const lines = Array.from({ length: 12 }).map((_, i) => {
@@ -12,7 +14,7 @@ const Circle = ({ maxSize = 200, pos, side, focused }) => {
         return { x, y }
     })
 
-    const fillColor = (index) => (focused.side === side && focused.index === index ? 'yellow' : 'red')
+    const fillColor = (index) => (focused?.side === side && focused?.index === index ? 'yellow' : 'red')
     return (
         <svg width={maxSize * 2} height={maxSize * 2}>
             <circle cx={maxSize} cy={maxSize} r={maxSize} fill="#efefef" />
@@ -21,13 +23,31 @@ const Circle = ({ maxSize = 200, pos, side, focused }) => {
                 <line key={i} x1={maxSize} y1={maxSize} x2={x} y2={y} stroke="black" strokeWidth="0.5" />
             ))}
 
-            {pos.map(({ id, clock, distance, size }, index) => {
+            {pos.map(({ id, clock, distance, size, form }, index) => {
                 const angle = (clock * 360) / 12 + 180
                 const radians = (angle * Math.PI) / 180
                 const x = maxSize - Math.sin(radians) * distance * (maxSize / CHESTMAXRADIUS)
                 const y = maxSize + Math.cos(radians) * distance * (maxSize / CHESTMAXRADIUS)
                 return (
-                    <Tooltip key={id} title={`${side}${index + 1}`}>
+                    <Tooltip
+                        title={
+                            <Box>
+                                <Box sx={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{`${side}${index + 1}`}</Box>
+                                <Box
+                                    sx={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}
+                                >{`方位:${clock} 距離:${distance} 大小:${size}`}</Box>
+                                {form.map(({ key, value }) => (
+                                    <Box key={key} sx={{ fontSize: '1rem', mt: '.3rem' }}>
+                                        <Box sx={{ fontWeight: 'bold' }}>{key}</Box>
+                                        <Box>{value}</Box>
+                                    </Box>
+                                ))}
+                            </Box>
+                        }
+                        placement="right"
+                        arrow
+                        classes={{ tooltip: classes.tooltip }}
+                    >
                         <circle cx={x} cy={y} r={size * (maxSize / 5)} fill={fillColor(index)} />
                         {/* <text
                                     font-size="12"

@@ -22,16 +22,16 @@ import {
     useMediaQuery,
 } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
-import { addPoint, setupBirads } from '../../../Redux/Slices/Breast'
+import { addPoint, setupBirads } from '../../Redux/Slices/Breast'
 import { Add } from '@mui/icons-material'
 import { v4 } from 'uuid'
-import DynamicForm from './DynmicForm'
-import useStyles from '../Style'
+import TurmorForm from './TumorForm'
+import useStyles from './Style'
 import Circle from './Circle'
-import CustomScrollbar from './../../CustomScrollbar/CustomScrollbar'
-import { removePoint } from '../../../Redux/Slices/Breast'
+import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
+import { removePoint } from '../../Redux/Slices/Breast'
 import { useTheme } from '@mui/styles'
-import useAlert from '../../../Hooks/useAlert'
+import useAlert from '../../Hooks/useAlert'
 
 function ChestMarker({}) {
     const classes = useStyles()
@@ -49,7 +49,7 @@ function ChestMarker({}) {
     const showAlert = useAlert()
 
     const theme = useTheme()
-    const tab = useMediaQuery(theme.breakpoints.down('lg'))
+    const tab = useMediaQuery(theme.breakpoints.down('xl'))
 
     useEffect(() => {
         if (tab) setCircle(150)
@@ -157,9 +157,9 @@ function ChestMarker({}) {
                         </CustomScrollbar>
                     </List>
                 </Grid>
-                {['R', 'L'].map((side) => {
-                    return (
-                        <Grid item xs={4} display="flex" justifyContent="center">
+                <Grid item xs={8} display="flex" justifyContent="center">
+                    {['R', 'L'].map((side) => {
+                        return (
                             <Box>
                                 <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
                                 <Circle maxSize={circleSize} pos={report[side]} side={side} focused={hovered} />
@@ -168,7 +168,7 @@ function ChestMarker({}) {
                                     <Select
                                         labelId="select-birads"
                                         value={birads[side]}
-                                        disabled={user.role === 4}
+                                        disabled={user.role < 3}
                                         onChange={(e) => {
                                             dispatch(setupBirads({ side, value: e.target.value }))
                                         }}
@@ -179,9 +179,9 @@ function ChestMarker({}) {
                                     </Select>
                                 </FormControl>
                             </Box>
-                        </Grid>
-                    )
-                })}
+                        )
+                    })}
+                </Grid>
                 <Grid item xs={2}>
                     <List sx={{ maxWidth: 400, height: '80vh', overflowY: 'auto' }}>
                         <CustomScrollbar>
@@ -202,7 +202,7 @@ function ChestMarker({}) {
 
             <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="lg">
                 <DialogContent>
-                    <DynamicForm id={id} side={side} focused={focus} label={label} />
+                    <TurmorForm id={id} side={side} focused={focus} label={label} />
                 </DialogContent>
                 <DialogActions>
                     <Button variant="outlined" color="primary" onClick={() => setDialogOpen(false)}>

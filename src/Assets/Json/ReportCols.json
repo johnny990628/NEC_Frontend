@@ -2,9 +2,7 @@
     {
         "name": "UEM",
         "label": "US examination mode",
-        "type": "radio",
-        "section": "Indication",
-        "divider": true,
+        "type": "select",
         "options": [
             { "label": "Screenings US", "value": "screenings_us", "type": "checkbox" },
             { "label": "Diagnostic US", "value": "diagnostic_us", "type": "checkbox" },
@@ -13,10 +11,8 @@
     },
     {
         "name": "EFSP",
-        "label": "10.Exam for symptomatic patient",
-        "type": "radio",
-        "section": "Indication",
-        "divider": true,
+        "label": "Exam for symptomatic patient",
+        "type": "select",
         "options": [
             { "label": "Pain", "value": "pain", "type": "checkbox" },
             { "label": "Palpable mass", "value": "palpable_mass", "type": "checkbox" },
@@ -27,39 +23,18 @@
         "name": "SMC",
         "label": "20.Screening mammographic Category",
         "type": "radio",
-        "section": "Indication",
         "options": [
             { "label": "Right", "value": "right", "type": "checkbox" },
             { "label": "Left", "value": "left", "type": "checkbox" },
             { "label": "UOQ", "value": "uoq", "type": "checkbox" },
             { "label": "UIQ", "value": "uiq", "type": "checkbox" },
             { "label": "LOQ", "value": "loq", "type": "checkbox" },
-            { "label": "LIQ", "value": "liq", "type": "checkbox" }
+            { "label": "LIQ", "value": "liq", "type": "checkbox" },
+            { "label": "MASS", "value": "mass", "type": "checkbox" },
+            { "label": "Calcification", "value": "calcification", "type": "checkbox" },
+            { "label": "Asymmetry", "value": "asymmetry", "type": "checkbox" },
+            { "label": "Architecture distortion", "value": "architecture_distortion", "type": "checkbox" }
         ]
-    },
-    {
-        "name": "MASS",
-        "label": "21.Mass",
-        "type": "checkbox",
-        "section": "Indication"
-    },
-    {
-        "name": "CALCIFICATION",
-        "label": "22.Calcification",
-        "type": "checkbox",
-        "section": "Indication"
-    },
-    {
-        "name": "ASYMMETRY",
-        "label": "23.Asymmetry",
-        "type": "checkbox",
-        "section": "Indication"
-    },
-    {
-        "name": "AD",
-        "label": "24.Architecture distortion",
-        "type": "checkbox",
-        "section": "Indication"
     },
     {
         "name": "OTHERS",
@@ -128,7 +103,6 @@
         "label": "US Category",
         "type": "select",
         "section": "Other",
-
         "options": [
             { "label": "Category 0", "value": "c0", "type": "checkbox" },
             { "label": "Category 1", "value": "c1", "type": "checkbox" },

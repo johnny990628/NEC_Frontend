@@ -1,5 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material'
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+} from '@mui/material'
 import {
     AirlineSeatIndividualSuite,
     ArrowBackIos,
@@ -17,22 +29,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './Style'
 
 import CustomTable from '../../Components/CustomTable/CustomTable'
-import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 
 import { fetchSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
 import useAlert from '../../Hooks/useAlert'
 import CustomReportForm from '../../Components/CustomReport/CustomReportForm'
-import {
-    finishReport,
-    updateReport,
-    resetReport,
-    setupSchedule,
-    fetchReportByReportID,
-    setupReport,
-} from '../../Redux/Slices/Breast'
+import { updateReport, resetReport, setupSchedule, fetchReportByReportID, setupReport } from '../../Redux/Slices/Breast'
 
 import Avatar, { genConfig } from 'react-nice-avatar'
+import Circle from '../../Components/CustomReport/Circle'
+import ExamForm from '../../Components/CustomReport/ExamForm'
 
 const Report = () => {
     const classes = useStyles()
@@ -41,8 +47,11 @@ const Report = () => {
     const [isExamination, setIsExamination] = useState(false)
     const [selection, setSelection] = useState({})
     const [version, setVersion] = useState()
+    const [finishDialog, setFinishDialog] = useState(false)
 
     const { schedules, count, page, loading } = useSelector((state) => state.schedule)
+    const { report } = useSelector((state) => state.breast)
+    const { user } = useSelector((state) => state.auth)
 
     const showAlert = useAlert()
 
@@ -96,10 +105,11 @@ const Report = () => {
         setIsExamination(false)
     }
     const handleReportSubmit = () => {
-        dispatch(finishReport())
-        showAlert({ toastTitle: '儲存報告', text: `${selection.patient.name}`, icon: 'success' })
-        setSelection({})
-        setIsExamination(false)
+        setFinishDialog(true)
+        // dispatch(finishReport())
+        // showAlert({ toastTitle: '儲存報告', text: `${selection.patient.name}`, icon: 'success' })
+        // setSelection({})
+        // setIsExamination(false)
     }
     const deleteReportAndSchedule = () => {
         showAlert({
@@ -262,7 +272,7 @@ const Report = () => {
                                     <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>{selection.patientID}</Box>
                                 </Box>
                             </Stack>
-                            {selection?.status === 'finish' && (
+                            {selection?.status !== 'wait-examination' && (
                                 <FormControl size="small" variant="outlined" sx={{ width: '5rem', ml: 4 }}>
                                     <InputLabel id="select-version">報告版本</InputLabel>
                                     <Select
@@ -293,25 +303,27 @@ const Report = () => {
                             </Button>
                         </Box>
                         <Box>
-                            {selection?.status === 'wait-examination' && (
+                            {selection?.status !== 'finish' && (
                                 <Button
                                     variant="outlined"
                                     startIcon={<Check />}
-                                    sx={{ borderRadius: '2rem', margin: '0 1rem' }}
+                                    sx={{ borderRadius: '2rem' }}
                                     onClick={handleReportSave}
                                 >
                                     暫存報告
                                 </Button>
                             )}
+                            {user.role >= 4 && (
+                                <Button
+                                    variant="contained"
+                                    startIcon={<Check />}
+                                    sx={{ borderRadius: '2rem', marginLeft: '1rem' }}
+                                    onClick={handleReportSubmit}
+                                >
+                                    完成報告
+                                </Button>
+                            )}
 
-                            <Button
-                                variant="contained"
-                                startIcon={<Check />}
-                                sx={{ borderRadius: '2rem' }}
-                                onClick={() => handleReportSubmit()}
-                            >
-                                完成報告
-                            </Button>
                             <Button
                                 variant="outlined"
                                 color="red"
@@ -337,7 +349,34 @@ const Report = () => {
                 />
             )}
 
-            <ReportDialog />
+            <Dialog open={finishDialog} onClose={() => setFinishDialog(false)} maxWidth="xl">
+                <DialogContent>
+                    <Grid container>
+                        <Grid container item xs={4}>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '1.3rem' }}>R</Box>
+                                <Circle maxSize={130} pos={report['R']} side={'R'} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '1.3rem' }}>L</Box>
+                                <Circle maxSize={130} pos={report['L']} side={'L'} />
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={8}>
+                            <ExamForm />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" color="primary" onClick={() => setFinishDialog(false)}>
+                        確認
+                    </Button>
+                    <Button color="red" onClick={() => setFinishDialog(false)}>
+                        取消
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     )
 }

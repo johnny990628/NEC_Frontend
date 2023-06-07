@@ -51,17 +51,12 @@ export const updateReport = createAsyncThunk('breast/updateReport', async (_, { 
             reportID: schedule.reportID,
             data: { report: { report, id: v4(), birads }, userID },
         })
-        schedule.status === 'finish'
-            ? await apiUpdateScheduleStatus({
-                  patientID: schedule.patientID,
-                  scheduleID: schedule._id,
-                  status: 'finish',
-              })
-            : await apiUpdateScheduleStatus({
-                  patientID: schedule.patientID,
-                  scheduleID: schedule._id,
-                  status: 'wait-finish',
-              })
+        await apiUpdateScheduleStatus({
+            patientID: schedule.patientID,
+            scheduleID: schedule._id,
+            status: schedule.status === 'finish' ? 'finish' : 'wait-finish',
+        })
+
         return response.data
     } catch (e) {
         return e

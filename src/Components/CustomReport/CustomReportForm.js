@@ -5,7 +5,7 @@ import useStyles from './Style'
 
 import CustomScrollbar from '../../Components/CustomScrollbar/CustomScrollbar'
 
-import ChestMarker from './Component/ChestMarker'
+import ChestMarker from './ChestMarker'
 
 const CustomReportForm = ({}) => {
     const classes = useStyles()
