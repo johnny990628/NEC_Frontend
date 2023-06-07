@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
         backgroundColor: theme.palette.secondary.main,
-        borderRadius: '1rem',
+        borderRadius: '1rem 0 0 1rem',
         display: 'flex',
         flexDirection: 'column',
         marginRight: '.1rem',
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         padding: '1rem',
         backgroundColor: theme.palette.secondary.main,
-        borderRadius: '1rem',
+        borderRadius: '0 1rem 1rem 0',
     },
     header: {
         display: 'flex',
