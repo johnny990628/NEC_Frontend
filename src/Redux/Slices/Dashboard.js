@@ -10,7 +10,13 @@ export const fetchDashboard = createAsyncThunk('report/fetchDashboard', async (_
     try {
         const patients = await apiGetPatients({ limit: 5, offset: 0, sort: 'createdAt', desc: -1, status: 'all' })
         const reports = await apiGetReports({ limit: 5, offset: 0, sort: 'createdAt', desc: -1 })
-        const schedules = await apiGetSchdules({ status: 'wait-examination' })
+        const schedules = await apiGetSchdules({
+            limit: 5,
+            offset: 0,
+            sort: 'createdAt',
+            desc: -1,
+            status: 'wait-examination',
+        })
         const count = await apiGetCounts()
         return {
             patients: patients.data.results,
