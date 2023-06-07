@@ -1,26 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-    TextField,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Stack,
-    IconButton,
-    InputAdornment,
-    Box,
-    Popover,
-    MenuList,
-    Grid,
-} from '@mui/material'
+import { TextField, FormControl, InputLabel, Select, MenuItem, Box, Grid } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { updatePoint } from '../../../Redux/Slices/Breast'
+import { updatePoint } from '../../Redux/Slices/Breast'
 
-import ReportForm from '../../../Assets/Json/ReportCols2.json'
-import useStyles from '../Style'
+import ReportForm from '../../Assets/Json/ReportCols2.json'
+import useStyles from './Style'
 import Circle from './Circle'
 
-const DynamicForm = ({ side, label, id, focused }) => {
+const TumorForm = ({ side, label, id, focused }) => {
     const dispatch = useDispatch()
     const classes = useStyles()
     const { report, CHESTMAXRADIUS, TUMORMAXSIZE } = useSelector((state) => state.breast)
@@ -147,43 +134,9 @@ const DynamicForm = ({ side, label, id, focused }) => {
                         </Grid>
                     )
                 })}
-                {/* <IconButton color="green" onClick={handleAdd}>
-                        <Add />
-                    </IconButton>
-                    <Popover
-                        open={Boolean(anchorEl)}
-                        anchorEl={anchorEl}
-                        onClose={() => setAnchorEl(null)}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        }}
-                    >
-                        <MenuList>
-                            {ReportForm.filter((Rf) => {
-                                const filterForm = form.filter((f) => f.key === Rf.name)
-                                return filterForm.length === 0
-                            }).map((item) => (
-                                <MenuItem
-                                    sx={{ p: '.5rem 1rem' }}
-                                    key={item.name}
-                                    onClick={() => handleAddFormList(item)}
-                                >
-                                    {item.label}
-                                </MenuItem>
-                            ))}
-                        </MenuList>
-                    </Popover>
-                    <IconButton color="red" onClick={handleDelete}>
-                        <Clear />
-                    </IconButton>  */}
             </Grid>
         </Box>
     )
 }
 
-export default DynamicForm
+export default TumorForm

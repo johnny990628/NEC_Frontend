@@ -13,15 +13,20 @@ const useStyles = makeStyles((theme) => ({
         // boxShadow: '6px 6px 10px rgba(0,0,0,0.1)',
     },
     list: {
-        height: '100%',
+        height: '80vh',
         backgroundColor: theme.palette.secondary.main,
+
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+            display: 'none',
+        },
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
     },
     link: {
         textDecoration: 'none',
-        margin: theme.spacing(1),
+        margin: theme.spacing(0.75),
         borderRadius: '1rem',
         transition: 'transform .4s ease-out',
         '&.active': {
@@ -40,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     logo: {
+        height: '5rem',
         margin: '1rem',
+        marginBottom: 0,
     },
     icon: {
         display: 'flex',
@@ -58,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
     closeIcon: {
         position: 'absolute',
+        height: '5vh',
         bottom: 20,
         left: 20,
         color: theme.palette.primary.main,

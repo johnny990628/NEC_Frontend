@@ -14,8 +14,10 @@ import {
     AccountBalanceOutlined,
     InsertChartOutlined,
     InsertPhotoOutlined,
+    Settings,
 } from '@mui/icons-material'
 import Statistic from '../Pages/Statistic/Statistic'
+import Setting from '../Pages/Setting/Setting'
 
 const routerList = [
     {
@@ -46,15 +48,16 @@ const routerList = [
         icon: <CreateNewFolderOutlined />,
         path: '/report',
         Component: Report,
+        authority: [2, 3, 4],
     },
-    {
-        display_name: '用戶',
-        name: 'user',
-        icon: <PersonOutlined />,
-        path: '/user',
-        Component: User,
-        authority: [3],
-    },
+    // {
+    //     display_name: '用戶',
+    //     name: 'user',
+    //     icon: <PersonOutlined />,
+    //     path: '/user',
+    //     Component: User,
+    //     authority: [3],
+    // },
     // {
     //     display_name: '部門管理',
     //     name: 'department',
@@ -69,7 +72,15 @@ const routerList = [
         icon: <InsertPhotoOutlined />,
         path: '/image',
         Component: Image,
-        authority: [3, 2, 1],
+        authority: [2, 3, 4],
+    },
+    {
+        display_name: '設定',
+        name: 'setting',
+        icon: <Settings />,
+        path: '/setting',
+        Component: Setting,
+        authority: [4],
     },
     // {
     //     display_name: '數據中心',

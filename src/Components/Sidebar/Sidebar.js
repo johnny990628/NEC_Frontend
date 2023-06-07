@@ -8,7 +8,6 @@ import { Dehaze, DoubleArrow, Logout } from '@mui/icons-material'
 import useStyles from './Style'
 
 import SidebarItem from '../Router.config'
-import { openSidebar, closeSidebar } from '../../Redux/Slices/Sidebar'
 import Authorized from './../Authorized/Authorized'
 import { logout } from '../../Redux/Slices/Auth'
 

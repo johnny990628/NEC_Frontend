@@ -94,9 +94,9 @@ const Report = () => {
                         <Select variant="standard" fullWidth value={row.row.original.role} onChange={handleChange}>
                             <MenuItem value={0}>等待審核</MenuItem>
                             <MenuItem value={1}>行政及護理師</MenuItem>
-                            <MenuItem value={2}>醫師</MenuItem>
-                            <MenuItem value={3}>管理員</MenuItem>
-                            <MenuItem value={4}>放射師</MenuItem>
+                            <MenuItem value={2}>放射師</MenuItem>
+                            <MenuItem value={3}>醫師</MenuItem>
+                            <MenuItem value={4}>管理員</MenuItem>
                         </Select>
                     )
                 },
