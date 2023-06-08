@@ -5,3 +5,4 @@ export const apiUpdatePacsSetting = (id, data) => Request.patch(`/pacsSetting/${
 export const apiDeletePacsSetting = (id) => Request.delete(`/pacsSetting/${id}`)
 export const apiGetPacsSettingById = (id) => Request.get(`/pacsSetting/${id}`)
 export const apiUpDatePacsSettingSort = (datas) => Request.patch(`/pacsSetting/sort`, datas)
+export const apiTestPacsSetting = (data) => Request.post(`/pacsSetting/test`, data)
