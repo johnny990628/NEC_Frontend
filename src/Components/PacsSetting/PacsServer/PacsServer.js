@@ -53,7 +53,6 @@ const PacsServer = () => {
     }
 
     const handleDragEnd = (result) => {
-        console.log(result)
         if (!result.destination) return
 
         const items = Array.from(pacsList)
