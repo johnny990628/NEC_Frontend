@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Box, TextField, Switch, Button } from '@mui/material'
 import { apiGetPacsSettingById } from '../../../Axios/PacsSetting'
-import { updatePacsSetting, fetchPacsSetting } from '../../../Redux/Slices/PacsSetting'
+import { updatePacsSetting, fetchPacsSetting, createPacsSetting } from '../../../Redux/Slices/PacsSetting'
 import useStyles from './FormStyle'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useAlert from '../../../Hooks/useAlert'
 import { apiTestPacsSetting } from '../../../Axios/PacsSetting'
 
@@ -11,7 +11,7 @@ const PacsSettingForm = ({ editID, setEditID }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const showAlert = useAlert()
-
+    const rexuxPacsList = useSelector((state) => state.pacsSetting.results)
     const [formData, setFormData] = useState({})
     const [isTest, setIsTest] = useState(false)
 
@@ -35,9 +35,21 @@ const PacsSettingForm = ({ editID, setEditID }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        dispatch(updatePacsSetting(formData))
+
+        if (editID === 'create') {
+            dispatch(createPacsSetting({ ...formData, weights: rexuxPacsList.length, isOpen: true }))
+            showAlert(ALERT_CREATE_SUCCESS)
+        } else {
+            dispatch(updatePacsSetting(formData))
+            showAlert(ALERT_UPDATE_SUCCESS)
+        }
         setEditID('')
-        showAlert(ALERT_UPDATE_SUCCESS)
+    }
+
+    const ALERT_CREATE_SUCCESS = {
+        alertTitle: '新增成功',
+        toastTitle: '新增成功',
+        icon: 'success',
     }
 
     const ALERT_UPDATE_SUCCESS = {

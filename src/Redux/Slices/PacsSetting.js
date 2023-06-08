@@ -55,6 +55,16 @@ export const upDatePacsSettingSort = createAsyncThunk('pacsSetting/upDatePacsSet
     }
 })
 
+export const createPacsSetting = createAsyncThunk('pacsSetting/createPacsSetting', async (data, thunkAPI) => {
+    try {
+        const response = await apiCreatePacsSetting(data)
+        return response.data
+    } catch (e) {
+        thunkAPI.dispatch(handleError(e.response))
+        return thunkAPI.rejectWithValue()
+    }
+})
+
 const initialState = { results: [], count: 0 }
 
 const pacsSettingSlice = createSlice({
@@ -164,6 +174,38 @@ const pacsSettingSlice = createSlice({
             }
         },
         [deletePacsSetting.rejected]: (state, action) => {
+            return {
+                ...state,
+                loading: false,
+            }
+        },
+        [createPacsSetting.pending]: (state, action) => {
+            return {
+                ...state,
+                loading: true,
+            }
+        },
+        [createPacsSetting.fulfilled]: (state, action) => {
+            const createdData = action.payload
+            if (Array.isArray(state.results)) {
+                // If results is an array, find the index of the item with the matching _id and remove it
+
+                const updatedResults = state.results.concat(createdData)
+                return {
+                    ...state,
+                    results: updatedResults,
+                    loading: false,
+                }
+            } else {
+                // If results is not an array, simply update the results with the new data
+                return {
+                    ...state,
+                    results: [createdData],
+                    loading: false,
+                }
+            }
+        },
+        [createPacsSetting.rejected]: (state, action) => {
             return {
                 ...state,
                 loading: false,

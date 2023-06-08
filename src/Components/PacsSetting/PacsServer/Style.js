@@ -26,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-around',
     },
+    createPacsServer: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '1rem',
+    },
 }))
 
 export default useStyles
