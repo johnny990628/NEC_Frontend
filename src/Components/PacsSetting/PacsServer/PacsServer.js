@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Chip, Switch, Button, Dialog, DialogTitle, DialogContent } from '@mui/material'
-import { Edit, Delete, Add } from '@mui/icons-material'
+import { Box, Chip, Switch, Button, Dialog, DialogActions, IconButton, DialogContent } from '@mui/material'
+import { Edit, Delete, Add, Close } from '@mui/icons-material'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import useStyles from './Style'
+
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import {
     fetchPacsSetting,

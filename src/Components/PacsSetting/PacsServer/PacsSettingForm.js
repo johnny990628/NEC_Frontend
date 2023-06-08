@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Box, TextField, Switch, Button } from '@mui/material'
+import { Box, TextField, IconButton, Button } from '@mui/material'
 import { apiGetPacsSettingById } from '../../../Axios/PacsSetting'
 import { updatePacsSetting, fetchPacsSetting, createPacsSetting } from '../../../Redux/Slices/PacsSetting'
 import useStyles from './FormStyle'
 import { useDispatch, useSelector } from 'react-redux'
 import useAlert from '../../../Hooks/useAlert'
 import { apiTestPacsSetting } from '../../../Axios/PacsSetting'
+import { Close } from '@mui/icons-material'
 
 const PacsSettingForm = ({ editID, setEditID }) => {
     const classes = useStyles()
@@ -122,6 +123,14 @@ const PacsSettingForm = ({ editID, setEditID }) => {
                     fullWidth
                 />
                 <Box className={classes.eventButtonBox}>
+                    <Button
+                        className={classes.Button}
+                        startIcon={<Close />}
+                        onClick={() => setEditID('')}
+                        sx={{ color: 'red.main', fontSize: '1.1rem' }}
+                    >
+                        取消
+                    </Button>
                     <Button className={classes.Button} onClick={handleTest} variant="contained" color="primary">
                         測試連線
                     </Button>
