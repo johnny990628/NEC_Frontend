@@ -29,8 +29,11 @@ const useStyles = makeStyles((theme) => ({
     createPacsServer: {
         width: '100%',
         display: 'flex',
-        justifyContent: 'center',
-        marginTop: '1rem',
+        alignItems: 'center',
+        background: theme.palette.background.default,
+
+        // justifyContent: 'center',
+        marginBottom: '1rem',
     },
 }))
 

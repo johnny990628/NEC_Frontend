@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Chip, Switch, Button, Dialog, DialogTitle, DialogContent } from '@mui/material'
-import { Edit, Delete } from '@mui/icons-material'
+import { Edit, Delete, Add } from '@mui/icons-material'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import useStyles from './Style'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -77,6 +77,11 @@ const PacsServer = () => {
                 {(provided) => (
                     <Box {...provided.droppableProps} ref={provided.innerRef}>
                         <EditPacsDialog editID={editID} setEditID={setEditID} />
+                        <Box className={classes.createPacsServer}>
+                            <Button onClick={handleCreate} variant="contained" startIcon={<Add />}>
+                                新增
+                            </Button>
+                        </Box>
                         {pacsList.map((pacs, index) => (
                             <Draggable key={pacs._id} draggableId={pacs._id} index={index}>
                                 {(provided) => (
@@ -139,9 +144,6 @@ const PacsServer = () => {
                                 )}
                             </Draggable>
                         ))}
-                        <Box className={classes.createPacsServer}>
-                            <Button onClick={handleCreate}>新增</Button>
-                        </Box>
                         {provided.placeholder}
                     </Box>
                 )}
