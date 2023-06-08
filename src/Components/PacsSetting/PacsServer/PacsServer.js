@@ -72,16 +72,18 @@ const PacsServer = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                        <Switch
-                                            defaultChecked={pacs.isOpen}
-                                            value={pacs.isOpen}
-                                            onChange={(e) => onChangeSwitch(pacs._id, e.target.checked)}
-                                        />
-                                        <Chip className={classes.serverName} label={pacs.pacsName} color="primary" />
-                                        <Box>
-                                            {pacs.pacsURL} - {pacs.pacsAETitle}
+                                        <Box className={classes.pacsOpenSwitch}>
+                                            <Switch
+                                                defaultChecked={pacs.isOpen}
+                                                value={pacs.isOpen}
+                                                onChange={(e) => onChangeSwitch(pacs._id, e.target.checked)}
+                                            />
                                         </Box>
-                                        <Box>
+                                        <Box className={classes.pacsServerName}>
+                                            <Chip label={pacs.pacsName} color="primary" />
+                                        </Box>
+                                        <Box className={classes.pacsURL}>{pacs.pacsURL}</Box>
+                                        <Box className={classes.pacsEvent}>
                                             <Button
                                                 startIcon={<Edit color="primary" />}
                                                 sx={{ fontSize: '1.1rem' }}
