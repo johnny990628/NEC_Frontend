@@ -11,6 +11,7 @@ import {
 } from '../../../Redux/Slices/PacsSetting'
 import { useDispatch, useSelector } from 'react-redux'
 import PacsSettingForm from './PacsSettingForm'
+import useAlert from '../../../Hooks/useAlert'
 
 const EditPacsDialog = ({ editID, setEditID }) => {
     return (
@@ -25,6 +26,7 @@ const EditPacsDialog = ({ editID, setEditID }) => {
 const PacsServer = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
 
     const { results: pacsList } = useSelector((state) => state.pacsSetting)
 
@@ -35,7 +37,15 @@ const PacsServer = () => {
     }, [])
 
     const handleDelete = (_id) => {
-        dispatch(deletePacsSetting({ _id }))
+        showAlert({
+            alertTitle: `確定要刪除該PACS Server嗎?`,
+            toastTitle: '刪除PACS',
+            text: '',
+            type: 'confirm',
+            event: async () => {
+                dispatch(deletePacsSetting({ _id }))
+            },
+        })
     }
 
     const handleEdit = async (_id) => {
