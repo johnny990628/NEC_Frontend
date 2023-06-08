@@ -89,7 +89,28 @@ const PacsServer = () => {
                                             />
                                         </Box>
                                         <Box className={classes.pacsServerName}>
-                                            <Chip label={pacs.pacsName} color="primary" />
+                                            <Chip
+                                                label={pacs.pacsName}
+                                                avatar={
+                                                    <Box
+                                                        style={{
+                                                            width: '1.5rem',
+                                                            height: '1.5rem',
+                                                            borderRadius: '50%',
+                                                            background: '#fff',
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                            color: '#000',
+                                                            fontWeight: 'bold',
+                                                            fontSize: '.7rem',
+                                                        }}
+                                                    >
+                                                        {pacs.shorteningPacsName}
+                                                    </Box>
+                                                }
+                                                color="primary"
+                                            />
                                         </Box>
                                         <Box className={classes.pacsURL}>{pacs.pacsURL}</Box>
                                         <Box className={classes.pacsEvent}>

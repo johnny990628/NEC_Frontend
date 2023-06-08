@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         width: '5%',
     },
     pacsServerName: {
-        width: '10%',
+        width: '15%',
     },
     pacsURL: {
         width: '70%',

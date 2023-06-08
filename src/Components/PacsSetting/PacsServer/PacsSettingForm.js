@@ -37,36 +37,46 @@ const PacsSettingForm = ({ editID, setEditID }) => {
         event.preventDefault()
         dispatch(updatePacsSetting(formData))
         setEditID('')
-        showAlert({
-            alertTitle: '確定修改資料?',
-            toastTitle: '修改成功',
-            icon: 'success',
-        })
+        showAlert(ALERT_UPDATE_SUCCESS)
+    }
+
+    const ALERT_UPDATE_SUCCESS = {
+        alertTitle: '確定修改資料?',
+        toastTitle: '修改成功',
+        icon: 'success',
+    }
+
+    const ALERT_TEST_SUCCESS = {
+        alertTitle: '連線成功',
+        toastTitle: '連線成功',
+        icon: 'success',
+    }
+
+    const ALERT_TEST_FAILURE = {
+        alertTitle: '連線失敗',
+        toastTitle: '連線失敗',
+        icon: 'error',
     }
 
     const handleTest = async () => {
-        const response = await apiTestPacsSetting({ pacsURL: formData.pacsURL, wadoURL: formData.pacsWadoURL })
-        if (response.status === 200) {
-            showAlert({
-                alertTitle: '連線成功',
-                toastTitle: '連線成功',
-                icon: 'success',
-            })
-            setIsTest(true)
+        try {
+            const response = await apiTestPacsSetting({ pacsURL: formData.pacsURL, wadoURL: formData.pacsWadoURL })
+                .then((res) => {
+                    showAlert(ALERT_TEST_SUCCESS)
+                    setIsTest(true)
+                })
+                .catch((err) => {
+                    showAlert(ALERT_TEST_FAILURE)
+                    setIsTest(false)
+                })
+        } catch (error) {
+            return error.response
         }
     }
 
     return (
         <Box>
             <form onSubmit={handleSubmit}>
-                <TextField
-                    className={classes.TextField}
-                    label="PACS URL"
-                    name="pacsURL"
-                    value={formData.pacsURL || ''}
-                    onChange={handleChange}
-                    fullWidth
-                />
                 <TextField
                     className={classes.TextField}
                     label="PACS Name"
@@ -77,41 +87,17 @@ const PacsSettingForm = ({ editID, setEditID }) => {
                 />
                 <TextField
                     className={classes.TextField}
-                    label="PACS Port"
-                    name="pacsPort"
-                    value={formData.pacsPort || ''}
+                    label="PACS 簡稱"
+                    name="shorteningPacsName"
+                    value={formData.shorteningPacsName || ''}
                     onChange={handleChange}
                     fullWidth
                 />
                 <TextField
                     className={classes.TextField}
-                    label="PACS AE Title"
-                    name="pacsAETitle"
-                    value={formData.pacsAETitle || ''}
-                    onChange={handleChange}
-                    fullWidth
-                />
-                <TextField
-                    className={classes.TextField}
-                    label="PACS WADO URI"
-                    name="pacsWadoURI"
-                    value={formData.pacsWadoURI || ''}
-                    onChange={handleChange}
-                    fullWidth
-                />
-                <TextField
-                    className={classes.TextField}
-                    label="PACS WADO Port"
-                    name="pacsWadoPort"
-                    value={formData.pacsWadoPort || ''}
-                    onChange={handleChange}
-                    fullWidth
-                />
-                <TextField
-                    className={classes.TextField}
-                    label="PACS WADO AE Title"
-                    name="pacsWadoAETitle"
-                    value={formData.pacsWadoAETitle || ''}
+                    label="PACS URL"
+                    name="pacsURL"
+                    value={formData.pacsURL || ''}
                     onChange={handleChange}
                     fullWidth
                 />
