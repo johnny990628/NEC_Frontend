@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '2rem 2rem 2rem 2rem',
         backgroundColor: theme.palette.background.main,
         transition: 'all .4s ease-in',
+
         '&.close': {
             width: 'calc(100% - var(--sidebar-close-width))',
             left: 'var(--sidebar-close-width)',
