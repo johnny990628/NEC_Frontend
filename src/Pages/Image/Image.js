@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, IconButton, Chip } from '@mui/material'
+import { Box, Button, IconButton, Chip, Tooltip } from '@mui/material'
 import moment from 'moment'
 
 import useStyles from './Style'
@@ -104,7 +104,11 @@ const Image = () => {
                 Header: 'PACS',
                 Cell: (row) =>
                     row.row.original.pacsOf.map((item) => {
-                        return <Chip className={classes.serverName} label={item} color="primary" />
+                        return (
+                            <Tooltip title={item.pacsName} placement="right">
+                                <Chip className={classes.serverName} label={item.shorteningPacsName} color="primary" />
+                            </Tooltip>
+                        )
                     }),
                 showInCustomTable: true,
                 required: true,
@@ -170,7 +174,7 @@ const Image = () => {
                             window.open(iframeURL, '_blank')
                         }}
                     >
-                        在新分頁開啟
+                        新分頁
                     </Button>
                 ),
                 showInCustomTable: true,
@@ -191,7 +195,7 @@ const Image = () => {
                             })
                         }}
                     >
-                        open series-{row.row.original.series.length}
+                        series-{row.row.original.series.length}
                     </Button>
                 ),
                 showInCustomTable: true,

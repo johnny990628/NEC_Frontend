@@ -35,7 +35,15 @@ const CustomTableSetting = ({ columns, setColumns, className }) => {
         <Box className={classes.button}>
             <Button
                 aria-describedby={id}
-                sx={{ width: '100%', fontSize: '1.1rem' }}
+                sx={{
+                    width: '100%',
+                    fontSize: '1.1rem',
+                    background: '#99A98F',
+                    '&:hover': {
+                        backgroundColor: '#C1D0B5',
+                        boxShadow: 'none',
+                    },
+                }}
                 variant="contained"
                 onClick={handleClick}
                 startIcon={<SettingsIcon />}

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Chip, Switch, Button, Dialog, DialogTitle, DialogContent } from '@mui/material'
-import { Edit, Delete } from '@mui/icons-material'
+import { Box, Chip, Switch, Button, Dialog, DialogActions, IconButton, DialogContent } from '@mui/material'
+import { Edit, Delete, Add, Close } from '@mui/icons-material'
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import useStyles from './Style'
+
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import {
     fetchPacsSetting,
@@ -11,6 +13,7 @@ import {
 } from '../../../Redux/Slices/PacsSetting'
 import { useDispatch, useSelector } from 'react-redux'
 import PacsSettingForm from './PacsSettingForm'
+import useAlert from '../../../Hooks/useAlert'
 
 const EditPacsDialog = ({ editID, setEditID }) => {
     return (
@@ -25,6 +28,7 @@ const EditPacsDialog = ({ editID, setEditID }) => {
 const PacsServer = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const showAlert = useAlert()
 
     const { results: pacsList } = useSelector((state) => state.pacsSetting)
 
@@ -35,7 +39,15 @@ const PacsServer = () => {
     }, [])
 
     const handleDelete = (_id) => {
-        dispatch(deletePacsSetting({ _id }))
+        showAlert({
+            alertTitle: `確定要刪除該PACS Server嗎?`,
+            toastTitle: '刪除PACS',
+            text: '',
+            type: 'confirm',
+            event: async () => {
+                dispatch(deletePacsSetting({ _id }))
+            },
+        })
     }
 
     const handleEdit = async (_id) => {
@@ -43,7 +55,6 @@ const PacsServer = () => {
     }
 
     const handleDragEnd = (result) => {
-        console.log(result)
         if (!result.destination) return
 
         const items = Array.from(pacsList)
@@ -57,12 +68,21 @@ const PacsServer = () => {
         dispatch(updatePacsSetting({ _id, isOpen }))
     }
 
+    const handleCreate = () => {
+        setEditID('create')
+    }
+
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="pacsList">
                 {(provided) => (
                     <Box {...provided.droppableProps} ref={provided.innerRef}>
                         <EditPacsDialog editID={editID} setEditID={setEditID} />
+                        <Box className={classes.createPacsServer}>
+                            <Button onClick={handleCreate} variant="contained" startIcon={<Add />}>
+                                新增
+                            </Button>
+                        </Box>
                         {pacsList.map((pacs, index) => (
                             <Draggable key={pacs._id} draggableId={pacs._id} index={index}>
                                 {(provided) => (
@@ -72,16 +92,40 @@ const PacsServer = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                        <Switch
-                                            defaultChecked={pacs.isOpen}
-                                            value={pacs.isOpen}
-                                            onChange={(e) => onChangeSwitch(pacs._id, e.target.checked)}
-                                        />
-                                        <Chip className={classes.serverName} label={pacs.pacsName} color="primary" />
-                                        <Box>
-                                            {pacs.pacsURL} - {pacs.pacsAETitle}
+                                        <DragIndicatorIcon color="disabled" />
+                                        <Box className={classes.pacsOpenSwitch}>
+                                            <Switch
+                                                defaultChecked={pacs.isOpen}
+                                                value={pacs.isOpen}
+                                                onChange={(e) => onChangeSwitch(pacs._id, e.target.checked)}
+                                            />
                                         </Box>
-                                        <Box>
+                                        <Box className={classes.pacsServerName}>
+                                            <Chip
+                                                label={pacs.pacsName}
+                                                avatar={
+                                                    <Box
+                                                        style={{
+                                                            width: '1.5rem',
+                                                            height: '1.5rem',
+                                                            borderRadius: '50%',
+                                                            background: '#fff',
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                            color: '#000',
+                                                            fontWeight: 'bold',
+                                                            fontSize: '.7rem',
+                                                        }}
+                                                    >
+                                                        {pacs.shorteningPacsName}
+                                                    </Box>
+                                                }
+                                                color="primary"
+                                            />
+                                        </Box>
+                                        <Box className={classes.pacsURL}>{pacs.pacsURL}</Box>
+                                        <Box className={classes.pacsEvent}>
                                             <Button
                                                 startIcon={<Edit color="primary" />}
                                                 sx={{ fontSize: '1.1rem' }}

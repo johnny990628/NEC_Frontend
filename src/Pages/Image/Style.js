@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     formHeader: {
         fontSize: '3rem',
     },
+    serverName: {
+        margin: theme.spacing(0.5),
+    },
 }))
 
 export default useStyles

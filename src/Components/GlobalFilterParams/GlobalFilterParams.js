@@ -88,7 +88,7 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon onClick={toggleAcordion} style={{ cursor: 'pointer' }} />}
                     aria-controls="panel1a-content"
-                    style={{ cursor: 'default' }}
+                    style={{ cursor: 'default', backgroundColor: '#fff' }}
                 >
                     <Grid container spacing={1}>
                         {filterParams
