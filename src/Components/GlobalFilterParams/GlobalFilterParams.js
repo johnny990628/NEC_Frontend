@@ -57,9 +57,9 @@ const GlobalFilterParams = ({ setSearch, search, totalCount, loading, filterPara
     //filterParams to be array of objects
     const [value, setValue] = useState(originalData)
 
-    useEffect(() => {
-        setSearch(value)
-    }, [])
+    // useEffect(() => {
+    //     setSearch(value)
+    // }, [])
 
     const handleSearch = useDebouncedCallback((text) => {
         setSearch(text)
