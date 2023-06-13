@@ -1,5 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
-import { Badge, Box, Button, Stack, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
+import {
+    Badge,
+    Box,
+    Button,
+    Stack,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Typography,
+    Tooltip,
+} from '@mui/material'
 import {
     CalendarToday,
     Delete,
@@ -10,6 +20,9 @@ import {
     ClearOutlined,
     ArrowDropDown,
     PersonAddAlt1,
+    CheckCircleOutlined,
+    FactCheckOutlined,
+    AddTaskOutlined,
 } from '@mui/icons-material'
 import Avatar, { genConfig } from 'react-nice-avatar'
 import CustomForm from '../../Components/CustomForm/CustomForm'
@@ -124,98 +137,69 @@ const Patient = () => {
                 accessor: 'schedule',
                 Header: '排程狀態',
                 Cell: (row) => {
+                    const wait_examination = row.row.original?.schedule?.filter(
+                        ({ status }) => status === 'wait-examination'
+                    )
+                    const wait_finish = row.row.original?.schedule?.filter(({ status }) => status === 'wait-finish')
+                    const finish = row.row.original?.schedule?.filter(({ status }) => status === 'finish')
+
+                    return (
+                        <Stack direction="row" spacing={2}>
+                            <Tooltip title="已開單">
+                                <Badge
+                                    badgeContent={wait_examination.length}
+                                    className={`${classes.statusBox} examination`}
+                                >
+                                    <AccessTime />
+                                </Badge>
+                            </Tooltip>
+                            <Tooltip title="代完成報告">
+                                <Badge badgeContent={wait_finish.length} className={`${classes.statusBox} wait`}>
+                                    <AddTaskOutlined />
+                                </Badge>
+                            </Tooltip>
+                            <Tooltip title="已完成報告">
+                                <Badge badgeContent={finish.length} className={`${classes.statusBox} finish`}>
+                                    <CheckCircleOutlined />
+                                </Badge>
+                            </Tooltip>
+                        </Stack>
+                    )
+                },
+            },
+            {
+                accessor: 'add',
+                Header: '加入排程',
+                Cell: (row) => {
                     // const hasReport = row.row.original.report.length > 0
                     const { id, name, gender } = row.row.original
                     const mr = gender === 'm' ? '先生' : '小姐'
-                    const on_call = row.row.original?.schedule?.find(({ status }) => status === 'on-call')
-                    const wait_examination = row.row.original?.schedule?.find(
-                        ({ status }) => status === 'wait-examination'
-                    )
-                    const wait_finish = row.row.original?.schedule?.find(({ status }) => status === 'wait-finish')
-
-                    const scheduleStatus = () => {
-                        if (on_call) return { status: 'on-call', class: 'call', text: '檢查中', icon: <AccessTime /> }
-                        if (wait_examination)
-                            return {
-                                status: 'wait-examination',
-                                class: 'examination',
-                                text: '等待檢查',
-                                icon: <ClearOutlined />,
-                            }
-                        if (wait_finish)
-                            return {
-                                status: 'wait-finish',
-                                class: 'call',
-                                text: '暫存報告',
-                                icon: <AccessTime />,
-                            }
-                        return { status: 'yet', class: 'yet', text: '等待排程', icon: <CalendarToday /> }
-                    }
-                    const status = scheduleStatus()
 
                     return (
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Button
-                                className={`${classes.status} ${status.class} `}
-                                startIcon={status.icon}
+                                className={classes.status}
+                                startIcon={<CalendarToday />}
                                 fullWidth
                                 onClick={() => {
-                                    switch (status.status) {
-                                        case 'wait-examination':
-                                            showAlert({
-                                                alertTitle: `確定要取消 ${name} ${mr}的排程?`,
-                                                toastTitle: '取消排程',
-                                                text: `${name} ${mr}`,
-                                                type: 'confirm',
-                                                event: async () => {
-                                                    dispatch(removeSchedule(wait_examination._id))
-                                                },
-                                            })
-
-                                            break
-                                        case 'yet':
-                                            showAlert({
-                                                alertTitle: `請輸入${name}的醫令`,
-                                                toastTitle: '加入排程',
-                                                text: `${name} ${mr}`,
-                                                type: 'select',
-                                                options: PROCEDURECODE,
-                                                event: async (text) => {
-                                                    dispatch(
-                                                        addSchedule({
-                                                            patientID: id,
-                                                            procedureCode: text,
-                                                        })
-                                                    )
-                                                },
-                                            })
-                                            break
-                                        case 'on-call':
-                                            showAlert({
-                                                alertTitle: `確定要取消 ${name} ${mr}的檢查狀態(非管理員請勿操作)`,
-                                                toastTitle: '取消檢查狀態',
-                                                text: `${name} ${mr}`,
-                                                type: 'confirm',
-                                                event: async () => {
-                                                    const onCall = row.row.original?.schedule?.find(
-                                                        ({ status }) => status === 'on-call'
-                                                    )
-                                                    dispatch(
-                                                        changeScheduleStatus({
-                                                            scheduleID: onCall._id,
-                                                            status: 'wait-examination',
-                                                        })
-                                                    )
-                                                },
-                                            })
-
-                                            break
-                                        default:
-                                            break
-                                    }
+                                    showAlert({
+                                        alertTitle: `請輸入${name}的醫令`,
+                                        toastTitle: '加入排程',
+                                        text: `${name} ${mr}`,
+                                        type: 'select',
+                                        options: PROCEDURECODE,
+                                        event: async (text) => {
+                                            dispatch(
+                                                addSchedule({
+                                                    patientID: id,
+                                                    procedureCode: text,
+                                                })
+                                            )
+                                        },
+                                    })
                                 }}
                             >
-                                <Box className={classes.statusBox}>{status.text}</Box>
+                                <Box className={classes.statusBox}>開單</Box>
                             </Button>
                         </Box>
                     )
