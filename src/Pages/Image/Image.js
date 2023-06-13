@@ -105,7 +105,7 @@ const Image = () => {
                 Cell: (row) =>
                     row.row.original.pacsOf.map((item) => {
                         return (
-                            <Tooltip title={item.pacsName} placement="right">
+                            <Tooltip title={item.pacsName} placement="right" key={item.shorteningPacsName}>
                                 <Chip className={classes.serverName} label={item.shorteningPacsName} color="primary" />
                             </Tooltip>
                         )
