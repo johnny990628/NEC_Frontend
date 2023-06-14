@@ -105,7 +105,7 @@ const Image = () => {
                 Cell: (row) =>
                     row.row.original.pacsOf.map((item) => {
                         return (
-                            <Tooltip title={item.pacsName} placement="right">
+                            <Tooltip title={item.pacsName} placement="right" key={item.shorteningPacsName}>
                                 <Chip className={classes.serverName} label={item.shorteningPacsName} color="primary" />
                             </Tooltip>
                         )
@@ -207,8 +207,10 @@ const Image = () => {
                 Cell: (row) => (
                     <IconButton
                         onClick={async () => {
+                            const pacsID = row.row.original.pacsConfig._id
                             const studyUID = row.row.original.StudyInstanceUID
-                            const responseDCM = await apiDownloadDCM(studyUID)
+
+                            const responseDCM = await apiDownloadDCM({ studyUID, pacsID })
                             const blob = new Blob([responseDCM.data], { type: 'application/octet-stream' })
                             const url = window.URL.createObjectURL(blob)
                             const link = document.createElement('a')
