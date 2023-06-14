@@ -73,7 +73,11 @@ const PacsSettingForm = ({ editID, setEditID }) => {
 
     const handleTest = async () => {
         try {
-            const response = await apiTestPacsSetting({ pacsURL: formData.pacsURL, wadoURL: formData.pacsWadoURL })
+            const response = await apiTestPacsSetting({
+                pacsQidoURL: formData.pacsQidoURL,
+                pacsWadoURL: formData.pacsWadoURL,
+                serverURL: formData.serverURL,
+            })
                 .then((res) => {
                     showAlert(ALERT_TEST_SUCCESS)
                     setIsTest(true)
@@ -86,6 +90,8 @@ const PacsSettingForm = ({ editID, setEditID }) => {
             return error.response
         }
     }
+
+    console.log(formData)
 
     return (
         <Box>
@@ -108,9 +114,17 @@ const PacsSettingForm = ({ editID, setEditID }) => {
                 />
                 <TextField
                     className={classes.TextField}
-                    label="PACS URL"
-                    name="pacsURL"
-                    value={formData.pacsURL || ''}
+                    label="Server URL"
+                    name="serverURL"
+                    value={formData.serverURL || ''}
+                    onChange={handleChange}
+                    fullWidth
+                />
+                <TextField
+                    className={classes.TextField}
+                    label="PACS QIDO URL"
+                    name="pacsQidoURL"
+                    value={formData.pacsQidoURL || ''}
                     onChange={handleChange}
                     fullWidth
                 />
