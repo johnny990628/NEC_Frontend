@@ -16,6 +16,8 @@ import {
     InputLabel,
     Grid,
     CircularProgress,
+    ToggleButtonGroup,
+    ToggleButton,
 } from '@mui/material'
 import { useTheme } from '@mui/styles'
 import { Search, ArrowDropUp, ArrowDropDown } from '@mui/icons-material'
@@ -25,6 +27,8 @@ import useStyles from './Style'
 
 import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
 import CustomTableSetting from '../CustomTableForm/CustomTableSetting'
+import DateRanger from '../DateRanger/DateRanger'
+import { addDays, parseISO } from 'date-fns'
 
 const CustomTable = ({
     columns,
@@ -42,6 +46,7 @@ const CustomTable = ({
 }) => {
     const [search, setSearch] = useState({})
     const [status, setStatus] = useState('all')
+    const [dateRange, setDateRange] = useState({ from: parseISO('1900-01-01'), to: addDays(new Date(), 1) })
 
     const classes = useStyles()
     const theme = useTheme()
@@ -90,10 +95,11 @@ const CustomTable = ({
             offset: pageIndex,
             ...search,
             status,
+            dateRange,
             sort: sortBy[0]?.id,
             desc: sortBy[0]?.desc ? -1 : 1,
         })
-    }, [pageIndex, pageSize, search, sortBy, totalCount, status])
+    }, [pageIndex, pageSize, search, sortBy, totalCount, status, dateRange])
 
     const TablePagination = () => {
         return (
@@ -122,25 +128,6 @@ const CustomTable = ({
                         {'>>'}
                     </Button>
                 </ButtonGroup>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="rows">列數</InputLabel>
-                    <Select
-                        labelId="rows"
-                        label="列數"
-                        value={pageSize}
-                        onChange={(e) => {
-                            setPageSize(Number(e.target.value))
-                        }}
-                        className={classes.tableFooterItem}
-                        sx={{ color: 'text.gray' }}
-                    >
-                        {[5, 10, 20, 30, 40].map((pageSize) => (
-                            <MenuItem key={pageSize} value={pageSize}>
-                                {pageSize}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
             </Box>
         )
     }
@@ -152,17 +139,17 @@ const CustomTable = ({
                 item
                 xs={1}
                 sx={{
-                    padding: '0 2',
-                    mb: 0,
+                    p: 1,
+                    mb: 2,
                 }}
             >
                 {GlobalFilter && (
-                    <Grid item xs={12} md={12} lg={8} sx={{ justifyContent: 'left' }}>
+                    <Grid item xs={6}>
                         <GlobalFilter setSearch={setSearch} search={search} totalCount={totalCount} loading={loading} />
                     </Grid>
                 )}
                 {GlobalFilterParams && (
-                    <Grid item xs={12} md={12} lg={12} sx={{ justifyContent: 'left' }}>
+                    <Grid item xs={12}>
                         <GlobalFilterParams
                             setSearch={setSearch}
                             search={search}
@@ -175,8 +162,29 @@ const CustomTable = ({
                     </Grid>
                 )}
 
-                <Grid item xs={12} md={12} lg={4} sx={{ justifyContent: 'right' }}>
-                    {GlobalFilter && <TablePagination />}
+                <Grid item xs={6} display="flex" justifyContent="flex-end" alignItems="center">
+                    <Box>
+                        <DateRanger setDateRange={setDateRange} />
+                    </Box>
+                    <FormControl variant="outlined" size="small" sx={{ minWidth: 120 }}>
+                        <InputLabel id="rows">列數</InputLabel>
+                        <Select
+                            labelId="rows"
+                            label="列數"
+                            value={pageSize}
+                            onChange={(e) => {
+                                setPageSize(Number(e.target.value))
+                            }}
+                            className={classes.tableFooterItem}
+                            sx={{ color: 'text.gray' }}
+                        >
+                            {[5, 10, 20, 30, 40].map((pageSize) => (
+                                <MenuItem key={pageSize} value={pageSize}>
+                                    {pageSize}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Grid>
             </Grid>
             <Grid item xs={9} {...getTableProps()} className={classes.tableBody}>
@@ -246,11 +254,9 @@ const CustomTable = ({
                 </CustomScrollbar>
             </Grid>
 
-            {GlobalFilterParams && (
-                <Box>
-                    <TablePagination />
-                </Box>
-            )}
+            <Box sx={{ pt: 2 }}>
+                <TablePagination />
+            </Box>
         </Grid>
     )
 }
