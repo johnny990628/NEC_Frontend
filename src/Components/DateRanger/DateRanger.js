@@ -13,16 +13,15 @@ const DateRanger = ({ setDateRange }) => {
     const handleModeChange = (e) => {
         setMode(e.target.value)
         setDate(new Date())
-        if (e.target.value === 'all') {
-            setDateRange({ from: parseISO('1900-01-01'), to: addDays(new Date(), 1) })
-        }
+        if (e.target.value === 'all') setDateRange({ from: parseISO('1900-01-01'), to: addDays(new Date(), 1) })
+        else setDateRange({ from: new Date(), to: addDays(new Date(), 1) })
     }
 
     const handleDateSelect = (range) => {
         setDate(range)
         isValid(range)
             ? setDateRange({ from: range, to: addDays(range, 1) })
-            : setDateRange(date?.to ? range : { from: range?.from, to: addDays(range?.from, 2) })
+            : setDateRange(date?.to ? range : { from: range?.from, to: addDays(range?.to, 1) })
     }
 
     const formatDate = () => {
