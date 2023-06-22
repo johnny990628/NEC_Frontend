@@ -15,13 +15,13 @@ export const fetchDashboard = createAsyncThunk('report/fetchDashboard', async (_
             offset: 0,
             sort: 'createdAt',
             desc: -1,
-            status: 'wait-examination',
+            status: 'all',
         })
         const count = await apiGetCounts()
         return {
             patients: patients.data.results,
             reports: reports.data.results,
-            schedules: schedules.data.results,
+            schedules: schedules.data.results.filter((schedule) => schedule.status === 'wait-examination'),
             count: count.data,
         }
     } catch (e) {

@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 
 import routerList from './Router.config'
 import Authorized from './Authorized/Authorized'
-import { PageTransition } from '@steveeeie/react-page-transition'
 
 const Router = () => {
     const location = useLocation()
@@ -19,14 +18,7 @@ const Router = () => {
                     path={path}
                     element={
                         <Authorized authority={authority} currentRole={user.role} noMatch={<></>}>
-                            <PageTransition
-                                preset="slides"
-                                enterAnimation="rotateSlideIn"
-                                exitAnimation="rotateSlideOut"
-                                transitionKey={location.pathname}
-                            >
-                                <Component />
-                            </PageTransition>
+                            <Component />
                         </Authorized>
                     }
                 />

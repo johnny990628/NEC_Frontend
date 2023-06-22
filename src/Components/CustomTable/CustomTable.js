@@ -45,7 +45,7 @@ const CustomTable = ({
     setColumns,
 }) => {
     const [search, setSearch] = useState({})
-    const [status, setStatus] = useState('all')
+
     const [dateRange, setDateRange] = useState({ from: parseISO('1900-01-01'), to: addDays(new Date(), 1) })
 
     const classes = useStyles()
@@ -89,17 +89,15 @@ const CustomTable = ({
     )
 
     useEffect(() => {
-        if (search) setStatus('all')
         fetchData({
             limit: pageSize,
             offset: pageIndex,
             ...search,
-            status,
             dateRange,
             sort: sortBy[0]?.id,
             desc: sortBy[0]?.desc ? -1 : 1,
         })
-    }, [pageIndex, pageSize, search, sortBy, totalCount, status, dateRange])
+    }, [pageIndex, pageSize, search, sortBy, totalCount, dateRange])
 
     const TablePagination = () => {
         return (
