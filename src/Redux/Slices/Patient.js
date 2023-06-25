@@ -11,18 +11,15 @@ import { handleError } from './Error'
 
 const initialState = { loading: false, data: [], count: 0, page: 1 }
 
-export const fetchPatients = createAsyncThunk(
-    'patients/fetchPatients',
-    async ({ limit, offset, search, sort, desc, status }, thunkAPI) => {
-        try {
-            const response = await apiGetPatients({ limit, offset, search, sort, desc, status })
-            return { ...response.data, page: Math.ceil(response.data.count / limit) }
-        } catch (e) {
-            thunkAPI.dispatch(handleError(e.response))
-            return thunkAPI.rejectWithValue()
-        }
+export const fetchPatients = createAsyncThunk('patients/fetchPatients', async (params, thunkAPI) => {
+    try {
+        const response = await apiGetPatients(params)
+        return { ...response.data, page: Math.ceil(response.data.count / params.limit) }
+    } catch (e) {
+        thunkAPI.dispatch(handleError(e.response))
+        return thunkAPI.rejectWithValue()
     }
-)
+})
 
 export const createPatient = createAsyncThunk('patients/createPatient', async (data, thunkAPI) => {
     try {

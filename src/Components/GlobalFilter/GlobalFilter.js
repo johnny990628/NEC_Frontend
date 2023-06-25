@@ -12,11 +12,11 @@ const GlobalFilter = ({ setSearch, search, totalCount, loading }) => {
     }, 500)
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', margin: '1rem' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                <Search sx={{ color: 'text.gray', mr: 1, my: 0.5 }} />
                 <TextField
-                    variant="standard"
+                    variant="outlined"
+                    size="small"
                     label={`${totalCount}筆資料`}
                     value={value}
                     onChange={(e) => {
@@ -27,6 +27,13 @@ const GlobalFilter = ({ setSearch, search, totalCount, loading }) => {
                         e.key === 'Enter' && setSearch({ search: value })
                     }}
                     sx={{ width: '20rem' }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Search sx={{ color: 'text.gray', mr: 1, my: 0.5 }} />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
             </Box>
             <Box style={{ marginLeft: '1rem' }}>
