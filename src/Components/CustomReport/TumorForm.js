@@ -114,7 +114,7 @@ const TumorForm = ({ side, label, id, focused }) => {
                             <Box mr={2} className={classes.selectLabel}>
                                 {label}
                             </Box>
-                            <FormControl fullWidth>
+                            <FormControl size="small" fullWidth>
                                 <InputLabel id={`select-form-${name}`}>{label}</InputLabel>
                                 <Select
                                     size="small"

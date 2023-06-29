@@ -17,7 +17,7 @@ const ExamForm = ({}) => {
                                 {label}
                             </Box>
                             {type === 'select' && (
-                                <FormControl fullWidth>
+                                <FormControl size="small" fullWidth>
                                     <InputLabel id={`select-form-${name}`}>{label}</InputLabel>
                                     <Select size="small" labelId={`select-form-${name}`} label={label}>
                                         <MenuItem value={''} sx={{ height: 35 }}></MenuItem>

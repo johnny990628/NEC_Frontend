@@ -352,7 +352,7 @@ const Report = () => {
             <Dialog open={finishDialog} onClose={() => setFinishDialog(false)} maxWidth="xl">
                 <DialogContent>
                     <Grid container>
-                        <Grid container item xs={4}>
+                        <Grid container item xs={3}>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '1.3rem' }}>R</Box>
                                 <Circle maxSize={130} pos={report['R']} side={'R'} />
@@ -363,7 +363,7 @@ const Report = () => {
                             </Grid>
                         </Grid>
 
-                        <Grid item xs={8}>
+                        <Grid item xs={9}>
                             <ExamForm />
                         </Grid>
                     </Grid>
