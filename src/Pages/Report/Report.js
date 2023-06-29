@@ -256,7 +256,7 @@ const Report = () => {
                         }}
                     >
                         <Box display="flex" alignItems="center">
-                            <Button startIcon={<ArrowBackIos />} sx={{}} onClick={() => handleCancelExamination()}>
+                            <Button startIcon={<ArrowBackIos />} onClick={() => handleCancelExamination()}>
                                 返回
                             </Button>
                             <Stack direction="row" alignItems="center" spacing={2} ml={4}>

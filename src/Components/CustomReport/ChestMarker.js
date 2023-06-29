@@ -103,7 +103,7 @@ function ChestMarker({}) {
                         <Box>
                             <Box
                                 sx={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}
-                            >{`方位:${clock} 距離:${distance} 大小:${size}`}</Box>
+                            >{`方位:${clock} 距離:${distance}cm 大小:${size}cm`}</Box>
                             {form.map(({ key, value }) => (
                                 <Box key={key} sx={{ fontSize: '1rem', mt: '.3rem' }}>
                                     <Box sx={{ fontWeight: 'bold' }}>{key}</Box>
