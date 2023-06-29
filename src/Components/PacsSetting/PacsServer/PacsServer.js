@@ -124,7 +124,7 @@ const PacsServer = () => {
                                                 color="primary"
                                             />
                                         </Box>
-                                        <Box className={classes.pacsURL}>{pacs.pacsURL}</Box>
+                                        <Box className={classes.pacsURL}>{pacs.serverURL}</Box>
                                         <Box className={classes.pacsEvent}>
                                             <Button
                                                 startIcon={<Edit color="primary" />}
