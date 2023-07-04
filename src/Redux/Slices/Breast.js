@@ -10,6 +10,7 @@ const initialState = {
     schedule: {},
     report: { L: [], R: [] },
     birads: { L: 1, R: 1 },
+    summarize: [],
 }
 
 export const fetchReportByReportID = createAsyncThunk('breast/fetchReportByReportID', async ({ reportID }) => {
@@ -66,14 +67,14 @@ export const updateReport = createAsyncThunk('breast/updateReport', async (_, { 
 export const finishReport = createAsyncThunk('breast/finishReport', async (_, { getState }) => {
     try {
         const {
-            breast: { schedule, report, birads },
+            breast: { schedule, report, birads, summarize },
             auth: {
                 user: { _id: userID },
             },
         } = getState()
         const response = await apiUpdateReport({
             reportID: schedule.reportID,
-            data: { report: { report, id: v4(), birads }, userID },
+            data: { report: { report, id: v4(), birads, summarize }, userID },
         })
         await apiUpdateScheduleStatus({
             patientID: schedule.patientID,
@@ -113,7 +114,10 @@ const breastSlice = createSlice({
                 [side]: tepAzimut,
             }
         },
-        clearPoint: (state, action) => {},
+        updateSum: (state, action) => {
+            const { form } = action.payload
+            state['summarize'] = form
+        },
         resetReport: (state, action) => {
             return initialState
         },
@@ -145,7 +149,16 @@ const breastSlice = createSlice({
     },
 })
 
-export const { addPoint, updatePoint, removePoint, clearPoint, setupSchedule, resetReport, setupReport, setupBirads } =
-    breastSlice.actions
+export const {
+    addPoint,
+    updatePoint,
+    removePoint,
+    clearPoint,
+    setupSchedule,
+    updateSum,
+    resetReport,
+    setupReport,
+    setupBirads,
+} = breastSlice.actions
 
 export default breastSlice.reducer

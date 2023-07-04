@@ -68,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
     },
     optionToggleButton: {
         padding: '.5rem',
+        fontSize: '.7rem',
+        whiteSpace: 'nowrap',
     },
     popover: {
         padding: '.5rem',

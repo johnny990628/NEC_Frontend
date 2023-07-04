@@ -47,6 +47,7 @@ const Circle = ({ maxSize = 200, pos, side, focused }) => {
                         placement="right"
                         arrow
                         classes={{ tooltip: classes.tooltip }}
+                        key={id}
                     >
                         <circle cx={x} cy={y} r={size * (maxSize / 5)} fill={fillColor(index)} />
                         {/* <text

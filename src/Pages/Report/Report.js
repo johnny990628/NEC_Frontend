@@ -34,7 +34,14 @@ import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
 import { fetchSchedule, removeSchedule } from '../../Redux/Slices/Schedule'
 import useAlert from '../../Hooks/useAlert'
 import CustomReportForm from '../../Components/CustomReport/CustomReportForm'
-import { updateReport, resetReport, setupSchedule, fetchReportByReportID, setupReport } from '../../Redux/Slices/Breast'
+import {
+    updateReport,
+    resetReport,
+    setupSchedule,
+    fetchReportByReportID,
+    setupReport,
+    finishReport,
+} from '../../Redux/Slices/Breast'
 
 import Avatar, { genConfig } from 'react-nice-avatar'
 import Circle from '../../Components/CustomReport/Circle'
@@ -105,11 +112,11 @@ const Report = () => {
         setIsExamination(false)
     }
     const handleReportSubmit = () => {
-        setFinishDialog(true)
-        // dispatch(finishReport())
-        // showAlert({ toastTitle: '儲存報告', text: `${selection.patient.name}`, icon: 'success' })
-        // setSelection({})
-        // setIsExamination(false)
+        dispatch(finishReport())
+        showAlert({ toastTitle: '儲存報告', text: `${selection.patient.name}`, icon: 'success' })
+        setSelection({})
+        setIsExamination(false)
+        setFinishDialog(false)
     }
     const deleteReportAndSchedule = () => {
         showAlert({
@@ -318,7 +325,7 @@ const Report = () => {
                                     variant="contained"
                                     startIcon={<Check />}
                                     sx={{ borderRadius: '2rem', marginLeft: '1rem' }}
-                                    onClick={handleReportSubmit}
+                                    onClick={() => setFinishDialog(true)}
                                 >
                                     完成報告
                                 </Button>
@@ -369,7 +376,7 @@ const Report = () => {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="outlined" color="primary" onClick={() => setFinishDialog(false)}>
+                    <Button variant="outlined" color="primary" onClick={handleReportSubmit}>
                         確認
                     </Button>
                     <Button color="red" onClick={() => setFinishDialog(false)}>

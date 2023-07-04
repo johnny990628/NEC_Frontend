@@ -21,8 +21,8 @@
     },
     {
         "name": "SMC",
-        "label": "20.Screening mammographic Category",
-        "type": "radio",
+        "label": "Screening mammographic Category",
+        "type": "multiple_select",
         "options": [
             { "label": "Right", "value": "right", "type": "checkbox" },
             { "label": "Left", "value": "left", "type": "checkbox" },
@@ -38,13 +38,13 @@
     },
     {
         "name": "OTHERS",
-        "label": "25.Others",
+        "label": "Others",
         "type": "text",
         "section": "Indication"
     },
     {
         "name": "DOB",
-        "label": "26.Density of breast",
+        "label": "Density of breast",
         "type": "select",
         "section": "Indication",
         "options": [
@@ -56,15 +56,15 @@
     },
     {
         "name": "RECOMENDATION",
-        "label": "27.Recomendation",
+        "label": "Recomendation",
         "type": "text",
         "section": "Indication",
         "divider": true
     },
     {
         "name": "FUFPNBL",
-        "label": "30.F/U for previous noted benign lesions",
-        "type": "radio",
+        "label": "F/U for previous noted benign lesions",
+        "type": "multiple_select",
         "section": "Indication",
         "options": [
             { "label": "Fibroademoa", "value": "fibroademoa", "type": "checkbox" },
@@ -75,8 +75,8 @@
     },
     {
         "name": "SAB",
-        "label": "40.Surgically altered breast",
-        "type": "radio",
+        "label": "Surgically altered breast",
+        "type": "multiple_select",
         "section": "Indication",
         "divider": true,
         "options": [
@@ -86,8 +86,8 @@
     },
     {
         "name": "AR",
-        "label": "50.Augmentation / Reconstruction",
-        "type": "radio",
+        "label": "Augmentation / Reconstruction",
+        "type": "multiple_select",
         "section": "Indication",
         "divider": true,
         "options": [
