@@ -16,15 +16,22 @@ import { useTheme } from '@mui/styles'
 import useStyles from './Style'
 import ReportForm from '../../Assets/Json/ReportCols.json'
 import { updateSum } from '../../Redux/Slices/Breast'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ExamForm = ({}) => {
-    const [form, setForm] = useState([])
     const classes = useStyles()
     const dispatch = useDispatch()
 
+    const { summarize } = useSelector((state) => state.breast)
+    const [form, setForm] = useState([])
+
     useEffect(() => {
-        dispatch(updateSum({ form }))
+        console.log(summarize)
+        setForm([...summarize])
+    }, [])
+
+    useEffect(() => {
+        if (form.length > 0) dispatch(updateSum({ form }))
     }, [form])
 
     const handleInputChange = ({ e, name }) => {

@@ -19,7 +19,8 @@ export const fetchReportByReportID = createAsyncThunk('breast/fetchReportByRepor
         const records = response.data.records
         const record = records[records.length - 1].report || []
         const birads = records[records.length - 1].birads || { L: 1, R: 1 }
-        return { record, birads }
+        const summarize = records[records.length - 1].summarize || []
+        return { record, birads, summarize }
     } catch (e) {
         return e
     }
@@ -42,7 +43,7 @@ export const createReport = createAsyncThunk(
 export const updateReport = createAsyncThunk('breast/updateReport', async (_, { getState }) => {
     try {
         const {
-            breast: { schedule, report, birads },
+            breast: { schedule, report, birads, summarize },
             auth: {
                 user: { _id: userID },
             },
@@ -50,7 +51,7 @@ export const updateReport = createAsyncThunk('breast/updateReport', async (_, { 
 
         const response = await apiUpdateReport({
             reportID: schedule.reportID,
-            data: { report: { report, id: v4(), birads }, userID },
+            data: { report: { report, id: v4(), birads, summarize }, userID },
         })
         await apiUpdateScheduleStatus({
             patientID: schedule.patientID,
@@ -134,8 +135,8 @@ const breastSlice = createSlice({
     },
     extraReducers: {
         [fetchReportByReportID.fulfilled]: (state, action) => {
-            const { record, birads } = action.payload
-            return { ...state, report: record, birads }
+            const { record, birads, summarize } = action.payload
+            return { ...state, report: record, birads, summarize }
         },
         [createReport.fulfilled]: (state, action) => {
             return initialState
