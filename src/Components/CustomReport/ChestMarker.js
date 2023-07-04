@@ -20,6 +20,7 @@ import {
     DialogActions,
     Button,
     useMediaQuery,
+    Stack,
 } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { addPoint, setupBirads } from '../../Redux/Slices/Breast'
@@ -32,11 +33,12 @@ import CustomScrollbar from '../CustomScrollbar/CustomScrollbar'
 import { removePoint } from '../../Redux/Slices/Breast'
 import { useTheme } from '@mui/styles'
 import useAlert from '../../Hooks/useAlert'
+import ReportForm from '../../Assets/Json/ReportCols.json'
 
 function ChestMarker({}) {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const { report, birads } = useSelector((state) => state.breast)
+    const { report, birads, summarize } = useSelector((state) => state.breast)
     const { user } = useSelector((state) => state.auth)
     const [hovered, setHovered] = useState({ side: '', index: -1 })
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -157,30 +159,54 @@ function ChestMarker({}) {
                         </CustomScrollbar>
                     </List>
                 </Grid>
-                <Grid item xs={8} display="flex" justifyContent="center">
-                    {['R', 'L'].map((side) => {
-                        return (
-                            <Box>
-                                <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
-                                <Circle maxSize={circleSize} pos={report[side]} side={side} focused={hovered} />
-                                <FormControl variant="standard" sx={{ width: '6rem', mr: 2, marginBottom: '1em' }}>
-                                    <InputLabel id="select-birads">BI-RADS</InputLabel>
-                                    <Select
-                                        labelId="select-birads"
-                                        value={birads[side]}
-                                        disabled={user.role < 3}
-                                        onChange={(e) => {
-                                            dispatch(setupBirads({ side, value: e.target.value }))
-                                        }}
-                                    >
-                                        {[1, 2, 3, 4, 5, 6].map((b) => (
-                                            <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        )
-                    })}
+                <Grid item xs={8}>
+                    <Box display="flex" justifyContent="center">
+                        {['R', 'L'].map((side) => {
+                            return (
+                                <Box>
+                                    <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
+                                    <Circle maxSize={circleSize} pos={report[side]} side={side} focused={hovered} />
+                                    <FormControl variant="standard" sx={{ width: '6rem', mr: 2, marginBottom: '1em' }}>
+                                        <InputLabel id="select-birads">BI-RADS</InputLabel>
+                                        <Select
+                                            labelId="select-birads"
+                                            value={birads[side]}
+                                            disabled={user.role < 3}
+                                            onChange={(e) => {
+                                                dispatch(setupBirads({ side, value: e.target.value }))
+                                            }}
+                                        >
+                                            {[1, 2, 3, 4, 5, 6].map((b) => (
+                                                <MenuItem key={b} value={b}>{`${b}類`}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+                            )
+                        })}
+                    </Box>
+                    <Box mt={4}>
+                        {summarize.map(({ key, value }) => {
+                            const col = ReportForm.find((r) => r.name === key)
+                            return (
+                                <Box key={key} sx={{ fontSize: '1rem', mt: '.3rem' }}>
+                                    <Box sx={{ fontWeight: 'bold' }}>{col.label}</Box>
+                                    {col.type === 'text' && <Box>{value}</Box>}
+                                    {col.type === 'select' && (
+                                        <Box>{col.options?.find((c) => c.value === value).label}</Box>
+                                    )}
+                                    {col.type === 'multiple_select' && (
+                                        <Box>
+                                            {col.options
+                                                ?.map((c) => (value.indexOf(c.value) === -1 ? null : c.label))
+                                                .filter((c) => c)
+                                                .join(' , ')}
+                                        </Box>
+                                    )}
+                                </Box>
+                            )
+                        })}
+                    </Box>
                 </Grid>
                 <Grid item xs={2}>
                     <List sx={{ maxWidth: 400, height: '80vh', overflowY: 'auto' }}>
