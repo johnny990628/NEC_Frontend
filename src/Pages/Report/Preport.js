@@ -12,16 +12,13 @@ import DialogTitle from '@mui/material/DialogTitle'
 import InputLabel from '@mui/material/InputLabel'
 import { FormControl, Menu, MenuItem, Select, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchReportByReportID } from '../../Redux/Slices/Breast'
+import { useReactToPrint } from 'react-to-print'
 import reportdata from '../../Assets/Json/ReportCols.json'
-import * as AiIcons from 'react-icons/ai'
 
 const Preport = (props) => {
     const { info } = props
-    console.log(info);
     const dispatch = useDispatch()
     const [version, setVersion] = useState('')
-    const [patient, setPatient] = useState(info.patient)
     const [report, setReport] = useState(reportdata)
     const descriptionElementRef = useRef(null)
     const [anchorEl, setAnchorEl] = useState(null)
@@ -40,9 +37,10 @@ const Preport = (props) => {
         setAnchorEl(event.currentTarget)
     }
 
-    const handlePrint = () => {
-        setAnchorEl(null)
-    }
+    const formRef = useRef()
+    const handlePrint = useReactToPrint({
+        content: () => formRef.current,
+    })
 
     return props.trigger ? (
         
@@ -64,11 +62,12 @@ const Preport = (props) => {
                         >
                             <Print />
                         </IconButton>
-                        <Dialog id="basic-menu" open={open}>
+                        <Dialog open={open}>
                             <Menu
                                 id="basic-menu-list"
                                 aria-labelledby="basic-button"
                                 open={open}
+                                onClose={(e) => setAnchorEl(null)}
                                 anchorOrigin={{
                                     vertical: 'center',
                                     horizontal: 'center',
@@ -89,7 +88,7 @@ const Preport = (props) => {
 
                         <ListItemText
                     primary={`${
-                        patient ? `${patient.id} / ${patient.name} / ${patient.gender === 'm' ? '先生' : '小姐'}` : '無病人資料'
+                        info.patient ? `${info.patient.id} / ${info.patient.name} / ${info.patient.gender === 'm' ? '先生' : '小姐'}` : '無病人資料'
                     }`}
                     secondary={
                         <Box>
@@ -117,7 +116,7 @@ const Preport = (props) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
-                        <table>
+                        <table ref={formRef}>
                             <thead>
                                 <tr>
                                     <th>項目</th>
