@@ -399,6 +399,7 @@ const Report = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Preport trigger={showReport} setShowReport={setShowReport} info={info} />
         </Box>
     )
 }
