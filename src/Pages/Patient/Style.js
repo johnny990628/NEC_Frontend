@@ -33,14 +33,14 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold',
     },
     statusBox: {
-        '&.wait': {
-            color: theme.palette.status.call_dark,
-        },
         '&.examination': {
-            color: theme.palette.status.processing_dark,
+            color: theme.palette.status.red_dark,
+        },
+        '&.wait': {
+            color: theme.palette.status.yellow_dark,
         },
         '&.finish': {
-            color: theme.palette.status.yet_dark,
+            color: theme.palette.status.green_dark,
         },
     },
     radioGroup: {

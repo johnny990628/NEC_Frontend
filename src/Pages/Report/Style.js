@@ -15,28 +15,28 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
     },
     status: {
-        backgroundColor: theme.palette.status.processing,
-        border: `1px solid ${theme.palette.status.processing_dark}`,
-        color: theme.palette.status.processing_dark,
+        backgroundColor: theme.palette.status.purple,
+        border: `1px solid ${theme.palette.status.purple_dark}`,
+        color: theme.palette.status.purple_dark,
         padding: '.5rem 1rem',
         marginRight: '.6rem',
         borderRadius: '1rem',
         fontSize: '1rem',
         fontWeight: 'bold',
         '&.examination': {
-            backgroundColor: theme.palette.status.yet,
-            border: `1px solid ${theme.palette.status.yet_dark}`,
-            color: theme.palette.status.yet_dark,
+            backgroundColor: theme.palette.status.red,
+            border: `1px solid ${theme.palette.status.red_dark}`,
+            color: theme.palette.status.red_dark,
         },
         '&.finish': {
-            backgroundColor: theme.palette.status.finish,
-            border: `1px solid ${theme.palette.status.finish_dark}`,
-            color: theme.palette.status.finish_dark,
+            backgroundColor: theme.palette.status.green,
+            border: `1px solid ${theme.palette.status.green_dark}`,
+            color: theme.palette.status.green_dark,
         },
         '&.waitFinish': {
-            backgroundColor: theme.palette.status.call,
-            border: `1px solid ${theme.palette.status.call_dark}`,
-            color: theme.palette.status.call_dark,
+            backgroundColor: theme.palette.status.yellow,
+            border: `1px solid ${theme.palette.status.yellow_dark}`,
+            color: theme.palette.status.yellow_dark,
         },
     },
     statusBox: {
@@ -44,6 +44,22 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         whiteSpace: 'nowrap',
+    },
+    procedureStatus: {
+        padding: '.5rem 1rem',
+        borderRadius: '1rem',
+        fontSize: '1rem',
+        fontWeight: 'bold',
+        '&.green': {
+            backgroundColor: theme.palette.status.green,
+            border: `1px solid ${theme.palette.status.green_dark}`,
+            color: theme.palette.status.green_dark,
+        },
+        '&.purple': {
+            backgroundColor: theme.palette.status.purple,
+            border: `1px solid ${theme.palette.status.purple_dark}`,
+            color: theme.palette.status.purple_dark,
+        },
     },
 }))
 

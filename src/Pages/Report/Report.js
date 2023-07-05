@@ -164,7 +164,15 @@ const Report = () => {
             {
                 accessor: 'procedureCode',
                 Header: '病例代碼',
-                Cell: (row) => row.row.original?.procedureCode,
+                Cell: (row) => (
+                    <Box
+                        className={`${classes.procedureStatus} ${
+                            row.row.original?.procedureCode === '19014C' ? 'green' : 'purple'
+                        }`}
+                    >
+                        <Box className={classes.statusBox}>{row.row.original?.procedureCode}</Box>
+                    </Box>
+                ),
             },
 
             {
