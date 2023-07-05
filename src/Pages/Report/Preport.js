@@ -13,6 +13,7 @@ import InputLabel from '@mui/material/InputLabel'
 import { FormControl, Menu, MenuItem, Select, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useReactToPrint } from 'react-to-print'
+import ReportFormHtml, { ReportFormForPDF } from '../../Components/ReportDialog/ReportFormHtml'
 import reportdata from '../../Assets/Json/ReportCols.json'
 
 const Preport = (props) => {
@@ -122,9 +123,12 @@ const Preport = (props) => {
                 )}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText
-                    sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}
-                ></DialogContentText>
+                <DialogContentText sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
+                    <ReportFormHtml />
+                    <Box sx={{ display: 'none' }}>
+                        <ReportFormForPDF ref={OfficialformRef} />
+                    </Box>
+                </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
