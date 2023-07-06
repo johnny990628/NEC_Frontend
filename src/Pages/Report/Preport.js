@@ -31,6 +31,7 @@ const Preport = (props) => {
 
     const handleClose = () => {
         props.setShowReport(false)
+        setVersion('')
     }
 
     const handleClick = (event) => {
