@@ -25,7 +25,6 @@ const Preport = (props) => {
     const { info } = props
     const dispatch = useDispatch()
     const [version, setVersion] = useState('')
-    const descriptionElementRef = useRef(null)
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
     
@@ -86,7 +85,7 @@ const Preport = (props) => {
     const PatientForm = () => {
         const classes = useStyles()
         
-        const [patient, setPatient] = useState(info.patient)
+        const patient = info.patient
     
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
@@ -143,13 +142,16 @@ const Preport = (props) => {
 
     const ReportFormHtml = () => {
         const classes = useStyles()
-        const report = useSelector((state) => state.reportForm.edit)
+        // const report = useSelector((state) => state.reportForm.edit)
         const [cancerArr, setCancerArr] = useState([])
         useEffect(() => {
-            if (report) {
-                setCancerArr(report)
+            if (version) {
+                const currentReport = info.report.records.find((r) => r.id === version)
+                setCancerArr(currentReport.summarize)
             }
-        }, [report])
+        }, [version])
+        
+        console.log(cancerArr);
     
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
@@ -181,9 +183,9 @@ const Preport = (props) => {
                             <FormSection
                                 key={list.name}
                                 list={list}
-                                checked={cancerArr?.some((c) => c.name === list.name)}
-                                options={cancerArr?.find((c) => c.name === list.name)?.value}
-                                text={cancerArr?.find((c) => c.name === list.name)?.value}
+                                checked={cancerArr.some((c) => c.key === list.name)}
+                                options={cancerArr.find((c) => c.key === list.name)?.value}
+                                text={cancerArr.find((c) => c.key === list.name)?.value}
                             />
                         </>
                     ))}
@@ -194,6 +196,10 @@ const Preport = (props) => {
     
     const FormSection = ({ list, checked, options, text }) => {
         const classes = useStyles()
+
+        console.log(checked);
+        
+
         return list.section === 'Indication' ? (
             <tr>
                 <td colSpan="4">
@@ -361,7 +367,7 @@ const Preport = (props) => {
                     }
                 />
                 {info.status !== 'wait-examination' && (
-                    <FormControl size="small" variant="outlined" sx={{ width: '5rem', ml: 4 }}>
+                    <FormControl size="small" variant="outlined" sx={{ width: '6rem' }}>
                         <InputLabel id="select-version">報告版本</InputLabel>
                         <Select
                             labelId="select-version"
