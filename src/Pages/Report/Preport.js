@@ -150,8 +150,6 @@ const Preport = (props) => {
                 setCancerArr(currentReport.summarize)
             }
         }, [version])
-        
-        console.log(cancerArr);
     
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
@@ -196,10 +194,7 @@ const Preport = (props) => {
     
     const FormSection = ({ list, checked, options, text }) => {
         const classes = useStyles()
-
-        console.log(checked);
         
-
         return list.section === 'Indication' ? (
             <tr>
                 <td colSpan="4">
