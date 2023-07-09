@@ -187,8 +187,10 @@ const Report = () => {
                             startIcon={<Visibility color="contrast" />}
                             sx={{ fontSize: '1.1rem', color: 'contrast.main' }}
                             onClick={() => {
-                                setShowReport(true)
-                                setInfo(row.row.original)
+                                if (row.row.original.status !== 'wait-examination') {
+                                    setShowReport(true)
+                                    setInfo(row.row.original)
+                                }
                             }}
                             // onClick={() => handlePreviewReport(row.row.original.reportID)}
                         >
@@ -278,7 +280,7 @@ const Report = () => {
                         }}
                     >
                         <Box display="flex" alignItems="center">
-                        <Button startIcon={<ArrowBackIos />} onClick={() => handleCancelExamination()}>
+                            <Button startIcon={<ArrowBackIos />} onClick={() => handleCancelExamination()}>
                                 返回
                             </Button>
                             <Stack direction="row" alignItems="center" spacing={2} ml={4}>
@@ -374,7 +376,7 @@ const Report = () => {
             <Dialog open={finishDialog} onClose={() => setFinishDialog(false)} maxWidth="xl">
                 <DialogContent>
                     <Grid container>
-                    <Grid container item xs={3}>
+                        <Grid container item xs={3}>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '1.3rem' }}>R</Box>
                                 <Circle maxSize={130} pos={report['R']} side={'R'} />
@@ -391,7 +393,7 @@ const Report = () => {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                <Button variant="outlined" color="primary" onClick={handleReportSubmit}>
+                    <Button variant="outlined" color="primary" onClick={handleReportSubmit}>
                         確認
                     </Button>
                     <Button color="red" onClick={() => setFinishDialog(false)}>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { styled } from '@mui/material/styles'
+// import { styled } from '@mui/material/styles'
 import { IconButton, ListItemText } from '@mui/material'
-import { Close, Print } from '@mui/icons-material'
+import { Print } from '@mui/icons-material'
 import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -11,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import InputLabel from '@mui/material/InputLabel'
-import { FormControl, Menu, MenuItem, Select, Typography } from '@mui/material'
+import { FormControl, Menu, MenuItem, Select } from '@mui/material'
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -27,7 +27,6 @@ const Preport = (props) => {
     const [version, setVersion] = useState('')
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
-    
 
     const handleClose = () => {
         props.setShowReport(false)
@@ -85,9 +84,9 @@ const Preport = (props) => {
 
     const PatientForm = () => {
         const classes = useStyles()
-        
+
         const patient = info.patient
-    
+
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
                 <tr>
@@ -151,7 +150,7 @@ const Preport = (props) => {
                 setCancerArr(currentReport.summarize)
             }
         }, [version])
-    
+
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
                 <tbody>
@@ -192,10 +191,10 @@ const Preport = (props) => {
             </table>
         )
     }
-    
+
     const FormSection = ({ list, checked, options, text }) => {
         const classes = useStyles()
-        
+
         return list.section === 'Indication' ? (
             <tr>
                 <td colSpan="4">
@@ -242,7 +241,7 @@ const Preport = (props) => {
                             <input type="checkbox" checked={checked} readOnly />
                             <b>{list.label}</b>
                         </td>
-    
+
                         <td className={classes.table}>
                             {list?.options?.map((option) => (
                                 <div>
@@ -396,7 +395,5 @@ const Preport = (props) => {
         ''
     )
 }
-
-
 
 export default Preport
