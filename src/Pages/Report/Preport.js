@@ -28,6 +28,8 @@ const Preport = (props) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
 
+    console.log(REPORTCOLS);
+
     const handleClose = () => {
         props.setShowReport(false)
         setVersion('')
@@ -198,7 +200,7 @@ const Preport = (props) => {
         return list.section === 'Indication' ? (
             <tr>
                 <td colSpan="4">
-                    {(list.type === 'radio' || list.type === 'select') && (
+                    {(list.type === 'radio' || list.type === 'select' || list.type === 'multiple_select') && (
                         <>
                             <input type="checkbox" checked={checked} readOnly />
                             <b>{list.label}</b>
@@ -235,7 +237,7 @@ const Preport = (props) => {
             </tr>
         ) : (
             <tr className={`${classes.table} ${classes.printBreak}`}>
-                {(list.type === 'redio' || list.type === 'select') && (
+                {(list.type === 'redio' || list.type === 'select' || list.type === 'multiple_select') && (
                     <>
                         <td>
                             <input type="checkbox" checked={checked} readOnly />
@@ -299,7 +301,7 @@ const Preport = (props) => {
     const FormFooter = () => {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <p style={{ fontSize: '1.2rem' }}></p>
+                {/* <p style={{ fontSize: '1.2rem' }}></p> */}
             </div>
         )
     }
