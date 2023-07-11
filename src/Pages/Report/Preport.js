@@ -157,15 +157,15 @@ const Preport = (props) => {
                         <b>腫瘤編號</b>
                     </td>
                     <td className={classes.table}>
-                        {index > biradsR.length - 1 ? `${index + 1 - biradsR.length}` : `${index + 1}`}
+                        {index > biradsR.length - 1 ? `L${index + 1 - biradsR.length}` : `R${index + 1}`}
                     </td>
                     <td className={classes.table}>
                         <b>左右側</b>
                     </td>
                     {index > biradsR.length - 1 ? (
-                        <td className={classes.table}>L</td>
+                        <td className={classes.table}>左側</td>
                     ) : (
-                        <td className={classes.table}>R</td>
+                        <td className={classes.table}>右側</td>
                     )}
                     <td className={classes.table}>
                         <b>方位</b>
@@ -344,7 +344,11 @@ const Preport = (props) => {
                             >
                                 <ListItemText
                                     primary={
-                                        index > biradsR.length - 1 ? `L${index + 1 - biradsR.length}` : `R${index + 1}`
+                                        birads[index].form.length > 0
+                                            ? index > biradsR.length - 1
+                                                ? `L${index + 1 - biradsR.length}`
+                                                : `R${index + 1}`
+                                            : ''
                                     }
                                     secondary={
                                         <box style={{ width: '90%', margin: 'auto' }} key={index}>
