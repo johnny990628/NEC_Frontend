@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 // import { styled } from '@mui/material/styles'
-import { IconButton, ListItemText } from '@mui/material'
+import { IconButton, ListItemText, Grid, ListItem, useMediaQuery } from '@mui/material'
 import { Print } from '@mui/icons-material'
 import { Box } from '@mui/system'
+import { useTheme } from '@mui/styles'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -13,22 +14,23 @@ import DialogTitle from '@mui/material/DialogTitle'
 import InputLabel from '@mui/material/InputLabel'
 import { FormControl, Menu, MenuItem, Select } from '@mui/material'
 
-import { useDispatch, useSelector } from 'react-redux'
-
 import { useReactToPrint } from 'react-to-print'
 
 import useStyles from './Style'
+import Circle from '../../Components/CustomReport/Circle'
 import REPORTCOLS from '../../Assets/Json/ReportCols.json'
 import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 
 const Preport = (props) => {
     const { info } = props
-    const dispatch = useDispatch()
     const [version, setVersion] = useState('')
     const [anchorEl, setAnchorEl] = useState(null)
-    const open = Boolean(anchorEl)
 
-    console.log(REPORTCOLS);
+    const circleSize = 150
+    const theme = useTheme()
+    const tab = useMediaQuery(theme.breakpoints.down('xl'))
+    const open = Boolean(anchorEl)
+    console.log(info)
 
     const handleClose = () => {
         props.setShowReport(false)
@@ -56,6 +58,7 @@ const Preport = (props) => {
                 <PatientForm />
                 <ReportFormHtml print={true} />
                 <FormFooter />
+                <BiradsReportFormHtml />
             </div>
         )
     })
@@ -65,7 +68,7 @@ const Preport = (props) => {
             <div style={{ width: '100%' }} ref={ref}>
                 <FormHeader />
                 <PatientForm />
-                <ReportFormHtml print={true} />
+                <SimpleReportFormHtml print={true} />
                 <FormFooter />
             </div>
         )
@@ -144,7 +147,6 @@ const Preport = (props) => {
 
     const ReportFormHtml = () => {
         const classes = useStyles()
-        // const report = useSelector((state) => state.reportForm.edit)
         const [cancerArr, setCancerArr] = useState([])
         useEffect(() => {
             if (version) {
@@ -156,7 +158,7 @@ const Preport = (props) => {
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
                 <tbody>
-                    {[...REPORTCOLS, ...REPORTCOLS2].map((list, i) => (
+                    {[...REPORTCOLS].map((list, i) => (
                         <>
                             {i === 1 && (
                                 <tr>
@@ -189,6 +191,107 @@ const Preport = (props) => {
                             />
                         </>
                     ))}
+                </tbody>
+            </table>
+        )
+    }
+
+    const BiradsReportFormHtml = () => {
+        const classes = useStyles()
+        const [cancerArr, setCancerArr] = useState([])
+        useEffect(() => {
+            if (version) {
+                const currentReport = info.report.records.find((r) => r.id === version)
+                setCancerArr(currentReport.summarize)
+            }
+        }, [version])
+
+        return (
+            <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
+                <tbody>
+                    {[...REPORTCOLS2].map((list, i) => (
+                        <>
+                            <FormSection
+                                key={list.name}
+                                list={list}
+                                checked={cancerArr.some((c) => c.key === list.name)}
+                                options={cancerArr.find((c) => c.key === list.name)?.value}
+                                text={cancerArr.find((c) => c.key === list.name)?.value}
+                            />
+                        </>
+                    ))}
+                </tbody>
+            </table>
+        )
+    }
+
+    const SimpleReportFormHtml = () => {
+        const classes = useStyles()
+        const [biradsR, setBiradsR] = useState([])
+        const [biradsL, setBiradsL] = useState([])
+        useEffect(() => {
+            if (version) {
+                const currentReport = info.report.records.find((r) => r.id === version)
+                setBiradsR(currentReport.report.R)
+                setBiradsL(currentReport.report.L)
+            }
+        }, [version])
+
+        return (
+            <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
+                <tbody>
+                    <Grid sx={8}>
+                        <Box display="flex">
+                            <Box>
+                                {['R'].map((side) => {
+                                    return (
+                                        <Box sx={{ margin: '1rem' }}>
+                                            <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
+                                            <Circle maxSize={circleSize} pos={biradsR} side={side} />
+                                            <br />
+                                            <b>Size :</b>
+                                            {biradsR.length > 0 &&
+                                                biradsR.map((props, index) => {
+                                                    return <TumorList {...props} index={index} side="R" />
+                                                })}
+                                        </Box>
+                                    )
+                                })}
+                            </Box>
+                            <Box>
+                                {['L'].map((side) => {
+                                    return (
+                                        <Box sx={{ margin: '1rem' }}>
+                                            <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
+                                            <Circle maxSize={circleSize} pos={biradsL} side={side} />
+                                            <br />
+                                            <b>Size :</b>
+                                            {biradsL.length > 0 &&
+                                                biradsL.map((props, index) => {
+                                                    return <TumorList {...props} index={index} side="L" />
+                                                })}
+                                        </Box>
+                                    )
+                                })}
+                            </Box>
+                        </Box>
+                        {[...REPORTCOLS2].map((list, i) => (
+                            <Box>
+                                <td>
+                                    <b>{list.label}</b>
+                                </td>
+
+                                <td style={{ display: 'flex', width: '100%' }}>
+                                    {list?.options?.map((option) => (
+                                        <div style={{ width: '100%' }}>
+                                            <input type="checkbox" value={option.value} readOnly />
+                                            {option.label}
+                                        </div>
+                                    ))}
+                                </td>
+                            </Box>
+                        ))}
+                    </Grid>
                 </tbody>
             </table>
         )
@@ -295,6 +398,23 @@ const Preport = (props) => {
                     </>
                 )}
             </tr>
+        )
+    }
+
+    const TumorList = ({ side, clock, distance, size, index }) => {
+        return (
+            <ListItem>
+                <ListItem>
+                    <ListItemText
+                        primary={`${side}${index + 1}`}
+                        secondary={
+                            <Box sx={{ fontSize: tab ? '.7rem' : '1rem', whiteSpace: 'nowrap' }}>
+                                {`方位:${clock} 距離:${distance} 大小:${size}`}
+                            </Box>
+                        }
+                    />
+                </ListItem>
+            </ListItem>
         )
     }
 
