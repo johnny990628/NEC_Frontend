@@ -55,6 +55,7 @@ const Report = () => {
     const [isExamination, setIsExamination] = useState(false)
     const [selection, setSelection] = useState({})
     const [version, setVersion] = useState()
+    const [ver, setVer] = useState()
     const [info, setInfo] = useState({})
     const [finishDialog, setFinishDialog] = useState(false)
     const [showReport, setShowReport] = useState(false)
@@ -190,6 +191,7 @@ const Report = () => {
                                 if (row.row.original.status !== 'wait-examination') {
                                     setShowReport(true)
                                     setInfo(row.row.original)
+                                    setVer(row.row.original.report?.records[row.row.original.report.records.length - 1].id)
                                 }
                             }}
                             // onClick={() => handlePreviewReport(row.row.original.reportID)}
@@ -401,7 +403,7 @@ const Report = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <Preport trigger={showReport} setShowReport={setShowReport} info={info} />
+            <Preport trigger={showReport} setShowReport={setShowReport} info={info} ver={ver} setVer={setVer}  />
         </Box>
     )
 }

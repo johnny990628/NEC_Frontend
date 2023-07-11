@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { IconButton, ListItemText, Grid, ListItem, useMediaQuery } from '@mui/material'
 import { Print } from '@mui/icons-material'
 import { Box } from '@mui/system'
-import { useTheme } from '@mui/styles'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -23,18 +22,13 @@ import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
 
 const Preport = (props) => {
     const { info } = props
-    const [version, setVersion] = useState('')
     const [anchorEl, setAnchorEl] = useState(null)
-
-    const circleSize = 150
-    const theme = useTheme()
-    const tab = useMediaQuery(theme.breakpoints.down('xl'))
+    const circleSize = 125
     const open = Boolean(anchorEl)
-    console.log(info)
 
     const handleClose = () => {
         props.setShowReport(false)
-        setVersion('')
+        props.setVer('')
     }
 
     const handleClick = (event) => {
@@ -58,6 +52,7 @@ const Preport = (props) => {
                 <PatientForm />
                 <ReportFormHtml print={true} />
                 <FormFooter />
+                <p style={{pageBreakAfter:'always'}} />
                 <BiradsReportFormHtml />
             </div>
         )
@@ -69,6 +64,7 @@ const Preport = (props) => {
                 <FormHeader />
                 <PatientForm />
                 <SimpleReportFormHtml print={true} />
+                <p style={{pageBreakAfter:'always'}} />
                 <FormFooter />
             </div>
         )
@@ -145,15 +141,65 @@ const Preport = (props) => {
         )
     }
 
+    const BiradsForm = ({ clock,distance, size, index}) => {
+        const classes = useStyles()
+        const [biradsR, setBiradsR] = useState([])
+        useEffect(() => {
+            if (props.ver) {
+                const currentReport = info.report.records.find((r) => r.id === props.ver)
+                setBiradsR(currentReport.report.R)
+            }
+        }, [props.ver])
+
+        return(
+            <table className={classes.table} style={{ width: '90%', margin: 'auto', height:'5rem' }}>
+                <tr>
+                    <td className={classes.table}>
+                        <b>腫瘤編號</b>
+                    </td>
+                    <td className={classes.table}>{index+1}</td>
+                    <td className={classes.table}>
+                        <b>左右側</b>
+                    </td>
+                    {index > biradsR.length-1 ? (
+                        <td className={classes.table}>
+                        L
+                    </td>
+                    ) : (
+                        <td className={classes.table}>
+                        R
+                    </td>
+                    )}
+                    <td className={classes.table}>
+                        <b>方位</b>
+                    </td>
+                        <td className={classes.table}>{clock}</td>
+                    <td className={classes.table}>
+                        <b>距離乳頭距離(cm)</b>
+                    </td>
+                    <td className={classes.table} colSpan="5">
+                        {distance}
+                    </td>
+                    <td className={classes.table}>
+                        <b>最大俓(cm)</b>
+                    </td>
+                    <td className={classes.table} colSpan="5">
+                        {size}
+                    </td>
+                    </tr>
+            </table>
+        )
+    }
+
     const ReportFormHtml = () => {
         const classes = useStyles()
         const [cancerArr, setCancerArr] = useState([])
         useEffect(() => {
-            if (version) {
-                const currentReport = info.report.records.find((r) => r.id === version)
+            if (props.ver) {
+                const currentReport = info.report.records.find((r) => r.id === props.ver)
                 setCancerArr(currentReport.summarize)
             }
-        }, [version])
+        }, [props.ver])
 
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
@@ -198,30 +244,41 @@ const Preport = (props) => {
 
     const BiradsReportFormHtml = () => {
         const classes = useStyles()
-        const [cancerArr, setCancerArr] = useState([])
+        const [biradsR, setBiradsR] = useState([])
+        const [biradsL, setBiradsL] = useState([])
         useEffect(() => {
-            if (version) {
-                const currentReport = info.report.records.find((r) => r.id === version)
-                setCancerArr(currentReport.summarize)
+            if (props.ver) {
+                const currentReport = info.report.records.find((r) => r.id === props.ver)
+                setBiradsR(currentReport.report.R)
+                setBiradsL(currentReport.report.L)
             }
-        }, [version])
+        }, [props.ver])
+
+        const birads = biradsR.concat(biradsL)
 
         return (
-            <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
-                <tbody>
-                    {[...REPORTCOLS2].map((list, i) => (
-                        <>
-                            <FormSection
-                                key={list.name}
-                                list={list}
-                                checked={cancerArr.some((c) => c.key === list.name)}
-                                options={cancerArr.find((c) => c.key === list.name)?.value}
-                                text={cancerArr.find((c) => c.key === list.name)?.value}
-                            />
-                        </>
-                    ))}
-                </tbody>
-            </table>
+            <>
+            {birads.map((birad, index) => (
+                <>
+                <BiradsForm index={index} clock={birad.clock} distance={birad.distance} size={birad.size} />
+                <table className={classes.table} style={{ width: '90%', margin: 'auto' }} key={index}>
+                    <tbody>
+                        {[...REPORTCOLS2].map((list, i) => (
+                            <React.Fragment key={list.name}>
+                                <FormSection
+                                    list={list}
+                                    checked={birads[index].form.some((c) => c.key === list.name)}
+                                    options={birads[index].form.find((c) => c.key === list.name)?.value}
+                                    text={birads[index].form.find((c) => c.key === list.name)?.value}
+                                />
+                            </React.Fragment>
+                        ))}
+                    </tbody>
+                    <p style={{pageBreakAfter:'always' ,height: '10rem'}} >檢查總結:</p>
+                </table>
+                </>
+            ))}
+        </>
         )
     }
 
@@ -230,22 +287,22 @@ const Preport = (props) => {
         const [biradsR, setBiradsR] = useState([])
         const [biradsL, setBiradsL] = useState([])
         useEffect(() => {
-            if (version) {
-                const currentReport = info.report.records.find((r) => r.id === version)
+            if (props.ver) {
+                const currentReport = info.report.records.find((r) => r.id === props.ver)
                 setBiradsR(currentReport.report.R)
                 setBiradsL(currentReport.report.L)
             }
-        }, [version])
+        }, [props.ver])
 
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
                 <tbody>
                     <Grid sx={8}>
                         <Box display="flex">
-                            <Box>
+                            <Box sx={{ marginLeft: '3rem' }}>
                                 {['R'].map((side) => {
                                     return (
-                                        <Box sx={{ margin: '1rem' }}>
+                                        <Box>
                                             <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
                                             <Circle maxSize={circleSize} pos={biradsR} side={side} />
                                             <br />
@@ -261,7 +318,7 @@ const Preport = (props) => {
                             <Box>
                                 {['L'].map((side) => {
                                     return (
-                                        <Box sx={{ margin: '1rem' }}>
+                                        <Box sx={{ marginLeft: '5rem' }}>
                                             <Box sx={{ fontSize: '1.5rem' }}>{side}</Box>
                                             <Circle maxSize={circleSize} pos={biradsL} side={side} />
                                             <br />
@@ -275,7 +332,7 @@ const Preport = (props) => {
                                 })}
                             </Box>
                         </Box>
-                        {[...REPORTCOLS2].map((list, i) => (
+                        {/* {[...REPORTCOLS2].map((list, i) => (
                             <Box>
                                 <td>
                                     <b>{list.label}</b>
@@ -290,7 +347,7 @@ const Preport = (props) => {
                                     ))}
                                 </td>
                             </Box>
-                        ))}
+                        ))} */}
                     </Grid>
                 </tbody>
             </table>
@@ -312,7 +369,7 @@ const Preport = (props) => {
                                     return (
                                         <>
                                             <input
-                                                type="radio"
+                                                type="checkbox"
                                                 value={option.value}
                                                 checked={options?.includes(option.value)}
                                                 readOnly
@@ -351,7 +408,7 @@ const Preport = (props) => {
                             {list?.options?.map((option) => (
                                 <div>
                                     <input
-                                        type="radio"
+                                        type="checkbox"
                                         value={option.value}
                                         checked={options?.includes(option.value)}
                                         readOnly
@@ -408,7 +465,7 @@ const Preport = (props) => {
                     <ListItemText
                         primary={`${side}${index + 1}`}
                         secondary={
-                            <Box sx={{ fontSize: tab ? '.7rem' : '1rem', whiteSpace: 'nowrap' }}>
+                            <Box >
                                 {`方位:${clock} 距離:${distance} 大小:${size}`}
                             </Box>
                         }
@@ -489,8 +546,8 @@ const Preport = (props) => {
                         <Select
                             labelId="select-version"
                             label="報告版本"
-                            value={version}
-                            onChange={(e) => setVersion(e.target.value)}
+                            value={props.ver || ''}
+                            onChange={(e) => props.setVer(e.target.value)}
                         >
                             {info.report?.records &&
                                 info.report?.records.map((record, index) => (
