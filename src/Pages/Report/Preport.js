@@ -64,7 +64,6 @@ const Preport = (props) => {
                 <FormHeader />
                 <PatientForm />
                 <SimpleReportFormHtml print={true} />
-                <p style={{pageBreakAfter:'always'}} />
                 <FormFooter />
             </div>
         )
@@ -157,7 +156,7 @@ const Preport = (props) => {
                     <td className={classes.table}>
                         <b>腫瘤編號</b>
                     </td>
-                    <td className={classes.table}>{index+1}</td>
+                    <td className={classes.table}>{index > biradsR.length-1 ? `${index + 1 - biradsR.length}` : `${index + 1}`}</td>
                     <td className={classes.table}>
                         <b>左右側</b>
                     </td>
@@ -274,8 +273,8 @@ const Preport = (props) => {
                             </React.Fragment>
                         ))}
                     </tbody>
-                    <p style={{pageBreakAfter:'always' ,height: '10rem'}} >檢查總結:</p>
                 </table>
+                <p style={{pageBreakAfter:'always'}} />
                 </>
             ))}
         </>
@@ -293,6 +292,10 @@ const Preport = (props) => {
                 setBiradsL(currentReport.report.L)
             }
         }, [props.ver])
+
+        const birads = biradsR.concat(biradsL)
+
+        console.log(birads);
 
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
@@ -332,22 +335,24 @@ const Preport = (props) => {
                                 })}
                             </Box>
                         </Box>
-                        {/* {[...REPORTCOLS2].map((list, i) => (
-                            <Box>
-                                <td>
-                                    <b>{list.label}</b>
-                                </td>
+                        {birads.map((birad, index) => (
+                            <div style={{display: 'flex',justifyContent: 'center',alignItems: 'center',margin: '1rem' }}>
+                            <ListItemText
+                            primary={index > biradsR.length-1 ? `L${index + 1 - biradsR.length}` : `R${index + 1}`}
+                            secondary={<box style={{ width: '90%', margin: 'auto' }} key={index}>
+                            {birads[index].form.map(({ key, value }) => (
+                                            <Box key={key} sx={{ fontSize: '1rem',width: '40%', mt: '0rem', display: 'inline-block' }}>
+                                                <Box sx={{ fontWeight: 'bold', borderBottom: '1px solid #000' }}>{key}</Box>
+                                                <Box>{value}</Box>
+                                            </Box>
+                                        ))}
 
-                                <td style={{ display: 'flex', width: '100%' }}>
-                                    {list?.options?.map((option) => (
-                                        <div style={{ width: '100%' }}>
-                                            <input type="checkbox" value={option.value} readOnly />
-                                            {option.label}
-                                        </div>
-                                    ))}
-                                </td>
-                            </Box>
-                        ))} */}
+                        </box>}
+                            
+                        />
+                
+                </div>
+            ))}
                     </Grid>
                 </tbody>
             </table>
@@ -559,7 +564,7 @@ const Preport = (props) => {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
-                    <ReportFormHtml />
+                    <SimpleReportFormHtml />
                     <Box sx={{ display: 'none' }}>
                         <ReportOfficialFormForPDF ref={OfficialformRef} />
                         <ReportSimpleFormForPDF ref={SimpleformRef} />
