@@ -564,7 +564,7 @@ const Preport = (props) => {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ height: '90vh', display: 'flex', justifyContent: 'center' }}>
-                    <SimpleReportFormHtml />
+                    <ReportFormHtml />
                     <Box sx={{ display: 'none' }}>
                         <ReportOfficialFormForPDF ref={OfficialformRef} />
                         <ReportSimpleFormForPDF ref={SimpleformRef} />
