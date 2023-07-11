@@ -52,7 +52,7 @@ const Preport = (props) => {
                 <PatientForm />
                 <ReportFormHtml print={true} />
                 <FormFooter />
-                <p style={{pageBreakAfter:'always'}} />
+                <p style={{ pageBreakAfter: 'always' }} />
                 <BiradsReportFormHtml />
             </div>
         )
@@ -140,7 +140,7 @@ const Preport = (props) => {
         )
     }
 
-    const BiradsForm = ({ clock,distance, size, index}) => {
+    const BiradsForm = ({ clock, distance, size, index }) => {
         const classes = useStyles()
         const [biradsR, setBiradsR] = useState([])
         useEffect(() => {
@@ -150,29 +150,27 @@ const Preport = (props) => {
             }
         }, [props.ver])
 
-        return(
-            <table className={classes.table} style={{ width: '90%', margin: 'auto', height:'5rem' }}>
+        return (
+            <table className={classes.table} style={{ width: '90%', margin: 'auto', height: '5rem' }}>
                 <tr>
                     <td className={classes.table}>
                         <b>腫瘤編號</b>
                     </td>
-                    <td className={classes.table}>{index > biradsR.length-1 ? `${index + 1 - biradsR.length}` : `${index + 1}`}</td>
+                    <td className={classes.table}>
+                        {index > biradsR.length - 1 ? `${index + 1 - biradsR.length}` : `${index + 1}`}
+                    </td>
                     <td className={classes.table}>
                         <b>左右側</b>
                     </td>
-                    {index > biradsR.length-1 ? (
-                        <td className={classes.table}>
-                        L
-                    </td>
+                    {index > biradsR.length - 1 ? (
+                        <td className={classes.table}>L</td>
                     ) : (
-                        <td className={classes.table}>
-                        R
-                    </td>
+                        <td className={classes.table}>R</td>
                     )}
                     <td className={classes.table}>
                         <b>方位</b>
                     </td>
-                        <td className={classes.table}>{clock}</td>
+                    <td className={classes.table}>{clock}</td>
                     <td className={classes.table}>
                         <b>距離乳頭距離(cm)</b>
                     </td>
@@ -185,7 +183,7 @@ const Preport = (props) => {
                     <td className={classes.table} colSpan="5">
                         {size}
                     </td>
-                    </tr>
+                </tr>
             </table>
         )
     }
@@ -257,27 +255,27 @@ const Preport = (props) => {
 
         return (
             <>
-            {birads.map((birad, index) => (
-                <>
-                <BiradsForm index={index} clock={birad.clock} distance={birad.distance} size={birad.size} />
-                <table className={classes.table} style={{ width: '90%', margin: 'auto' }} key={index}>
-                    <tbody>
-                        {[...REPORTCOLS2].map((list, i) => (
-                            <React.Fragment key={list.name}>
-                                <FormSection
-                                    list={list}
-                                    checked={birads[index].form.some((c) => c.key === list.name)}
-                                    options={birads[index].form.find((c) => c.key === list.name)?.value}
-                                    text={birads[index].form.find((c) => c.key === list.name)?.value}
-                                />
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
-                <p style={{pageBreakAfter:'always'}} />
-                </>
-            ))}
-        </>
+                {birads.map((birad, index) => (
+                    <>
+                        <BiradsForm index={index} clock={birad.clock} distance={birad.distance} size={birad.size} />
+                        <table className={classes.table} style={{ width: '90%', margin: 'auto' }} key={index}>
+                            <tbody>
+                                {[...REPORTCOLS2].map((list, i) => (
+                                    <React.Fragment key={list.name}>
+                                        <FormSection
+                                            list={list}
+                                            checked={birads[index].form.some((c) => c.key === list.name)}
+                                            options={birads[index].form.find((c) => c.key === list.name)?.value}
+                                            text={birads[index].form.find((c) => c.key === list.name)?.value}
+                                        />
+                                    </React.Fragment>
+                                ))}
+                            </tbody>
+                        </table>
+                        <p style={{ pageBreakAfter: 'always' }} />
+                    </>
+                ))}
+            </>
         )
     }
 
@@ -295,7 +293,7 @@ const Preport = (props) => {
 
         const birads = biradsR.concat(biradsL)
 
-        console.log(birads);
+        console.log(birads)
 
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
@@ -336,23 +334,41 @@ const Preport = (props) => {
                             </Box>
                         </Box>
                         {birads.map((birad, index) => (
-                            <div style={{display: 'flex',justifyContent: 'center',alignItems: 'center',margin: '1rem' }}>
-                            <ListItemText
-                            primary={index > biradsR.length-1 ? `L${index + 1 - biradsR.length}` : `R${index + 1}`}
-                            secondary={<box style={{ width: '90%', margin: 'auto' }} key={index}>
-                            {birads[index].form.map(({ key, value }) => (
-                                            <Box key={key} sx={{ fontSize: '1rem',width: '40%', mt: '0rem', display: 'inline-block' }}>
-                                                <Box sx={{ fontWeight: 'bold', borderBottom: '1px solid #000' }}>{key}</Box>
-                                                <Box>{value}</Box>
-                                            </Box>
-                                        ))}
-
-                        </box>}
-                            
-                        />
-                
-                </div>
-            ))}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    margin: '1rem',
+                                }}
+                            >
+                                <ListItemText
+                                    primary={
+                                        index > biradsR.length - 1 ? `L${index + 1 - biradsR.length}` : `R${index + 1}`
+                                    }
+                                    secondary={
+                                        <box style={{ width: '90%', margin: 'auto' }} key={index}>
+                                            {birads[index].form.map(({ key, value }) => (
+                                                <Box
+                                                    key={key}
+                                                    sx={{
+                                                        fontSize: '1rem',
+                                                        width: '40%',
+                                                        mt: '0rem',
+                                                        display: 'inline-block',
+                                                    }}
+                                                >
+                                                    <Box sx={{ fontWeight: 'bold', borderBottom: '1px solid #000' }}>
+                                                        {key}
+                                                    </Box>
+                                                    <Box>{value}</Box>
+                                                </Box>
+                                            ))}
+                                        </box>
+                                    }
+                                />
+                            </div>
+                        ))}
                     </Grid>
                 </tbody>
             </table>
@@ -469,11 +485,7 @@ const Preport = (props) => {
                 <ListItem>
                     <ListItemText
                         primary={`${side}${index + 1}`}
-                        secondary={
-                            <Box >
-                                {`方位:${clock} 距離:${distance} 大小:${size}`}
-                            </Box>
-                        }
+                        secondary={<Box>{`方位:${clock} 距離:${distance} 大小:${size}`}</Box>}
                     />
                 </ListItem>
             </ListItem>
