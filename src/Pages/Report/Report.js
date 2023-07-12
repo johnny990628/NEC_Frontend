@@ -46,6 +46,7 @@ import {
 import Avatar, { genConfig } from 'react-nice-avatar'
 import Circle from '../../Components/CustomReport/Circle'
 import ExamForm from '../../Components/CustomReport/ExamForm'
+import Preport from './Preport'
 
 const Report = () => {
     const classes = useStyles()
@@ -54,7 +55,10 @@ const Report = () => {
     const [isExamination, setIsExamination] = useState(false)
     const [selection, setSelection] = useState({})
     const [version, setVersion] = useState()
+    const [ver, setVer] = useState()
+    const [info, setInfo] = useState({})
     const [finishDialog, setFinishDialog] = useState(false)
+    const [showReport, setShowReport] = useState(false)
 
     const { schedules, count, page, loading } = useSelector((state) => state.schedule)
     const { report } = useSelector((state) => state.breast)
@@ -183,6 +187,16 @@ const Report = () => {
                         <Button
                             startIcon={<Visibility color="contrast" />}
                             sx={{ fontSize: '1.1rem', color: 'contrast.main' }}
+                            onClick={() => {
+                                if (row.row.original.status !== 'wait-examination') {
+                                    setShowReport(true)
+                                    setInfo(row.row.original)
+                                    setVer(
+                                        row.row.original.report?.records[row.row.original.report.records.length - 1].id
+                                    )
+                                }
+                            }}
+                            style={{ visibility: row.row.original.status === 'wait-examination' ? 'hidden' : '' }}
                             // onClick={() => handlePreviewReport(row.row.original.reportID)}
                         >
                             檢視
@@ -392,6 +406,7 @@ const Report = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Preport trigger={showReport} setShowReport={setShowReport} info={info} ver={ver} setVer={setVer} />
         </Box>
     )
 }
