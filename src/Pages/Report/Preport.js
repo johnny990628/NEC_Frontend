@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 // import { styled } from '@mui/material/styles'
-import { IconButton, ListItemText, Grid, ListItem, useMediaQuery } from '@mui/material'
+import { IconButton, ListItemText, Grid, ListItem, Chip, TextField } from '@mui/material'
 import { Print } from '@mui/icons-material'
 import { Box } from '@mui/system'
 import Button from '@mui/material/Button'
@@ -64,6 +64,7 @@ const Preport = (props) => {
                 <FormHeader />
                 <PatientForm />
                 <SimpleReportFormHtml print={true} />
+                <Summarize />
                 <FormFooter />
             </div>
         )
@@ -293,8 +294,6 @@ const Preport = (props) => {
 
         const birads = biradsR.concat(biradsL)
 
-        console.log(birads)
-
         return (
             <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
                 <tbody>
@@ -376,6 +375,81 @@ const Preport = (props) => {
                     </Grid>
                 </tbody>
             </table>
+        )
+    }
+
+    const Summarize = () => {
+        const classes = useStyles()
+        const [cancerArr, setCancerArr] = useState([])
+        useEffect(() => {
+            if (props.ver) {
+                const currentReport = info.report.records.find((r) => r.id === props.ver)
+                setCancerArr(currentReport.summarize)
+            }
+        }, [props.ver])
+
+        return (
+            <>
+                <p style={{ pageBreakAfter: 'always' }} />
+                <table className={classes.table} style={{ width: '90%', margin: 'auto' }}>
+                    {cancerArr.map(({ key, value }) => {
+                        const row = REPORTCOLS.find((f) => f.name === key)
+                        if (row.type === 'multiple_select') {
+                            var filteroption = row.options.filter((option) => value.includes(option.value))
+                        }
+                        return (
+                            <div
+                                style={{
+                                    display: 'inline-block',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    margin: '1rem',
+                                    float: 'left',
+                                    width: '45%',
+                                }}
+                            >
+                                <ListItemText
+                                    secondary={
+                                        <box style={{ width: '90%', margin: 'auto' }} key={key}>
+                                            <Box
+                                                key={key}
+                                                sx={{
+                                                    fontSize: '1rem',
+                                                    width: '100%',
+                                                    mt: '0rem',
+                                                }}
+                                            >
+                                                <Box sx={{ fontWeight: 'bold', borderBottom: '1px solid #000' }}>
+                                                    {row.label}
+                                                </Box>
+                                                {row.type === 'select' && (
+                                                    <>
+                                                        {row.options.map((option) => (
+                                                            <Box>{value === option.value ? option.label : ''}</Box>
+                                                        ))}
+                                                    </>
+                                                )}
+                                                {row.type === 'multiple_select' && (
+                                                    <>
+                                                        {filteroption.map((item) => (
+                                                            <Box key={item.value}>{item.label}</Box>
+                                                        ))}
+                                                    </>
+                                                )}
+                                                {row.type === 'text' && (
+                                                    <>
+                                                        <Box>{value}</Box>
+                                                    </>
+                                                )}
+                                            </Box>
+                                        </box>
+                                    }
+                                />
+                            </div>
+                        )
+                    })}
+                </table>
+            </>
         )
     }
 

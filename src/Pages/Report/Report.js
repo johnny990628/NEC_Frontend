@@ -196,6 +196,7 @@ const Report = () => {
                                     )
                                 }
                             }}
+                            style={{ visibility: row.row.original.status === 'wait-examination' ? 'hidden' : '' }}
                             // onClick={() => handlePreviewReport(row.row.original.reportID)}
                         >
                             檢視
