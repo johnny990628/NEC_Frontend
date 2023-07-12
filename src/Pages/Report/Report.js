@@ -191,7 +191,9 @@ const Report = () => {
                                 if (row.row.original.status !== 'wait-examination') {
                                     setShowReport(true)
                                     setInfo(row.row.original)
-                                    setVer(row.row.original.report?.records[row.row.original.report.records.length - 1].id)
+                                    setVer(
+                                        row.row.original.report?.records[row.row.original.report.records.length - 1].id
+                                    )
                                 }
                             }}
                             // onClick={() => handlePreviewReport(row.row.original.reportID)}
@@ -403,7 +405,7 @@ const Report = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <Preport trigger={showReport} setShowReport={setShowReport} info={info} ver={ver} setVer={setVer}  />
+            <Preport trigger={showReport} setShowReport={setShowReport} info={info} ver={ver} setVer={setVer} />
         </Box>
     )
 }
