@@ -16,8 +16,7 @@ import {
     InsertPhotoOutlined,
     Settings,
 } from '@mui/icons-material'
-import Statistic from '../Pages/Statistic/Statistic'
-import Setting from '../Pages/Setting/Setting'
+import Login from '../Pages/Login/Login'
 
 const routerList = [
     {
@@ -34,14 +33,7 @@ const routerList = [
         path: '/patient',
         Component: Patient,
     },
-    // {
-    //     display_name: '報告',
-    //     name: 'createReport',
-    //     icon: <EventAvailableOutlined />,
-    //     path: '/createReport',
-    //     Component: CreateReport,
-    //     authority: [4, 3, 2],
-    // },
+
     {
         display_name: '報告',
         name: 'report',
@@ -58,38 +50,6 @@ const routerList = [
         Component: User,
         authority: [4],
     },
-    // {
-    //     display_name: '部門管理',
-    //     name: 'department',
-    //     icon: <AccountBalanceOutlined />,
-    //     path: '/department',
-    //     Component: Department,
-    //     authority: [3, 1],
-    // },
-    // {
-    //     display_name: '影像',
-    //     name: 'image',
-    //     icon: <InsertPhotoOutlined />,
-    //     path: '/image',
-    //     Component: Image,
-    //     authority: [2, 3, 4],
-    // },
-    // {
-    //     display_name: '設定',
-    //     name: 'setting',
-    //     icon: <Settings />,
-    //     path: '/setting',
-    //     Component: Setting,
-    //     authority: [4],
-    // },
-    // {
-    //     display_name: '數據中心',
-    //     name: 'statistic',
-    //     icon: <InsertChartOutlined />,
-    //     path: '/statistic',
-    //     Component: Statistic,
-    //     authority: [4],
-    // },
 ]
 
 export default routerList

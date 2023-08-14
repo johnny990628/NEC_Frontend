@@ -9,6 +9,8 @@ import 'react-day-picker/dist/style.css'
 
 import store from './Redux/store'
 import { Provider } from 'react-redux'
+import { ReactKeycloakProvider } from '@react-keycloak/web'
+import keycloak from './Utils/Keycloak.js'
 
 const whiteTheme = createTheme({
     palette: {
@@ -68,13 +70,20 @@ const whiteTheme = createTheme({
 })
 
 ReactDOM.render(
-    <Provider store={store}>
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={whiteTheme}>
-                <CssBaseline />
-                <App />
-            </ThemeProvider>
-        </StyledEngineProvider>
-    </Provider>,
+    <ReactKeycloakProvider
+        authClient={keycloak}
+        // initOptions={{
+        //     onLoad: 'login-required',
+        // }}
+    >
+        <Provider store={store}>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={whiteTheme}>
+                    <CssBaseline />
+                    <App />
+                </ThemeProvider>
+            </StyledEngineProvider>
+        </Provider>
+    </ReactKeycloakProvider>,
     document.getElementById('root')
 )

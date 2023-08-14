@@ -15,13 +15,14 @@ import {
     useMediaQuery,
 } from '@mui/material'
 
-import { Person, PersonAdd } from '@mui/icons-material'
+import { LoginOutlined, Person, PersonAdd } from '@mui/icons-material'
 import { useTheme } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
 
 import useStyles from './Style'
 
 import { login, register } from '../../Redux/Slices/Auth'
+import { useKeycloak } from '@react-keycloak/web'
 
 const Login = () => {
     const [page, setPage] = useState('login')
@@ -31,11 +32,13 @@ const Login = () => {
     const classes = useStyles()
     const theme = useTheme()
     const com = useMediaQuery(theme.breakpoints.up('lg'))
+    const { keycloak, initialized } = useKeycloak()
 
     const handleLoginSubmit = (e) => {
         e.preventDefault()
-        const data = new FormData(e.currentTarget)
-        dispatch(login({ username: data.get('username'), password: data.get('password'), remember }))
+        keycloak.login()
+        // const data = new FormData(e.currentTarget)
+        // dispatch(login({ username: data.get('username'), password: data.get('password'), remember }))
     }
     const handleRegisterSubmit = (e) => {
         e.preventDefault()
@@ -93,7 +96,19 @@ const Login = () => {
                 <Typography component="h1" variant="h5">
                     登入
                 </Typography>
-                <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
+                <Button
+                    fullWidth
+                    variant="outlined"
+                    startIcon={<LoginOutlined />}
+                    sx={{ mt: 2 }}
+                    onClick={() => keycloak.login()}
+                >
+                    Keycloak login
+                </Button>
+                <Link href="#" variant="body2" onClick={() => setPage('register')}>
+                    沒有帳號嗎?註冊
+                </Link>
+                {/* <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
                     <TextField
                         margin="normal"
                         required
@@ -132,7 +147,7 @@ const Login = () => {
                             沒有帳號嗎?註冊
                         </Link>
                     </Grid>
-                </Box>
+                </Box> */}
             </Box>
         )
     }

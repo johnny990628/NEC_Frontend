@@ -25,7 +25,7 @@ import CustomReportForm from '../CustomReport/CustomReportForm'
 import ReportFormHtml, { ReportFormForPDF } from './ReportFormHtml'
 import { updateReport, fillReport, resetReport } from '../../Redux/Slices/ReportForm'
 import { Box } from '@mui/system'
-import Authorized from './../Authorized/Authorized'
+import Authorized from '../PrivateRoute/PrivateRoute'
 
 import REPORTCOLS from '../../Assets/Json/ReportCols.json'
 import REPORTCOLS2 from '../../Assets/Json/ReportCols2.json'
