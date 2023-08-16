@@ -36,9 +36,9 @@ export const logout = createAsyncThunk('auth/logout', async (isTokenExpiration, 
     }
 })
 
-export const register = createAsyncThunk('auth/register', async ({ username, password, name }, thunkAPI) => {
+export const register = createAsyncThunk('auth/register', async ({ email, username, password, name }, thunkAPI) => {
     try {
-        const response = await apiRegister({ username, password, name })
+        const response = await apiRegister({ email, username, password, name })
         thunkAPI.dispatch(
             handleNotification({
                 title: '註冊成功',

@@ -43,7 +43,14 @@ const Login = () => {
     const handleRegisterSubmit = (e) => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
-        dispatch(register({ username: data.get('username'), password: data.get('password'), name: data.get('name') }))
+        dispatch(
+            register({
+                email: data.get('email'),
+                username: data.get('username'),
+                password: data.get('password'),
+                name: data.get('name'),
+            })
+        )
         setPage('login')
     }
 
@@ -55,6 +62,15 @@ const Login = () => {
                     註冊
                 </Typography>
                 <Box component="form" onSubmit={handleRegisterSubmit} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                    />
                     <TextField
                         margin="normal"
                         required
