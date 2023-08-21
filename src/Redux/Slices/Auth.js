@@ -1,8 +1,8 @@
 import { ConstructionOutlined } from '@mui/icons-material'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiLogin, apiLogout, apiRegister } from '../../Axios/Auth'
-import useAlert from '../../Hooks/useAlert'
 import { handleError, handleNotification } from './Error'
+import keycloak from '../../Utils/Keycloak'
 
 const initialState = { token: '', user: {}, verify: false }
 
@@ -19,18 +19,18 @@ export const login = createAsyncThunk('auth/login', async ({ username, password,
     }
 })
 
-export const logout = createAsyncThunk('auth/logout', async (isTokenExpiration, thunkAPI) => {
+export const logout = createAsyncThunk('auth/logout', async (thunkAPI) => {
     try {
-        const response = await apiLogout()
-        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('accessToken')
+        keycloak.logout()
 
         thunkAPI.dispatch(
             handleNotification({
-                title: isTokenExpiration ? '登入憑證到期，請重新登入' : '已登出',
-                text: '',
+                title: '登入憑證到期，請重新登入',
+                text: '已登出',
             })
         )
-        return response.data
+        return null
     } catch (e) {
         return e
     }

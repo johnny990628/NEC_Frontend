@@ -72,6 +72,9 @@ const whiteTheme = createTheme({
 ReactDOM.render(
     <ReactKeycloakProvider
         authClient={keycloak}
+        onTokens={({ token }) => {
+            localStorage.setItem('accessToken', token)
+        }}
         // initOptions={{
         //     onLoad: 'login-required',
         // }}

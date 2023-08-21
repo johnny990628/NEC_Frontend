@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
@@ -9,6 +10,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     function (config) {
+        const accessToken = localStorage.getItem('accessToken')
+        if (accessToken) config.headers['Authorization'] = `Bearer ${accessToken}`
         return config
     },
     function (error) {

@@ -13,13 +13,23 @@ const App = () => {
     useWebsocket()
     useErrorHandle()
     const dispatch = useDispatch()
-    const { keycloak } = useKeycloak()
+    const { keycloak, initialized } = useKeycloak()
 
     const isLoggedIn = keycloak.authenticated
 
     useEffect(() => {
+        if (keycloak && initialized) {
+            keycloak.onTokenExpired = () => keycloak.updateToken(600)
+        }
+        return () => {
+            if (keycloak) keycloak.onTokenExpired = () => {}
+        }
+    }, [initialized, keycloak])
+
+    useEffect(() => {
         dispatch(fetchDepartments4List())
     }, [])
+
     return isLoggedIn ? <Layout /> : <Login />
 }
 
