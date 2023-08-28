@@ -121,7 +121,7 @@ const Login = () => {
                 >
                     Keycloak login
                 </Button>
-                <Link href="#" variant="body2" onClick={() => setPage('register')}>
+                <Link href="#" variant="body2" onClick={() => keycloak.register()}>
                     沒有帳號嗎?註冊
                 </Link>
                 {/* <Box component="form" onSubmit={handleLoginSubmit} noValidate sx={{ mt: 1 }}>
@@ -174,13 +174,13 @@ const Login = () => {
             sx={{
                 height: '90vh',
                 display: 'flex',
-                justifyContent: com ? 'space-between' : 'center',
+                justifyContent: 'center',
                 alignItems: 'center',
             }}
         >
             <CssBaseline />
 
-            {com && (
+            {/* {com && (
                 <IconButton
                     className={classes.iconButton}
                     sx={{ backgroundColor: 'contrast.main' }}
@@ -188,7 +188,7 @@ const Login = () => {
                 >
                     <Person className={classes.icons} />
                 </IconButton>
-            )}
+            )} */}
 
             {page === 'login' && (
                 <Grow in={page === 'login'} timeout={1000}>
@@ -198,14 +198,15 @@ const Login = () => {
                 </Grow>
             )}
 
-            {page === 'register' && (
+            {/* {page === 'register' && (
                 <Grow in={page === 'register'} timeout={1000}>
                     <div>
                         <RegisterSection />
                     </div>
                 </Grow>
-            )}
-            {com && (
+            )} */}
+
+            {/* {com && (
                 <IconButton
                     className={classes.iconButton}
                     sx={{ backgroundColor: 'primary.main' }}
@@ -213,7 +214,7 @@ const Login = () => {
                 >
                     <PersonAdd className={classes.icons} />
                 </IconButton>
-            )}
+            )} */}
         </Container>
     )
 }

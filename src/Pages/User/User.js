@@ -53,7 +53,7 @@ const Report = () => {
                     )
                 },
             },
-            { accessor: 'name', Header: '姓名', Cell: (row) => row.row.original.name },
+            { accessor: 'name', Header: '姓名', Cell: (row) => row.row.original.firstName },
             {
                 accessor: 'actions',
                 Header: '操作',
@@ -62,7 +62,7 @@ const Report = () => {
                         <Button
                             sx={{ color: 'red.main' }}
                             startIcon={<Delete />}
-                            onClick={() => handleDeleteUser(row.row.original._id)}
+                            onClick={() => handleDeleteUser(row.row.original.id)}
                         >
                             刪除
                         </Button>
@@ -74,33 +74,33 @@ const Report = () => {
                 Header: '註冊時間',
                 Cell: (row) => (
                     <Box>
-                        <Box>{new Date(row.row.original.createdAt).toLocaleDateString()}</Box>
+                        <Box>{new Date(row.row.original.createdTimestamp).toLocaleDateString()}</Box>
                         <Box sx={{ fontSize: '.8rem', color: 'gray.main' }}>
-                            {new Date(row.row.original.createdAt).toLocaleTimeString()}
+                            {new Date(row.row.original.createdTimestamp).toLocaleTimeString()}
                         </Box>
                     </Box>
                 ),
             },
 
-            {
-                accessor: 'status',
-                Header: '狀態',
-                Cell: (row) => {
-                    const handleChange = (e) => {
-                        dispatch(updateUser({ id: row.row.original._id, data: { role: e.target.value } }))
-                        showAlert({ toastTitle: '修改完成', text: `${row.row.original.name}`, icon: 'success' })
-                    }
-                    return (
-                        <Select variant="standard" fullWidth value={row.row.original.role} onChange={handleChange}>
-                            <MenuItem value={0}>等待審核</MenuItem>
-                            <MenuItem value={1}>行政及護理師</MenuItem>
-                            <MenuItem value={2}>放射師</MenuItem>
-                            <MenuItem value={3}>醫師</MenuItem>
-                            <MenuItem value={4}>管理員</MenuItem>
-                        </Select>
-                    )
-                },
-            },
+            // {
+            //     accessor: 'status',
+            //     Header: '狀態',
+            //     Cell: (row) => {
+            //         const handleChange = (e) => {
+            //             dispatch(updateUser({ id: row.row.original._id, data: { role: e.target.value } }))
+            //             showAlert({ toastTitle: '修改完成', text: `${row.row.original.firstName}`, icon: 'success' })
+            //         }
+            //         return (
+            //             <Select variant="standard" fullWidth value={row.row.original.role} onChange={handleChange}>
+            //                 <MenuItem value={0}>等待審核</MenuItem>
+            //                 <MenuItem value={1}>行政及護理師</MenuItem>
+            //                 <MenuItem value={2}>放射師</MenuItem>
+            //                 <MenuItem value={3}>醫師</MenuItem>
+            //                 <MenuItem value={4}>管理員</MenuItem>
+            //             </Select>
+            //         )
+            //     },
+            // },
         ],
         []
     )
