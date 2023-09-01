@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Stack } from '@mui/material'
 import { AssignmentTurnedIn, Delete, Edit } from '@mui/icons-material'
 
@@ -6,18 +6,19 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import useStyles from './Style'
 import CustomTable from '../../Components/CustomTable/CustomTable'
-import ReportDialog from '../../Components/ReportDialog/ReportDialog'
 import GlobalFilter from './../../Components/GlobalFilter/GlobalFilter'
-import { deleteUser, fetchUser, updateUser } from '../../Redux/Slices/User'
+import { deleteUser, fetchUser, updateUser, userTrigger } from '../../Redux/Slices/User'
 import useAlert from '../../Hooks/useAlert'
 import Avatar, { genConfig } from 'react-nice-avatar'
+import { fetchRole } from '../../Redux/Slices/Role'
 
-const Report = () => {
+const User = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const showAlert = useAlert()
 
     const { results, count, page, loading } = useSelector((state) => state.user)
+    const { results: roleList } = useSelector((state) => state.role)
 
     const fetchData = async (params) => {
         dispatch(fetchUser(params))
@@ -81,26 +82,37 @@ const Report = () => {
                     </Box>
                 ),
             },
+            {
+                accessor: 'status',
+                Header: '狀態',
+                Cell: (row) => {
+                    const currentRole = row.row.original.roles.find((role) => !role.composite)
 
-            // {
-            //     accessor: 'status',
-            //     Header: '狀態',
-            //     Cell: (row) => {
-            //         const handleChange = (e) => {
-            //             dispatch(updateUser({ id: row.row.original._id, data: { role: e.target.value } }))
-            //             showAlert({ toastTitle: '修改完成', text: `${row.row.original.firstName}`, icon: 'success' })
-            //         }
-            //         return (
-            //             <Select variant="standard" fullWidth value={row.row.original.role} onChange={handleChange}>
-            //                 <MenuItem value={0}>等待審核</MenuItem>
-            //                 <MenuItem value={1}>行政及護理師</MenuItem>
-            //                 <MenuItem value={2}>放射師</MenuItem>
-            //                 <MenuItem value={3}>醫師</MenuItem>
-            //                 <MenuItem value={4}>管理員</MenuItem>
-            //             </Select>
-            //         )
-            //     },
-            // },
+                    const handleChange = (e) => {
+                        const updateRole = roleList.find((rl) => rl.id === e.target.value)
+                        dispatch(
+                            updateUser({
+                                userId: row.row.original.id,
+                                data: {
+                                    currentRole: currentRole,
+                                    updateRole: updateRole,
+                                },
+                            })
+                        )
+                        showAlert({ toastTitle: '修改完成', text: `${row.row.original.firstName}`, icon: 'success' })
+                        dispatch(userTrigger())
+                    }
+                    return (
+                        <Select variant="standard" fullWidth value={currentRole?.id} onChange={handleChange}>
+                            {roleList.map(({ id, name }) => (
+                                <MenuItem key={id} value={id}>
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    )
+                },
+            },
         ],
         []
     )
@@ -116,9 +128,8 @@ const Report = () => {
                 totalCount={count}
                 GlobalFilter={GlobalFilter}
             />
-            <ReportDialog mode="edit" />
         </Box>
     )
 }
 
-export default Report
+export default User

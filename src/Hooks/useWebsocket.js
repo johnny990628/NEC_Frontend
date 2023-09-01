@@ -56,9 +56,6 @@ function WebSocketComponent() {
                 dispatch(reportTrigger())
                 dispatch(scheduleTrigger())
                 break
-            case 'users':
-                dispatch(userTrigger())
-                break
         }
     }
 }

@@ -9,6 +9,7 @@ import authReducer from './Slices/Auth'
 import reportReducer from './Slices/Report'
 import scheduleReducer from './Slices/Schedule'
 import departmentReducer from './Slices/Department'
+import roleReducer from './Slices/Role'
 import userReducer from './Slices/User'
 import dashboardReducer from './Slices/Dashboard'
 import statisticReducer from './Slices/Statistic'
@@ -29,6 +30,7 @@ export default configureStore({
         schedule: scheduleReducer,
         department: departmentReducer,
         user: userReducer,
+        role: roleReducer,
         dashboard: dashboardReducer,
         statistic: statisticReducer,
         dicom: dicomReducer,

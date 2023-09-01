@@ -8,6 +8,7 @@ import { fetchDepartments4List } from './Redux/Slices/Department4List'
 import useErrorHandle from './Hooks/useErrorHandle'
 import { useKeycloak } from '@react-keycloak/web'
 import Login from './Pages/Login/Login'
+import { fetchRole } from './Redux/Slices/Role'
 
 const App = () => {
     useWebsocket()
@@ -28,6 +29,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(fetchDepartments4List())
+        dispatch(fetchRole())
     }, [])
 
     return isLoggedIn ? <Layout /> : <Login />

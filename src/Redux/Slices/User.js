@@ -15,9 +15,9 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async (params, thunk
     }
 })
 
-export const updateUser = createAsyncThunk('user/updateUser', async ({ id, data }, thunkAPI) => {
+export const updateUser = createAsyncThunk('user/updateUser', async ({ userId, data }, thunkAPI) => {
     try {
-        await apiUpdateUser(id, data)
+        await apiUpdateUser(userId, data)
     } catch (e) {
         thunkAPI.dispatch(handleError(e.response))
         return thunkAPI.rejectWithValue()
