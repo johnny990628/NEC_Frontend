@@ -7,7 +7,7 @@ import { Dehaze, DoubleArrow, Logout } from '@mui/icons-material'
 
 import useStyles from './Style'
 
-import SidebarItem from '../Router.config'
+import Routers from '../Router.config'
 import Authorized from '../PrivateRoute/PrivateRoute'
 import { logout } from '../../Redux/Slices/Auth'
 import { useKeycloak } from '@react-keycloak/web'
@@ -21,6 +21,10 @@ const Sidebar = () => {
     const { isOpen } = useSelector((state) => state.sidebar)
     const { user } = useSelector((state) => state.auth)
 
+    const userRoleList = keycloak.tokenParsed.realm_access.roles
+    const SidebarItem = Routers.filter((router) =>
+        router?.authority ? router.authority.some((r) => userRoleList.includes(r)) : true
+    )
     const activeItem = SidebarItem.findIndex((item) => item.path === location.pathname)
 
     return (

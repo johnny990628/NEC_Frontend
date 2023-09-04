@@ -103,7 +103,7 @@ const User = () => {
                         dispatch(userTrigger())
                     }
                     return (
-                        <Select variant="standard" fullWidth value={currentRole?.id} onChange={handleChange}>
+                        <Select variant="standard" fullWidth value={currentRole.id} onChange={handleChange}>
                             {roleList.map(({ id, name }) => (
                                 <MenuItem key={id} value={id}>
                                     {name}

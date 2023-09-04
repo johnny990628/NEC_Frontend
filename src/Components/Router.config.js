@@ -5,17 +5,7 @@ import Department from '../Pages/Department/Department'
 import Report from '../Pages/Report/Report'
 import User from '../Pages/User/User'
 import Image from '../Pages/Image/Image'
-import {
-    HomeOutlined,
-    EventAvailableOutlined,
-    AccessibleForwardOutlined,
-    CreateNewFolderOutlined,
-    PersonOutlined,
-    AccountBalanceOutlined,
-    InsertChartOutlined,
-    InsertPhotoOutlined,
-    Settings,
-} from '@mui/icons-material'
+import { HomeOutlined, AccessibleForwardOutlined, CreateNewFolderOutlined, PersonOutlined } from '@mui/icons-material'
 import Login from '../Pages/Login/Login'
 
 const routerList = [
@@ -25,6 +15,7 @@ const routerList = [
         icon: <HomeOutlined />,
         path: '/',
         Component: Home,
+        authority: ['admin', 'doctor', 'radiologist'],
     },
     {
         display_name: '病人',
@@ -32,6 +23,7 @@ const routerList = [
         icon: <AccessibleForwardOutlined />,
         path: '/patient',
         Component: Patient,
+        authority: ['admin', 'doctor', 'radiologist'],
     },
 
     {
@@ -40,7 +32,7 @@ const routerList = [
         icon: <CreateNewFolderOutlined />,
         path: '/report',
         Component: Report,
-        authority: [2, 3, 4],
+        authority: ['admin', 'doctor', 'radiologist'],
     },
     {
         display_name: '用戶',
@@ -48,7 +40,7 @@ const routerList = [
         icon: <PersonOutlined />,
         path: '/user',
         Component: User,
-        authority: [4],
+        authority: ['admin'],
     },
 ]
 
