@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     logo: {
-        height: '5rem',
+        height: '4rem',
         margin: '1rem',
         marginBottom: 0,
     },
@@ -72,6 +72,11 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             cursor: 'pointer',
         },
+    },
+    userInfo: {
+        position: 'absolute',
+        bottom: 100,
+        left: 28,
     },
 }))
 
