@@ -30,7 +30,10 @@ const User = () => {
             toastTitle: '刪除成功',
             icon: 'success',
             type: 'confirm',
-            event: () => dispatch(deleteUser(userID)),
+            event: async () => {
+                dispatch(deleteUser(userID))
+                dispatch(userTrigger())
+            },
         })
 
     const columns = useMemo(
